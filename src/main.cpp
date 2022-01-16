@@ -11,6 +11,72 @@
 #define SCREEN_HEIGHT       900
 
 
+void draw_cube(Eigen::Vector3f center_pos, GLfloat width) {
+    GLfloat half_width = width / 2;
+
+    GLfloat vertices[] = {
+        // Front face
+        center_pos.x() - half_width, center_pos.y() - half_width, center_pos.z() + half_width,      // bottom left
+        center_pos.x() + half_width, center_pos.y() - half_width, center_pos.z() + half_width,      // bottom right
+        center_pos.x() - half_width, center_pos.y() + half_width, center_pos.z() + half_width,      // top left
+
+        center_pos.x() - half_width, center_pos.y() + half_width, center_pos.z() + half_width,      // top left
+        center_pos.x() + half_width, center_pos.y() - half_width, center_pos.z() + half_width,      // bottom right
+        center_pos.x() + half_width, center_pos.y() + half_width, center_pos.z() + half_width,      // top right
+
+        // Back face
+        center_pos.x() - half_width, center_pos.y() - half_width, center_pos.z() - half_width,      // bottom left
+        center_pos.x() + half_width, center_pos.y() - half_width, center_pos.z() - half_width,      // bottom right
+        center_pos.x() - half_width, center_pos.y() + half_width, center_pos.z() - half_width,      // top left
+
+        center_pos.x() - half_width, center_pos.y() + half_width, center_pos.z() - half_width,      // top left
+        center_pos.x() + half_width, center_pos.y() - half_width, center_pos.z() - half_width,      // bottom right
+        center_pos.x() + half_width, center_pos.y() + half_width, center_pos.z() - half_width,      // top right
+
+        // Left face
+        center_pos.x() - half_width, center_pos.y() - half_width, center_pos.z() + half_width,      // bottom left
+        center_pos.x() - half_width, center_pos.y() - half_width, center_pos.z() - half_width,      // bottom right
+        center_pos.x() - half_width, center_pos.y() + half_width, center_pos.z() + half_width,      // top left
+
+        center_pos.x() - half_width, center_pos.y() + half_width, center_pos.z() + half_width,      // top left
+        center_pos.x() - half_width, center_pos.y() - half_width, center_pos.z() - half_width,      // bottom right
+        center_pos.x() - half_width, center_pos.y() + half_width, center_pos.z() - half_width,      // top right
+
+        // Right face
+        center_pos.x() + half_width, center_pos.y() - half_width, center_pos.z() + half_width,      // bottom left
+        center_pos.x() + half_width, center_pos.y() - half_width, center_pos.z() - half_width,      // bottom right
+        center_pos.x() + half_width, center_pos.y() + half_width, center_pos.z() + half_width,      // top left
+
+        center_pos.x() + half_width, center_pos.y() + half_width, center_pos.z() + half_width,      // top left
+        center_pos.x() + half_width, center_pos.y() - half_width, center_pos.z() - half_width,      // bottom right
+        center_pos.x() + half_width, center_pos.y() + half_width, center_pos.z() - half_width,      // top right
+
+        // Top face
+        center_pos.x() + half_width, center_pos.y() + half_width, center_pos.z() + half_width,      // bottom left
+        center_pos.x() + half_width, center_pos.y() + half_width, center_pos.z() - half_width,      // bottom right
+        center_pos.x() - half_width, center_pos.y() + half_width, center_pos.z() + half_width,      // top left
+
+        center_pos.x() - half_width, center_pos.y() + half_width, center_pos.z() + half_width,      // top left
+        center_pos.x() + half_width, center_pos.y() + half_width, center_pos.z() - half_width,      // bottom right
+        center_pos.x() - half_width, center_pos.y() + half_width, center_pos.z() - half_width,      // top right
+
+        // Bottom face
+        center_pos.x() + half_width, center_pos.y() - half_width, center_pos.z() + half_width,      // bottom left
+        center_pos.x() + half_width, center_pos.y() - half_width, center_pos.z() - half_width,      // bottom right
+        center_pos.x() - half_width, center_pos.y() - half_width, center_pos.z() + half_width,      // top left
+
+        center_pos.x() - half_width, center_pos.y() - half_width, center_pos.z() + half_width,      // top left
+        center_pos.x() + half_width, center_pos.y() - half_width, center_pos.z() - half_width,      // bottom right
+        center_pos.x() - half_width, center_pos.y() - half_width, center_pos.z() - half_width      // top right
+    };
+
+    // Draw vertex array
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, vertices);
+    glDrawArrays(GL_TRIANGLES, 0, 6 * 6);
+    glDisableClientState(GL_VERTEX_ARRAY);
+}
+
 void draw_square(Eigen::Vector3f center_pos, GLfloat width) {
     GLfloat vertices[] = {
         // x, y, z
@@ -60,7 +126,8 @@ int main(int argc, char **argv) {
     glViewport(0.0, 0.0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1);
+    // x1, x2, y1, y2, z1, z2
+    glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1000);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
@@ -69,8 +136,9 @@ int main(int argc, char **argv) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Render
-        draw_square(Eigen::Vector3f((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0), 100);
-        draw_point(Eigen::Vector3f((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0));
+        draw_cube(Eigen::Vector3f((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0), 250);
+        // draw_square(Eigen::Vector3f((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0), 100);
+        // draw_point(Eigen::Vector3f((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0));
 
         // Swap buffer
         glfwSwapBuffers(window);
