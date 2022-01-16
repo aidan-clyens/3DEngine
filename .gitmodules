@@ -1,3 +1,6 @@
 [submodule "thirdparty/bgfx.cmake"]
 	path = thirdparty/bgfx.cmake
 	url = git@github.com:widberg/bgfx.cmake.git
+[submodule "thirdparty/eigen"]
+	path = thirdparty/eigen
+	url = https://gitlab.com/libeigen/eigen.git

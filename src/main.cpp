@@ -2,6 +2,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <Eigen/Core>
+
 #include <iostream>
 
 // Defines
@@ -9,12 +11,13 @@
 #define SCREEN_HEIGHT       900
 
 
-void draw_square() {
+void draw_square(Eigen::Vector3f center_pos, GLfloat width) {
     GLfloat vertices[] = {
-        0.0, 300, 0.0,      // top left
-        300, 300, 0.0,      // top right
-        300, 0.0, 0.0,      // bottom right
-        0.0, 0.0, 0.0       // bottom left
+        // x, y, z
+        center_pos.x() - width / 2, center_pos.y() - width / 2, center_pos.z(),      // top left
+        center_pos.x() + width / 2, center_pos.y() - width / 2, center_pos.z(),      // top right
+        center_pos.x() + width / 2, center_pos.y() + width / 2, center_pos.z(),      // bottom right
+        center_pos.x() - width / 2, center_pos.y() + width / 2, center_pos.z()       // bottom left
     };
 
     // Draw vertex array
@@ -63,7 +66,7 @@ int main(int argc, char **argv) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Render
-        draw_square();
+        draw_square(Eigen::Vector3f((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0), 100);
         draw_point();
 
         // Swap buffer
