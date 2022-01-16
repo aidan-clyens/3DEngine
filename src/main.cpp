@@ -30,14 +30,14 @@ void draw_square(Eigen::Vector3f center_pos, GLfloat width) {
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void draw_point() {
+void draw_point(Eigen::Vector3f pos) {
     GLfloat point[] = {
-        SCREEN_WIDTH / 2.0, SCREEN_HEIGHT / 2.0
+        pos.x(), pos.y(), pos.z()
     };
 
     // Draw vertex array
     glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(2, GL_FLOAT, 0, point);
+    glVertexPointer(3, GL_FLOAT, 0, point);
     glDrawArrays(GL_POINTS, 0, 1);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
 
         // Render
         draw_square(Eigen::Vector3f((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0), 100);
-        draw_point();
+        draw_point(Eigen::Vector3f((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0));
 
         // Swap buffer
         glfwSwapBuffers(window);
