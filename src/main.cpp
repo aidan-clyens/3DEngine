@@ -108,6 +108,21 @@ void draw_point(Eigen::Vector3f pos) {
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
+void on_key_pressed(GLFWwindow *p_window, int key, int scancode, int action, int mods) {
+    std::cout << "Key: " << key << std::endl;
+
+    switch (action) {
+        case GLFW_PRESS:
+            break;
+        case GLFW_REPEAT:
+            break;
+        case GLFW_RELEASE:
+            break;
+        default:
+            break;
+    }
+}
+
 int main(int argc, char **argv) {
     if (!glfwInit()) {
         std::cerr << "Failed to init GLFW" << std::endl;        
@@ -120,6 +135,11 @@ int main(int argc, char **argv) {
         return -1;
     }
 
+    // Configure input
+    glfwSetKeyCallback(window, on_key_pressed);
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
+
+    // Make the current window's context current
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
