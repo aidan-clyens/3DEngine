@@ -24,6 +24,18 @@ void draw_square() {
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
+void draw_point() {
+    GLfloat point[] = {
+        SCREEN_WIDTH / 2.0, SCREEN_HEIGHT / 2.0
+    };
+
+    // Draw vertex array
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(2, GL_FLOAT, 0, point);
+    glDrawArrays(GL_POINTS, 0, 1);
+    glDisableClientState(GL_VERTEX_ARRAY);
+}
+
 int main(int argc, char **argv) {
     if (!glfwInit()) {
         std::cerr << "Failed to init GLFW" << std::endl;        
@@ -50,7 +62,9 @@ int main(int argc, char **argv) {
         // Clear window
         glClear(GL_COLOR_BUFFER_BIT);
 
+        // Render
         draw_square();
+        draw_point();
 
         // Swap buffer
         glfwSwapBuffers(window);
