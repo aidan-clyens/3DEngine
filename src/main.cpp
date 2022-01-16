@@ -14,16 +14,19 @@
 void draw_square(Eigen::Vector3f center_pos, GLfloat width) {
     GLfloat vertices[] = {
         // x, y, z
-        center_pos.x() - width / 2, center_pos.y() - width / 2, center_pos.z(),      // top left
-        center_pos.x() + width / 2, center_pos.y() - width / 2, center_pos.z(),      // top right
-        center_pos.x() + width / 2, center_pos.y() + width / 2, center_pos.z(),      // bottom right
-        center_pos.x() - width / 2, center_pos.y() + width / 2, center_pos.z()       // bottom left
+        center_pos.x() - width / 2, center_pos.y() - width / 2, center_pos.z(),      // bottom left
+        center_pos.x() + width / 2, center_pos.y() - width / 2, center_pos.z(),      // bottom right
+        center_pos.x() - width / 2, center_pos.y() + width / 2, center_pos.z(),      // top left
+
+        center_pos.x() - width / 2, center_pos.y() + width / 2, center_pos.z(),      // top left
+        center_pos.x() + width / 2, center_pos.y() - width / 2, center_pos.z(),      // bottom right
+        center_pos.x() + width / 2, center_pos.y() + width / 2, center_pos.z()       // top right
     };
 
     // Draw vertex array
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, vertices);
-    glDrawArrays(GL_QUADS, 0, 4);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
