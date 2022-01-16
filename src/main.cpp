@@ -11,7 +11,7 @@
 #define SCREEN_HEIGHT       900
 
 // Global variables
-Eigen::Vector3f translation_speed = Eigen::Vector3f(0, 0, 0);
+Eigen::Vector3f rotation_speed = Eigen::Vector3f(0, 0, 0);
 
 
 void draw_cube(Eigen::Vector3f center_pos, GLfloat width) {
@@ -116,37 +116,31 @@ void on_key_pressed(GLFWwindow *p_window, int key, int scancode, int action, int
 
     GLfloat speed = 5;
 
-    switch (key) {
-        // Up
-        case GLFW_KEY_W:
-            if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-                translation_speed[1] += speed;
-            }
-            break;
+    if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+        switch (key) {
+            // Up
+            case GLFW_KEY_W:
+                rotation_speed[1] += speed;
+                break;
 
-        // Down
-        case GLFW_KEY_S:
-            if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-                translation_speed[1] -= speed;
-            }
-            break;
+            // Down
+            case GLFW_KEY_S:
+                rotation_speed[1] -= speed;
+                break;
 
-        // Left
-        case GLFW_KEY_A:
-            if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-                translation_speed[0] -= speed;
-            }
-            break;
+            // Left
+            case GLFW_KEY_A:
+                rotation_speed[0] -= speed;
+                break;
 
-        // Right
-        case GLFW_KEY_D:
-            if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-                translation_speed[0] += speed;
-            }
-            break;
+            // Right
+            case GLFW_KEY_D:
+                rotation_speed[0] += speed;
+                break;
 
-        default:
-            break;
+            default:
+                break;
+        }
     }
 }
 
@@ -178,7 +172,10 @@ int main(int argc, char **argv) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    Eigen::Vector3f position = Eigen::Vector3f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0.0);
+    // Use wireframe mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    Eigen::Vector3f position = Eigen::Vector3f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, -500);
     GLfloat width = 250;
 
     // Main rendering loop
@@ -188,7 +185,10 @@ int main(int argc, char **argv) {
 
         // Transform
         glPushMatrix();
-        glTranslatef(translation_speed.x(), translation_speed.y(), translation_speed.z());
+        glTranslatef(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, -500);
+        glRotatef(rotation_speed.x(), 1, 0, 0);
+        glRotatef(rotation_speed.y(), 0, 1, 0);
+        glTranslatef(-(SCREEN_WIDTH / 2), -(SCREEN_HEIGHT / 2), 500);
 
         // Render
         draw_cube(position, width);
