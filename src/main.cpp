@@ -9,12 +9,20 @@
 #define SCREEN_HEIGHT       900
 
 
-float vertices[] = {
-    0.0, 0.5, 0.0,       // Vertex 1
-    0.5, -0.5, 0.0,      // Vertex 2
-    -0.5, -0.5, 0.0      // Vertex 3
-};
+void draw_square() {
+    GLfloat vertices[] = {
+        0.0, 300, 0.0,      // top left
+        300, 300, 0.0,      // top right
+        300, 0.0, 0.0,      // bottom right
+        0.0, 0.0, 0.0       // bottom left
+    };
 
+    // Draw vertex array
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, vertices);
+    glDrawArrays(GL_QUADS, 0, 4);
+    glDisableClientState(GL_VERTEX_ARRAY);
+}
 
 int main(int argc, char **argv) {
     if (!glfwInit()) {
@@ -31,15 +39,18 @@ int main(int argc, char **argv) {
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
+    glViewport(0.0, 0.0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
     while (!glfwWindowShouldClose(window)) {
         // Clear window
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // Draw vertex array
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_FLOAT, 0, vertices);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glDisableClientState(GL_VERTEX_ARRAY);
+        draw_square();
 
         // Swap buffer
         glfwSwapBuffers(window);
