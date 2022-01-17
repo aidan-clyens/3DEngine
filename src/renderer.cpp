@@ -65,6 +65,18 @@ void Renderer::render() {
     glfwPollEvents();
 }
 
+/* start_update
+ */
+void Renderer::start_update() {
+    glPushMatrix();
+}
+
+/* end_update
+ */
+void Renderer::end_update() {
+    glPopMatrix();
+}
+
 /* set_key_callback
  */
 void Renderer::set_key_callback(GLFWkeyfun callback) {

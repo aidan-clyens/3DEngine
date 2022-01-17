@@ -18,10 +18,27 @@
 // Global variables
 Eigen::Vector3f rotation_speed = Eigen::Vector3f(0, 0, 0);
 
+// Class definitions
+/* Cube
+ */
+class Cube : public Object3D {
+    public:
+        Cube(Eigen::Vector3f pos, GLfloat width):
+        Object3D(pos, width)
+        {
+
+        }
+
+        void update() {
+            this->translate(Eigen::Vector3f(m_position.x(), m_position.y(), m_position.z()));
+            this->rotate(rotation_speed.x(), Eigen::Vector3f(1, 0, 0));
+            this->rotate(rotation_speed.y(), Eigen::Vector3f(0, 1, 0));
+            this->translate(Eigen::Vector3f(-m_position.x(), -m_position.y(), -m_position.z()));
+        }
+};
+
 
 void on_key_pressed(GLFWwindow *p_window, int key, int scancode, int action, int mods) {
-    std::cout << "Key: " << key << std::endl;
-
     GLfloat speed = 5;
 
     if (action == GLFW_PRESS || action == GLFW_REPEAT) {
@@ -66,21 +83,32 @@ int main(int argc, char **argv) {
     Eigen::Vector3f position = Eigen::Vector3f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, -500);
     GLfloat width = 250;
 
-    std::vector<Object3D> objects; 
+    std::vector<Object3D*> objects; 
 
-    Object3D cube(position, width);
+    Cube *cube = new Cube(position, width);
     objects.push_back(cube);
 
     // Main rendering loop
     while (!renderer.is_window_closed()) {
         renderer.clear();
 
-        // Render objects
-        for (Object3D object : objects) {
-            object.render();
+        // Update objects
+        renderer.start_update();
+        for (Object3D *object : objects) {
+            object->update();
         }
 
+        // Render objects
+        for (Object3D *object : objects) {
+            object->render();
+        }
+        renderer.end_update();
+
         renderer.render();
+    }
+
+    for (Object3D *object : objects) {
+        delete object;
     }
 
     renderer.close();

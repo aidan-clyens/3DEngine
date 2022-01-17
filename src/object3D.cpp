@@ -77,3 +77,21 @@ void Object3D::render() {
     glDrawArrays(GL_TRIANGLES, 0, OBJECT3D_CUBE_NUM_FACES);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
+
+/* update
+ */
+void Object3D::update() {
+
+}
+
+/* translate
+ */
+void Object3D::translate(Eigen::Vector3f direction) {
+    glTranslatef(direction.x(), direction.y(), direction.z());
+}
+
+/* rotate
+ */
+void Object3D::rotate(GLfloat angle_deg, Eigen::Vector3f direction) {
+    glRotatef(angle_deg, direction.x(), direction.y(), direction.z());
+}

@@ -18,6 +18,8 @@ class Renderer {
 
         void clear();
         void render();
+        void start_update();
+        void end_update();
 
         bool is_window_closed() const;
 

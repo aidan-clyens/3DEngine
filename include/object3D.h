@@ -22,8 +22,12 @@ class Object3D {
         Object3D(Eigen::Vector3f pos, GLfloat width);
 
         void render();
+        virtual void update();
 
-    private:
+        void translate(Eigen::Vector3f direction);
+        void rotate(GLfloat angle_deg, Eigen::Vector3f direction);
+
+    protected:
         Eigen::Vector3f m_position;
         GLfloat m_width;
         GLfloat m_vertices[OBJECT3D_CUBE_NUM_VERTICES];
