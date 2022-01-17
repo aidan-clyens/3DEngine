@@ -5,9 +5,6 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
-#include <vector>
-
-#include "object3D.h"
 
 
 /* Renderer
@@ -19,8 +16,8 @@ class Renderer {
         bool init();
         void close();
 
+        void clear();
         void render();
-        void add_object(Object3D cube);
 
         bool is_window_closed() const;
 
@@ -32,6 +29,4 @@ class Renderer {
         int m_width;
         int m_height;
         GLFWwindow *p_window;
-
-        std::vector<Object3D> m_objects;
 };

@@ -5,6 +5,7 @@
 #include <Eigen/Core>
 
 #include <iostream>
+#include <vector>
 
 #include "renderer.h"
 #include "object3D.h"
@@ -65,11 +66,20 @@ int main(int argc, char **argv) {
     Eigen::Vector3f position = Eigen::Vector3f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, -500);
     GLfloat width = 250;
 
+    std::vector<Object3D> objects; 
+
     Object3D cube(position, width);
-    renderer.add_object(cube);
+    objects.push_back(cube);
 
     // Main rendering loop
     while (!renderer.is_window_closed()) {
+        renderer.clear();
+
+        // Render objects
+        for (Object3D object : objects) {
+            object.render();
+        }
+
         renderer.render();
     }
 

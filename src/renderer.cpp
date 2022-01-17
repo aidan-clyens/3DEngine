@@ -50,33 +50,19 @@ void Renderer::close() {
     glfwTerminate();
 }
 
+/* clear
+ */
+void Renderer::clear() {
+    // Clear window
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
 /* render
  */
 void Renderer::render() {
-    // Clear window
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    // // Transform
-    // glPushMatrix();
-    // glTranslatef(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, -500);
-    // glRotatef(rotation_speed.x(), 1, 0, 0);
-    // glRotatef(rotation_speed.y(), 0, 1, 0);
-    // glTranslatef(-(SCREEN_WIDTH / 2), -(SCREEN_HEIGHT / 2), 500);
-
-    // Render
-    for (Object3D object : m_objects) {
-        object.render();
-    }
-
-    // glPopMatrix();
-
     // Swap buffer
     glfwSwapBuffers(p_window);
     glfwPollEvents();
-}
-
-void Renderer::add_object(Object3D object) {
-    m_objects.push_back(object);
 }
 
 /* set_key_callback
