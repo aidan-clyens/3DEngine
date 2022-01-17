@@ -19,7 +19,7 @@
  */
 class Object3D {
     public:
-        Object3D(Eigen::Vector3f pos, GLfloat width);
+        Object3D(Eigen::Vector3f pos, Eigen::Vector3f size);
 
         void render();
         virtual void update();
@@ -29,6 +29,6 @@ class Object3D {
 
     protected:
         Eigen::Vector3f m_position;
-        GLfloat m_width;
+        Eigen::Vector3f m_size;
         GLfloat m_vertices[OBJECT3D_CUBE_NUM_VERTICES];
 };

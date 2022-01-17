@@ -3,66 +3,68 @@
 
 /* Object3D
  */
-Object3D::Object3D(Eigen::Vector3f pos, GLfloat width):
+Object3D::Object3D(Eigen::Vector3f pos, Eigen::Vector3f size):
 m_position(pos),
-m_width(width)
+m_size(size)
 {
-    GLfloat half_width = m_width / 2;
+    GLfloat half_size_x = m_size.x() / 2;
+    GLfloat half_size_y = m_size.y() / 2;
+    GLfloat half_size_z = m_size.z() / 2;
 
     GLfloat vertices[] = {
         // Front face
-        m_position.x() - half_width, m_position.y() - half_width, m_position.z() + half_width, // bottom left
-        m_position.x() + half_width, m_position.y() - half_width, m_position.z() + half_width, // bottom right
-        m_position.x() - half_width, m_position.y() + half_width, m_position.z() + half_width, // top left
+        m_position.x() - half_size_x, m_position.y() - half_size_y, m_position.z() + half_size_z, // bottom left
+        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() + half_size_z, // bottom right
+        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z, // top left
 
-        m_position.x() - half_width, m_position.y() + half_width, m_position.z() + half_width, // top left
-        m_position.x() + half_width, m_position.y() - half_width, m_position.z() + half_width, // bottom right
-        m_position.x() + half_width, m_position.y() + half_width, m_position.z() + half_width, // top right
+        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z, // top left
+        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() + half_size_z, // bottom right
+        m_position.x() + half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z, // top right
 
         // Back face
-        m_position.x() - half_width, m_position.y() - half_width, m_position.z() - half_width, // bottom left
-        m_position.x() + half_width, m_position.y() - half_width, m_position.z() - half_width, // bottom right
-        m_position.x() - half_width, m_position.y() + half_width, m_position.z() - half_width, // top left
+        m_position.x() - half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z, // bottom left
+        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z, // bottom right
+        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() - half_size_z, // top left
 
-        m_position.x() - half_width, m_position.y() + half_width, m_position.z() - half_width, // top left
-        m_position.x() + half_width, m_position.y() - half_width, m_position.z() - half_width, // bottom right
-        m_position.x() + half_width, m_position.y() + half_width, m_position.z() - half_width, // top right
+        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() - half_size_z, // top left
+        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z, // bottom right
+        m_position.x() + half_size_x, m_position.y() + half_size_y, m_position.z() - half_size_z, // top right
 
         // Left face
-        m_position.x() - half_width, m_position.y() - half_width, m_position.z() + half_width, // bottom left
-        m_position.x() - half_width, m_position.y() - half_width, m_position.z() - half_width, // bottom right
-        m_position.x() - half_width, m_position.y() + half_width, m_position.z() + half_width, // top left
+        m_position.x() - half_size_x, m_position.y() - half_size_y, m_position.z() + half_size_z, // bottom left
+        m_position.x() - half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z, // bottom right
+        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z, // top left
 
-        m_position.x() - half_width, m_position.y() + half_width, m_position.z() + half_width, // top left
-        m_position.x() - half_width, m_position.y() - half_width, m_position.z() - half_width, // bottom right
-        m_position.x() - half_width, m_position.y() + half_width, m_position.z() - half_width, // top right
+        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z, // top left
+        m_position.x() - half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z, // bottom right
+        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() - half_size_z, // top right
 
         // Right face
-        m_position.x() + half_width, m_position.y() - half_width, m_position.z() + half_width, // bottom left
-        m_position.x() + half_width, m_position.y() - half_width, m_position.z() - half_width, // bottom right
-        m_position.x() + half_width, m_position.y() + half_width, m_position.z() + half_width, // top left
+        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() + half_size_z, // bottom left
+        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z, // bottom right
+        m_position.x() + half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z, // top left
 
-        m_position.x() + half_width, m_position.y() + half_width, m_position.z() + half_width, // top left
-        m_position.x() + half_width, m_position.y() - half_width, m_position.z() - half_width, // bottom right
-        m_position.x() + half_width, m_position.y() + half_width, m_position.z() - half_width, // top right
+        m_position.x() + half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z, // top left
+        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z, // bottom right
+        m_position.x() + half_size_x, m_position.y() + half_size_y, m_position.z() - half_size_z, // top right
 
         // Top face
-        m_position.x() + half_width, m_position.y() + half_width, m_position.z() + half_width, // bottom left
-        m_position.x() + half_width, m_position.y() + half_width, m_position.z() - half_width, // bottom right
-        m_position.x() - half_width, m_position.y() + half_width, m_position.z() + half_width, // top left
+        m_position.x() + half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z, // bottom left
+        m_position.x() + half_size_x, m_position.y() + half_size_y, m_position.z() - half_size_z, // bottom right
+        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z, // top left
 
-        m_position.x() - half_width, m_position.y() + half_width, m_position.z() + half_width, // top left
-        m_position.x() + half_width, m_position.y() + half_width, m_position.z() - half_width, // bottom right
-        m_position.x() - half_width, m_position.y() + half_width, m_position.z() - half_width, // top right
+        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z, // top left
+        m_position.x() + half_size_x, m_position.y() + half_size_y, m_position.z() - half_size_z, // bottom right
+        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() - half_size_z, // top right
 
         // Bottom face
-        m_position.x() + half_width, m_position.y() - half_width, m_position.z() + half_width, // bottom left
-        m_position.x() + half_width, m_position.y() - half_width, m_position.z() - half_width, // bottom right
-        m_position.x() - half_width, m_position.y() - half_width, m_position.z() + half_width, // top left
+        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() + half_size_z, // bottom left
+        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z, // bottom right
+        m_position.x() - half_size_x, m_position.y() - half_size_y, m_position.z() + half_size_z, // top left
 
-        m_position.x() - half_width, m_position.y() - half_width, m_position.z() + half_width, // top left
-        m_position.x() + half_width, m_position.y() - half_width, m_position.z() - half_width, // bottom right
-        m_position.x() - half_width, m_position.y() - half_width, m_position.z() - half_width  // top right
+        m_position.x() - half_size_x, m_position.y() - half_size_y, m_position.z() + half_size_z, // top left
+        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z, // bottom right
+        m_position.x() - half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z  // top right
     };
 
     std::copy(std::begin(vertices), std::end(vertices), std::begin(m_vertices));

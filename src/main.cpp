@@ -23,16 +23,16 @@ Eigen::Vector3f rotation_speed = Eigen::Vector3f(0, 0, 0);
  */
 class Cube : public Object3D {
     public:
-        Cube(Eigen::Vector3f pos, GLfloat width):
-        Object3D(pos, width)
+        Cube(Eigen::Vector3f pos, float width):
+        Object3D(pos, Eigen::Vector3f(width, width, width))
         {
 
         }
 
         void update() {
             this->translate(Eigen::Vector3f(m_position.x(), m_position.y(), m_position.z()));
-            this->rotate(rotation_speed.x(), Eigen::Vector3f(1, 0, 0));
-            this->rotate(rotation_speed.y(), Eigen::Vector3f(0, 1, 0));
+            this->rotate(rotation_speed.y(), Eigen::Vector3f(1, 0, 0));
+            this->rotate(rotation_speed.x(), Eigen::Vector3f(0, 1, 0));
             this->translate(Eigen::Vector3f(-m_position.x(), -m_position.y(), -m_position.z()));
         }
 };
@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
     renderer.set_key_callback(on_key_pressed);
 
     Eigen::Vector3f position = Eigen::Vector3f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, -500);
-    GLfloat width = 250;
+    float width = 250;
 
     std::vector<Object3D*> objects; 
 
