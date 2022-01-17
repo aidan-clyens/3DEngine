@@ -7,8 +7,8 @@
 #include <iostream>
 #include <vector>
 
-#include "renderer.h"
-#include "object3D.h"
+#include "Engine/Renderer.h"
+#include "Engine/Object3D.h"
 
 
 // Defines
