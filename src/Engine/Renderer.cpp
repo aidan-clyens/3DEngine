@@ -27,6 +27,13 @@ bool Renderer::init() {
 
     // Make the current window's context current
     glfwMakeContextCurrent(p_window);
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to init GLAD" << std::endl;
+        glfwTerminate();
+        return false;
+    }
+
     glfwSwapInterval(1);
 
     glViewport(0.0, 0.0, m_width, m_height);
