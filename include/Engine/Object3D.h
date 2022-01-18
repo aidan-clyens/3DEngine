@@ -30,5 +30,8 @@ class Object3D {
     protected:
         Eigen::Vector3f m_position;
         Eigen::Vector3f m_size;
-        GLfloat m_vertices[OBJECT3D_CUBE_NUM_VERTICES];
+
+        unsigned int m_vertex_buffer_object;
+        unsigned int m_vertex_array_object;
+        unsigned int m_element_buffer_object;
 };
