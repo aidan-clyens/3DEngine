@@ -10,7 +10,8 @@ m_width(width),
 m_height(height),
 m_model(glm::mat4(1.0)),
 m_view(glm::mat4(1.0)),
-m_projection(glm::perspective(glm::radians((float)45.0), (float)width / (float)height, (float)0.1, (float)100.0))
+m_projection(glm::perspective(glm::radians((float)45.0), (float)width / (float)height, (float)0.1, (float)100.0)),
+m_camera(glm::vec3(0.0))
 {
 
 }
@@ -89,7 +90,7 @@ void Renderer::render(std::vector<Object3D*> &objects) {
         m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.z), glm::vec3(0.0, 0.0, 1.0));
 
         // Adjust view
-        m_view = glm::translate(m_view, glm::vec3(0.0, 0.0, -3.0));
+        m_view = glm::translate(m_view, m_camera);
 
         // Get matrix uniform locations
         unsigned int model_location = glGetUniformLocation(object->m_shader_program_id, "model");
@@ -113,6 +114,12 @@ void Renderer::render(std::vector<Object3D*> &objects) {
     // Swap buffer
     glfwSwapBuffers(p_window);
     glfwPollEvents();
+}
+
+/* set_camera_position
+ */
+void Renderer::set_camera_position(glm::vec3 position) {
+    m_camera = position;
 }
 
 /* set_key_callback

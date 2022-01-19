@@ -15,7 +15,7 @@
 #define SCREEN_HEIGHT       900
 
 // Global variables
-glm::vec3 rotation_speed = glm::vec3(0, 0, 0);
+glm::vec3 camera = glm::vec3(0.0, 0.0, -3.0);
 
 // Class definitions
 /* Cube
@@ -31,28 +31,28 @@ class Cube : public Object3D {
 
 
 void on_key_pressed(GLFWwindow *p_window, int key, int scancode, int action, int mods) {
-    GLfloat speed = 5;
+    GLfloat speed = 0.1;
 
     if (action == GLFW_PRESS || action == GLFW_REPEAT) {
         switch (key) {
             // Up
             case GLFW_KEY_W:
-                rotation_speed[1] += speed;
+                camera[1] += speed;
                 break;
 
             // Down
             case GLFW_KEY_S:
-                rotation_speed[1] -= speed;
+                camera[1] -= speed;
                 break;
 
             // Left
             case GLFW_KEY_A:
-                rotation_speed[0] -= speed;
+                camera[0] -= speed;
                 break;
 
             // Right
             case GLFW_KEY_D:
-                rotation_speed[0] += speed;
+                camera[0] += speed;
                 break;
 
             default:
@@ -98,6 +98,8 @@ int main(int argc, char **argv) {
         rotation.y += 1;
 
         cube->set_rotation(rotation);
+
+        renderer.set_camera_position(camera);
 
         renderer.render(objects);
     }

@@ -16,8 +16,6 @@ class Object3D;
 /* Renderer
  */
 class Renderer {
-    // friend class Object3D;
-
     public:
         Renderer(int width, int height);
 
@@ -25,8 +23,8 @@ class Renderer {
         void close();
 
         void render(std::vector<Object3D*> &objects);
-        void start_update();
-        void end_update();
+
+        void set_camera_position(glm::vec3 position);
 
         bool is_window_closed() const;
 
@@ -42,4 +40,6 @@ class Renderer {
         glm::mat4 m_model;
         glm::mat4 m_view;
         glm::mat4 m_projection;
+
+        glm::vec3 m_camera;
 };
