@@ -9,6 +9,7 @@
 
 #include "Engine/Renderer.h"
 #include "Engine/Object3D.h"
+#include "Engine/ShaderLoader.h"
 
 
 // Defines
@@ -64,6 +65,7 @@ void on_key_pressed(GLFWwindow *p_window, int key, int scancode, int action, int
 
 int main(int argc, char **argv) {
     Renderer renderer(SCREEN_WIDTH, SCREEN_HEIGHT);
+    ShaderLoader shader_loader;
 
     if (!renderer.init()) {
         std::cerr << "Failed to init Renderer" << std::endl;
@@ -73,15 +75,17 @@ int main(int argc, char **argv) {
 
     renderer.set_key_callback(on_key_pressed);
 
+    // Load shaders
     unsigned int vertex_shader_id;
     unsigned int fragment_shader_id;
     unsigned int shader_program_id;
-    if (renderer.load_shader("shaders/vertex.glsl", SHADER_VERTEX, vertex_shader_id) &&
-        renderer.load_shader("shaders/fragment.glsl", SHADER_FRAGMENT, fragment_shader_id)) {
+    if (shader_loader.load_shader("shaders/vertex.glsl", SHADER_VERTEX, vertex_shader_id) &&
+        shader_loader.load_shader("shaders/fragment.glsl", SHADER_FRAGMENT, fragment_shader_id)) {
 
-        renderer.link_shader_program(vertex_shader_id, fragment_shader_id, shader_program_id);
+        shader_loader.link_shader_program(vertex_shader_id, fragment_shader_id, shader_program_id);
     }
 
+    // Create objects
     Eigen::Vector3f position = Eigen::Vector3f(0, 0, 0);
     float width = 1;
 

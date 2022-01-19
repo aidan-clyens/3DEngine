@@ -1,6 +1,5 @@
 #include "Engine/Object3D.h"
 
-#include <iostream>
 
 /* Object3D
  */
