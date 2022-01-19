@@ -8,14 +8,13 @@
 #include "Engine/Renderer.h"
 #include "Engine/Object3D.h"
 #include "Engine/ShaderLoader.h"
+#include "Engine/Camera.h"
 
 
 // Defines
 #define SCREEN_WIDTH        1600
 #define SCREEN_HEIGHT       900
 
-// Global variables
-glm::vec3 camera_position = glm::vec3(0.0, 0.0, -3.0);
 
 // Class definitions
 /* Cube
@@ -31,35 +30,35 @@ class Cube : public Object3D {
 
 /* process_input
  */
-void process_input(GLFWwindow *window) {
+void process_input(GLFWwindow *window, Camera &camera) {
     const float speed = 0.05;
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        camera_position[1] += speed;
+        camera.translate_y(speed);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        camera_position[1] -= speed;
+        camera.translate_y(-speed);
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        camera_position[0] -= speed;
+        camera.translate_z(-speed);
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        camera_position[0] += speed;
+        camera.translate_z(speed);
     }
 }
 
-
+/* main
+ */
 int main(int argc, char **argv) {
     Renderer renderer(SCREEN_WIDTH, SCREEN_HEIGHT);
     ShaderLoader shader_loader;
+    Camera camera(glm::vec3(0.0, 0.0, 3.0));
 
     if (!renderer.init()) {
         std::cerr << "Failed to init Renderer" << std::endl;
         renderer.close();
         return -1;
     }
-
-    // renderer.set_key_callback(on_key_pressed);
 
     // Load shaders
     unsigned int vertex_shader_id;
@@ -82,16 +81,14 @@ int main(int argc, char **argv) {
 
     // Main rendering loop
     while (!renderer.is_window_closed()) {
-        process_input(renderer.get_window());
+        process_input(renderer.get_window(), camera);
 
         rotation.x += 1;
         rotation.y += 1;
 
         cube->set_rotation(rotation);
 
-        renderer.set_camera_position(camera_position);
-
-        renderer.render(objects);
+        renderer.render(objects, camera);
     }
 
     for (Object3D *object : objects) {

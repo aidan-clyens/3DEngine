@@ -1,6 +1,7 @@
 #include "Engine/Renderer.h"
 
 #include "Engine/Object3D.h"
+#include "Engine/Camera.h"
 
 
 /* Renderer
@@ -10,8 +11,7 @@ m_width(width),
 m_height(height),
 m_model(glm::mat4(1.0)),
 m_view(glm::mat4(1.0)),
-m_projection(glm::perspective(glm::radians((float)45.0), (float)width / (float)height, (float)0.1, (float)100.0)),
-m_camera(glm::vec3(0.0))
+m_projection(glm::perspective(glm::radians((float)45.0), (float)width / (float)height, (float)0.1, (float)100.0))
 {
 
 }
@@ -70,7 +70,7 @@ void Renderer::close() {
 
 /* render
  */
-void Renderer::render(std::vector<Object3D*> &objects) {
+void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
     // Clear window
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -90,7 +90,7 @@ void Renderer::render(std::vector<Object3D*> &objects) {
         m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.z), glm::vec3(0.0, 0.0, 1.0));
 
         // Adjust view
-        m_view = glm::translate(m_view, m_camera);
+        m_view = glm::lookAt(camera.m_position, camera.m_position + camera.m_front, camera.m_up);
 
         // Get matrix uniform locations
         unsigned int model_location = glGetUniformLocation(object->m_shader_program_id, "model");
@@ -114,12 +114,6 @@ void Renderer::render(std::vector<Object3D*> &objects) {
     // Swap buffer
     glfwSwapBuffers(p_window);
     glfwPollEvents();
-}
-
-/* set_camera_position
- */
-void Renderer::set_camera_position(glm::vec3 position) {
-    m_camera = position;
 }
 
 /* set_key_callback
