@@ -97,14 +97,7 @@ int main(int argc, char **argv) {
 
     // Main rendering loop
     while (!renderer.is_window_closed()) {
-        renderer.clear();
-
-        // Render objects
-        for (Object3D *object : objects) {
-            object->render();
-        }
-
-        renderer.render();
+        renderer.render(objects);
     }
 
     for (Object3D *object : objects) {

@@ -15,14 +15,16 @@
 #define OBJECT3D_CUBE_NUM_VERTICES      OBJECT3D_CUBE_NUM_FACES * 3
 
 
+class Renderer;
+
 /* Object3D
  */
 class Object3D {
+    friend class Renderer;
+
     public:
         Object3D(Eigen::Vector3f pos, Eigen::Vector3f size);
         virtual ~Object3D();
-
-        void render();
 
         void attach_shader(unsigned int program_id);
 

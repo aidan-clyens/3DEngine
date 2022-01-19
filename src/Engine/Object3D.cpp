@@ -44,6 +44,7 @@ m_shader_program_id(-1)
         3, 6, 7
     };
 
+    // Create VBO, EBO and VAO
     glGenVertexArrays(1, &m_vertex_array_object);
     glGenBuffers(1, &m_vertex_buffer_object);
     glGenBuffers(1, &m_element_buffer_object);
@@ -57,10 +58,6 @@ m_shader_program_id(-1)
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)0);
     glEnableVertexAttribArray(0);
-
-    // glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    // glBindVertexArray(0);
 }
 
 /* Object3D
@@ -69,23 +66,6 @@ Object3D::~Object3D() {
     glDeleteBuffers(1, &m_vertex_buffer_object);
     glDeleteBuffers(1, &m_element_buffer_object);
     glDeleteVertexArrays(1, &m_vertex_array_object);
-}
-
-/* render
- */
-void Object3D::render() {
-    // Draw vertex array
-    if (m_shader_program_id >= 0) {
-        glUseProgram(m_shader_program_id);
-    }
-
-    glBindVertexArray(m_vertex_array_object);
-    glDrawElements(GL_TRIANGLES, OBJECT3D_CUBE_NUM_VERTICES, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-
-    if (m_shader_program_id >= 0) {
-        glUseProgram(0);
-    }
 }
 
 /* attach_shader

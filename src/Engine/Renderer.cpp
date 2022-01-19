@@ -1,5 +1,7 @@
 #include "Engine/Renderer.h"
 
+#include "Engine/Object3D.h"
+
 
 /* Renderer
  */
@@ -62,16 +64,25 @@ void Renderer::close() {
     glfwTerminate();
 }
 
-/* clear
- */
-void Renderer::clear() {
-    // Clear window
-    glClear(GL_COLOR_BUFFER_BIT);
-}
-
 /* render
  */
-void Renderer::render() {
+void Renderer::render(std::vector<Object3D*> &objects) {
+    // Clear window
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Render each object
+    for (Object3D *object : objects) {
+        // Select shader
+        glUseProgram(object->m_shader_program_id);
+
+        glBindVertexArray(object->m_vertex_array_object);
+        glDrawElements(GL_TRIANGLES, OBJECT3D_CUBE_NUM_VERTICES, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+
+        // Deselect shader
+        glUseProgram(0);
+    }
+
     // Swap buffer
     glfwSwapBuffers(p_window);
     glfwPollEvents();

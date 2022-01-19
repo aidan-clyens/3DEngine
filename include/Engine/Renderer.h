@@ -5,19 +5,24 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <vector>
+
+
+class Object3D;
 
 
 /* Renderer
  */
 class Renderer {
+    // friend class Object3D;
+
     public:
         Renderer(int width, int height);
 
         bool init();
         void close();
 
-        void clear();
-        void render();
+        void render(std::vector<Object3D*> &objects);
         void start_update();
         void end_update();
 
