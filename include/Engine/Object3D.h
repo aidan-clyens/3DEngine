@@ -22,13 +22,14 @@ class Object3D {
     friend class Renderer;
 
     public:
-        Object3D(glm::vec3 pos, glm::vec3 size);
+        Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size);
         virtual ~Object3D();
 
         void attach_shader(unsigned int program_id);
 
     protected:
         glm::vec3 m_position;
+        glm::vec3 m_rotation;
         glm::vec3 m_size;
 
         unsigned int m_vertex_buffer_object;

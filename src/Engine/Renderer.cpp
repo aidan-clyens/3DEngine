@@ -79,8 +79,17 @@ void Renderer::render(std::vector<Object3D*> &objects) {
         glUseProgram(object->m_shader_program_id);
 
         // Create transformations
-        m_model = glm::rotate(glm::mat4(1.0), glm::radians((float)45.0), glm::vec3(1.0, 1.0, 0.0));
-        m_view = glm::translate(glm::mat4(1.0), glm::vec3(0.0, 0.0, -3.0));
+        m_model = glm::mat4(1.0);
+        m_view = glm::mat4(1.0);
+
+        // Transform object
+        m_model = glm::translate(m_model, object->m_position);
+        m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.x), glm::vec3(1.0, 0.0, 0.0));
+        m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.y), glm::vec3(0.0, 1.0, 0.0));
+        m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.z), glm::vec3(0.0, 0.0, 1.0));
+
+        // Adjust view
+        m_view = glm::translate(m_view, glm::vec3(0.0, 0.0, -3.0));
 
         // Get matrix uniform locations
         unsigned int model_location = glGetUniformLocation(object->m_shader_program_id, "model");
