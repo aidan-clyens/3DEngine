@@ -18,6 +18,12 @@ bool Renderer::init() {
         return false;
     }
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     p_window = glfwCreateWindow(m_width, m_height, "Hello World", NULL, NULL);
     if (!p_window) {
         std::cerr << "Failed to create window" << std::endl;
@@ -34,15 +40,14 @@ bool Renderer::init() {
         return false;
     }
 
+    std::cout << "OpenGL Version: "     << glGetString(GL_VERSION)                  << std::endl;
+    std::cout << "GLSL Version: "       << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+    std::cout << "OpenGL Vendor: "      << glGetString(GL_VENDOR)                   << std::endl;
+    std::cout << "OpenGL Renderer: "    << glGetString(GL_RENDERER)                 << std::endl;
+
     glfwSwapInterval(1);
 
     glViewport(0.0, 0.0, m_width, m_height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    // x1, x2, y1, y2, z1, z2
-    glOrtho(0, m_width, 0, m_height, 0, 1000);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
 
     // Use wireframe mode
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -72,16 +77,83 @@ void Renderer::render() {
     glfwPollEvents();
 }
 
-/* start_update
+/* load_shader
  */
-void Renderer::start_update() {
-    glPushMatrix();
+bool Renderer::load_shader(const std::string &filename, eShaderType shader_type, unsigned int &shader_id) {
+    std::ifstream file;
+    std::string content;
+    int success;
+    char info_log[512];
+
+    // Read content from GLSL file
+    file.open(filename);
+    if (file.is_open()) {
+        std::string line = "";
+        while (!file.eof()) {
+            std::getline(file, line);
+            content.append(line + "\n");
+        }
+    }
+    else {
+        std::cerr <<  "Failed to open file " << filename << std::endl;
+        return false;
+    }
+    file.close();
+
+    const char *buffer = content.c_str();
+
+    // Compile shader
+    if (shader_type == SHADER_VERTEX) {
+        shader_id = glCreateShader(GL_VERTEX_SHADER);
+    }
+    else if (shader_type == SHADER_FRAGMENT) {
+        shader_id = glCreateShader(GL_FRAGMENT_SHADER);
+    }
+
+    glShaderSource(shader_id, 1, &buffer, NULL);
+    glCompileShader(shader_id);
+
+    // Get shader compilation status
+    glGetShaderiv(shader_id, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(shader_id, 512, NULL, info_log);
+        if (shader_type == SHADER_VERTEX) {
+            std::cerr << "ERROR: Vertex Shader compilation FAILED\n" << info_log << std::endl;
+        }
+        else if (shader_type == SHADER_FRAGMENT) {
+            std::cerr << "ERROR: Fragment Shader compilation FAILED\n" << info_log << std::endl;
+        }
+        return false;
+    }
+
+    return true;
 }
 
-/* end_update
+/* link_shader_program
  */
-void Renderer::end_update() {
-    glPopMatrix();
+bool Renderer::link_shader_program(unsigned int vertex_shader_id, unsigned int fragment_shader_id, unsigned int &program_id) {
+    int success;
+    char info_log[512];
+
+    program_id = glCreateProgram();
+
+    // Link shader program
+    glAttachShader(program_id, vertex_shader_id);
+    glAttachShader(program_id, fragment_shader_id);
+    glLinkProgram(program_id);
+
+    glDeleteShader(vertex_shader_id);
+    glDeleteShader(fragment_shader_id);
+
+    // Get shader program link status
+    glGetProgramiv(program_id, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(program_id, 512, NULL, info_log);
+        std::cerr << "ERROR: Shader linking FAILED\n" << info_log << std::endl;
+        return false;
+    }
+
+    return true;
 }
 
 /* set_key_callback

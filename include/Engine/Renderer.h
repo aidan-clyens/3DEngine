@@ -5,7 +5,17 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 
+
+/* eShaderType
+ */
+typedef enum {
+    SHADER_VERTEX,
+    SHADER_FRAGMENT
+} eShaderType;
 
 
 /* Renderer
@@ -21,6 +31,9 @@ class Renderer {
         void render();
         void start_update();
         void end_update();
+
+        bool load_shader(const std::string &filename, eShaderType shader_type, unsigned int &shader_id);
+        bool link_shader_program(unsigned int vertex_shader_id, unsigned int fragment_shader_id, unsigned int &program_id);
 
         bool is_window_closed() const;
 

@@ -28,13 +28,6 @@ class Cube : public Object3D {
         {
 
         }
-
-        void update() {
-            this->translate(Eigen::Vector3f(m_position.x(), m_position.y(), m_position.z()));
-            this->rotate(rotation_speed.y(), Eigen::Vector3f(1, 0, 0));
-            this->rotate(rotation_speed.x(), Eigen::Vector3f(0, 1, 0));
-            this->translate(Eigen::Vector3f(-m_position.x(), -m_position.y(), -m_position.z()));
-        }
 };
 
 
@@ -80,29 +73,32 @@ int main(int argc, char **argv) {
 
     renderer.set_key_callback(on_key_pressed);
 
-    Eigen::Vector3f position = Eigen::Vector3f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, -500);
-    float width = 250;
+    unsigned int vertex_shader_id;
+    unsigned int fragment_shader_id;
+    unsigned int shader_program_id;
+    if (renderer.load_shader("shaders/vertex.glsl", SHADER_VERTEX, vertex_shader_id) &&
+        renderer.load_shader("shaders/fragment.glsl", SHADER_FRAGMENT, fragment_shader_id)) {
 
-    std::vector<Object3D*> objects; 
+        renderer.link_shader_program(vertex_shader_id, fragment_shader_id, shader_program_id);
+    }
+
+    Eigen::Vector3f position = Eigen::Vector3f(0, 0, 0);
+    float width = 1;
+
+    std::vector<Object3D*> objects;
 
     Cube *cube = new Cube(position, width);
+    cube->attach_shader(shader_program_id);
     objects.push_back(cube);
 
     // Main rendering loop
     while (!renderer.is_window_closed()) {
         renderer.clear();
 
-        // Update objects
-        renderer.start_update();
-        for (Object3D *object : objects) {
-            object->update();
-        }
-
         // Render objects
         for (Object3D *object : objects) {
             object->render();
         }
-        renderer.end_update();
 
         renderer.render();
     }

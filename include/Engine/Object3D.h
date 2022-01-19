@@ -20,12 +20,11 @@
 class Object3D {
     public:
         Object3D(Eigen::Vector3f pos, Eigen::Vector3f size);
+        virtual ~Object3D();
 
         void render();
-        virtual void update();
 
-        void translate(Eigen::Vector3f direction);
-        void rotate(GLfloat angle_deg, Eigen::Vector3f direction);
+        void attach_shader(unsigned int program_id);
 
     protected:
         Eigen::Vector3f m_position;
@@ -34,4 +33,6 @@ class Object3D {
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;
         unsigned int m_element_buffer_object;
+
+        unsigned int m_shader_program_id;
 };
