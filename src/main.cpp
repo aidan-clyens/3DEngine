@@ -86,20 +86,19 @@ int main(int argc, char **argv) {
     // Create objects
     std::vector<Object3D*> objects;
 
-    Cube *cube = new Cube(glm::vec3(1.5, 0, -2), glm::vec3(0, 10, 0), 1);
+    glm::vec3 rotation = glm::vec3(0, 0, 0);
+
+    Cube *cube = new Cube(glm::vec3(0, 0, -2), rotation, 1);
     cube->attach_shader(shader_program_id);
     objects.push_back(cube);
 
-    Cube *cube2 = new Cube(glm::vec3(-1, 0.4, -1), glm::vec3(-45, -10, 0), 1);
-    cube2->attach_shader(shader_program_id);
-    objects.push_back(cube2);
-
-    Cube *cube3 = new Cube(glm::vec3(-0.5, -1, -2), glm::vec3(10, 0, -30), 1);
-    cube3->attach_shader(shader_program_id);
-    objects.push_back(cube3);
-
     // Main rendering loop
     while (!renderer.is_window_closed()) {
+        rotation.x += 1;
+        rotation.y += 1;
+
+        cube->set_rotation(rotation);
+
         renderer.render(objects);
     }
 
