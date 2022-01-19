@@ -25,6 +25,9 @@ class Object3D {
         Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size);
         virtual ~Object3D();
 
+        void set_position(glm::vec3 position);
+        void set_rotation(glm::vec3 rotation);
+
         void attach_shader(unsigned int program_id);
 
     protected:

@@ -69,6 +69,18 @@ Object3D::~Object3D() {
     glDeleteVertexArrays(1, &m_vertex_array_object);
 }
 
+/* set_position
+ */
+void Object3D::set_position(glm::vec3 position) {
+    m_position = position;
+}
+
+/* set_rotation
+ */
+void Object3D::set_rotation(glm::vec3 rotation) {
+    m_rotation = rotation;
+}
+
 /* attach_shader
  */
 void Object3D::attach_shader(unsigned int program_id) {
