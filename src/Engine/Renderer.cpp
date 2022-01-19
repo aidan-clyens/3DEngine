@@ -7,7 +7,10 @@
  */
 Renderer::Renderer(int width, int height):
 m_width(width),
-m_height(height)
+m_height(height),
+m_model(glm::mat4(1.0)),
+m_view(glm::mat4(1.0)),
+m_projection(glm::perspective(glm::radians((float)45.0), (float)width / (float)height, (float)0.1, (float)100.0))
 {
 
 }
@@ -47,9 +50,9 @@ bool Renderer::init() {
     std::cout << "OpenGL Vendor: "      << glGetString(GL_VENDOR)                   << std::endl;
     std::cout << "OpenGL Renderer: "    << glGetString(GL_RENDERER)                 << std::endl;
 
-    glfwSwapInterval(1);
-
     glViewport(0.0, 0.0, m_width, m_height);
+    glfwSwapInterval(1);
+    glEnable(GL_DEPTH_TEST);
 
     // Use wireframe mode
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -68,13 +71,28 @@ void Renderer::close() {
  */
 void Renderer::render(std::vector<Object3D*> &objects) {
     // Clear window
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render each object
     for (Object3D *object : objects) {
         // Select shader
         glUseProgram(object->m_shader_program_id);
 
+        // Create transformations
+        m_model = glm::rotate(glm::mat4(1.0), glm::radians((float)45.0), glm::vec3(1.0, 1.0, 0.0));
+        m_view = glm::translate(glm::mat4(1.0), glm::vec3(0.0, 0.0, -3.0));
+
+        // Get matrix uniform locations
+        unsigned int model_location = glGetUniformLocation(object->m_shader_program_id, "model");
+        unsigned int view_location = glGetUniformLocation(object->m_shader_program_id, "view");
+        unsigned int projection_location = glGetUniformLocation(object->m_shader_program_id, "projection");
+
+        // Pass matrices to shader
+        glUniformMatrix4fv(model_location, 1, GL_FALSE, &m_model[0][0]);
+        glUniformMatrix4fv(view_location, 1, GL_FALSE, &m_view[0][0]);
+        glUniformMatrix4fv(projection_location, 1, GL_FALSE, &m_projection[0][0]);
+
+        // Render object
         glBindVertexArray(object->m_vertex_array_object);
         glDrawElements(GL_TRIANGLES, OBJECT3D_CUBE_NUM_VERTICES, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
