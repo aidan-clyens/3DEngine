@@ -2,8 +2,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <Eigen/Core>
-
 #include <iostream>
 #include <vector>
 
@@ -17,15 +15,15 @@
 #define SCREEN_HEIGHT       900
 
 // Global variables
-Eigen::Vector3f rotation_speed = Eigen::Vector3f(0, 0, 0);
+glm::vec3 rotation_speed = glm::vec3(0, 0, 0);
 
 // Class definitions
 /* Cube
  */
 class Cube : public Object3D {
     public:
-        Cube(Eigen::Vector3f pos, float width):
-        Object3D(pos, Eigen::Vector3f(width, width, width))
+        Cube(glm::vec3 pos, float width):
+        Object3D(pos, glm::vec3(width, width, width))
         {
 
         }
@@ -86,7 +84,7 @@ int main(int argc, char **argv) {
     }
 
     // Create objects
-    Eigen::Vector3f position = Eigen::Vector3f(0, 0, 0);
+    glm::vec3 position = glm::vec3(0, 0, 0);
     float width = 1;
 
     std::vector<Object3D*> objects;

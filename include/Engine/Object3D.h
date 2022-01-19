@@ -3,8 +3,7 @@
 // Includes
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
-#include <Eigen/Core>
+#include <glm/glm.hpp>
 
 #include <algorithm>
 #include <iterator>
@@ -23,14 +22,14 @@ class Object3D {
     friend class Renderer;
 
     public:
-        Object3D(Eigen::Vector3f pos, Eigen::Vector3f size);
+        Object3D(glm::vec3 pos, glm::vec3 size);
         virtual ~Object3D();
 
         void attach_shader(unsigned int program_id);
 
     protected:
-        Eigen::Vector3f m_position;
-        Eigen::Vector3f m_size;
+        glm::vec3 m_position;
+        glm::vec3 m_size;
 
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;

@@ -3,24 +3,24 @@
 
 /* Object3D
  */
-Object3D::Object3D(Eigen::Vector3f pos, Eigen::Vector3f size):
+Object3D::Object3D(glm::vec3 pos, glm::vec3 size):
 m_position(pos),
 m_size(size),
 m_shader_program_id(-1)
 {
-    GLfloat half_size_x = m_size.x() / 2;
-    GLfloat half_size_y = m_size.y() / 2;
-    GLfloat half_size_z = m_size.z() / 2;
+    GLfloat half_size_x = m_size.x / 2;
+    GLfloat half_size_y = m_size.y / 2;
+    GLfloat half_size_z = m_size.z / 2;
 
     GLfloat vertices[] = {
-        m_position.x() + half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z,   // back top right
-        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() + half_size_z,   // back top left
-        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() + half_size_z,   // back bottom right
-        m_position.x() - half_size_x, m_position.y() - half_size_y, m_position.z() + half_size_z,   // back bottom left
-        m_position.x() + half_size_x, m_position.y() + half_size_y, m_position.z() - half_size_z,   // front top right
-        m_position.x() - half_size_x, m_position.y() + half_size_y, m_position.z() - half_size_z,   // front top left
-        m_position.x() + half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z,   // front bottom right
-        m_position.x() - half_size_x, m_position.y() - half_size_y, m_position.z() - half_size_z,   // front bottom left
+        m_position.x + half_size_x, m_position.y + half_size_y, m_position.z + half_size_z,   // back top right
+        m_position.x - half_size_x, m_position.y + half_size_y, m_position.z + half_size_z,   // back top left
+        m_position.x + half_size_x, m_position.y - half_size_y, m_position.z + half_size_z,   // back bottom right
+        m_position.x - half_size_x, m_position.y - half_size_y, m_position.z + half_size_z,   // back bottom left
+        m_position.x + half_size_x, m_position.y + half_size_y, m_position.z - half_size_z,   // front top right
+        m_position.x - half_size_x, m_position.y + half_size_y, m_position.z - half_size_z,   // front top left
+        m_position.x + half_size_x, m_position.y - half_size_y, m_position.z - half_size_z,   // front bottom right
+        m_position.x - half_size_x, m_position.y - half_size_y, m_position.z - half_size_z,   // front bottom left
     };
 
     unsigned int indices[] = {
