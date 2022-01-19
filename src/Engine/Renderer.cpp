@@ -135,3 +135,9 @@ void Renderer::set_key_callback(GLFWkeyfun callback) {
 bool Renderer::is_window_closed() const {
     return glfwWindowShouldClose(p_window);
 }
+
+/* get_window
+ */
+GLFWwindow *Renderer::get_window() {
+    return p_window;
+}

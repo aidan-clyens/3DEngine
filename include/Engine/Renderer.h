@@ -30,6 +30,8 @@ class Renderer {
 
         void set_key_callback(GLFWkeyfun callback);
 
+        GLFWwindow *get_window();
+
     private:
         void on_key_pressed(GLFWwindow *p_window, int key, int scancode, int action, int mods);
 

@@ -15,7 +15,7 @@
 #define SCREEN_HEIGHT       900
 
 // Global variables
-glm::vec3 camera = glm::vec3(0.0, 0.0, -3.0);
+glm::vec3 camera_position = glm::vec3(0.0, 0.0, -3.0);
 
 // Class definitions
 /* Cube
@@ -29,37 +29,25 @@ class Cube : public Object3D {
         }
 };
 
+/* process_input
+ */
+void process_input(GLFWwindow *window) {
+    const float speed = 0.05;
 
-void on_key_pressed(GLFWwindow *p_window, int key, int scancode, int action, int mods) {
-    GLfloat speed = 0.1;
-
-    if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-        switch (key) {
-            // Up
-            case GLFW_KEY_W:
-                camera[1] += speed;
-                break;
-
-            // Down
-            case GLFW_KEY_S:
-                camera[1] -= speed;
-                break;
-
-            // Left
-            case GLFW_KEY_A:
-                camera[0] -= speed;
-                break;
-
-            // Right
-            case GLFW_KEY_D:
-                camera[0] += speed;
-                break;
-
-            default:
-                break;
-        }
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        camera_position[1] += speed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        camera_position[1] -= speed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        camera_position[0] -= speed;
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        camera_position[0] += speed;
     }
 }
+
 
 int main(int argc, char **argv) {
     Renderer renderer(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -71,7 +59,7 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    renderer.set_key_callback(on_key_pressed);
+    // renderer.set_key_callback(on_key_pressed);
 
     // Load shaders
     unsigned int vertex_shader_id;
@@ -94,12 +82,14 @@ int main(int argc, char **argv) {
 
     // Main rendering loop
     while (!renderer.is_window_closed()) {
+        process_input(renderer.get_window());
+
         rotation.x += 1;
         rotation.y += 1;
 
         cube->set_rotation(rotation);
 
-        renderer.set_camera_position(camera);
+        renderer.set_camera_position(camera_position);
 
         renderer.render(objects);
     }
