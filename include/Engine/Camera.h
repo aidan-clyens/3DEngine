@@ -16,6 +16,8 @@ class Camera {
     public:
         Camera(glm::vec3 position);
 
+        void set_position(glm::vec3 position);
+
         void translate_x(float speed);
         void translate_y(float speed);
         void translate_z(float speed);

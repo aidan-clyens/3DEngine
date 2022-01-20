@@ -11,6 +11,12 @@ m_up(glm::vec3(0.0, 1.0, 0.0))
 
 }
 
+/* set_position
+ */
+void Camera::set_position(glm::vec3 position) {
+    m_position = position;
+}
+
 /* translate_x
  */
 void Camera::translate_x(float speed) {

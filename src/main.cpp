@@ -83,6 +83,9 @@ int main(int argc, char **argv) {
     cube->attach_shader(shader_program_id);
     objects.push_back(cube);
 
+    double radius = 10;
+    double rotation_speed = 25;
+
     // Main rendering loop
     double current_frame = 0;
     double last_frame = 0;
@@ -93,10 +96,12 @@ int main(int argc, char **argv) {
 
         process_input(renderer.get_window(), camera);
 
-        rotation.x += 1;
-        rotation.y += 1;
+        rotation.x += rotation_speed * delta_time;
+        rotation.y += rotation_speed * delta_time;
 
         cube->set_rotation(rotation);
+
+        camera.set_position(glm::vec3(sin(current_frame) * radius, 0.0, cos(current_frame) * radius));
 
         renderer.render(objects, camera);
     }

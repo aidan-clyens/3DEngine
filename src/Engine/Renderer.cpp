@@ -90,7 +90,7 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
         m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.z), glm::vec3(0.0, 0.0, 1.0));
 
         // Adjust view
-        m_view = glm::lookAt(camera.m_position, camera.m_position + camera.m_front, camera.m_up);
+        m_view = glm::lookAt(camera.m_position, glm::vec3(0.0, 0.0, 0.0), camera.m_up);
 
         // Get matrix uniform locations
         unsigned int model_location = glGetUniformLocation(object->m_shader_program_id, "model");
