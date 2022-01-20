@@ -16,6 +16,10 @@
 #define SCREEN_HEIGHT       900
 
 
+// Global Variables
+double delta_time = 0;
+
+
 // Class definitions
 /* Cube
  */
@@ -31,7 +35,7 @@ class Cube : public Object3D {
 /* process_input
  */
 void process_input(GLFWwindow *window, Camera &camera) {
-    const float speed = 0.05;
+    const float speed = 1.0 * delta_time;
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         camera.translate_y(speed);
@@ -80,7 +84,13 @@ int main(int argc, char **argv) {
     objects.push_back(cube);
 
     // Main rendering loop
+    double current_frame = 0;
+    double last_frame = 0;
     while (!renderer.is_window_closed()) {
+        current_frame = glfwGetTime();
+        delta_time = current_frame - last_frame;
+        last_frame = current_frame;
+
         process_input(renderer.get_window(), camera);
 
         rotation.x += 1;
