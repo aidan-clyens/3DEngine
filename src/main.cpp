@@ -59,6 +59,12 @@ void process_input(GLFWwindow *window, Camera &camera) {
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         camera.translate_z(speed);
     }
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        camera.translate_y(speed);
+    }
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        camera.translate_y(-speed);
+    }
 
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         running = false;
