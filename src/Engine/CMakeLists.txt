@@ -1,4 +1,4 @@
-project(Engine)
+project(EngineCore)
 
 add_library(${PROJECT_NAME} Object3D.cpp Renderer.cpp ShaderLoader.cpp Camera.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC ../../include)
