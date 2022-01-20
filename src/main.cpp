@@ -17,6 +17,7 @@
 
 
 // Global Variables
+bool running = false;
 double delta_time = 0;
 
 
@@ -48,6 +49,10 @@ void process_input(GLFWwindow *window, Camera &camera) {
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         camera.translate_z(speed);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        running = false;
     }
 }
 
@@ -96,7 +101,8 @@ int main(int argc, char **argv) {
     // Main rendering loop
     double current_frame = 0;
     double last_frame = 0;
-    while (!renderer.is_window_closed()) {
+    running = true;
+    while (!renderer.is_window_closed() && running) {
         current_frame = glfwGetTime();
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
