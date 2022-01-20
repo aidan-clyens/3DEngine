@@ -35,7 +35,7 @@ class Cube : public Object3D {
 /* process_input
  */
 void process_input(GLFWwindow *window, Camera &camera) {
-    const float speed = 1.0 * delta_time;
+    const float speed = 2.5 * delta_time;
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         camera.translate_y(speed);
@@ -51,6 +51,11 @@ void process_input(GLFWwindow *window, Camera &camera) {
     }
 }
 
+void process_mouse_input(GLFWwindow *window, double x, double y) {
+    std::cout << x << ", " << y << std::endl;
+}
+
+
 /* main
  */
 int main(int argc, char **argv) {
@@ -63,6 +68,8 @@ int main(int argc, char **argv) {
         renderer.close();
         return -1;
     }
+
+    renderer.set_mouse_callback(process_mouse_input);
 
     // Load shaders
     unsigned int vertex_shader_id;
@@ -101,7 +108,7 @@ int main(int argc, char **argv) {
 
         cube->set_rotation(rotation);
 
-        camera.set_position(glm::vec3(sin(current_frame) * radius, 0.0, cos(current_frame) * radius));
+        // camera.set_position(glm::vec3(sin(current_frame) * radius, 0.0, cos(current_frame) * radius));
 
         renderer.render(objects, camera);
     }

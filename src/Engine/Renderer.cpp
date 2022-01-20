@@ -123,6 +123,13 @@ void Renderer::set_key_callback(GLFWkeyfun callback) {
     glfwSetInputMode(p_window, GLFW_STICKY_KEYS, 1);
 }
 
+/* set_mouse_callback
+ */
+void Renderer::set_mouse_callback(GLFWcursorposfun callback) {
+    glfwSetCursorPosCallback(p_window, callback);
+    glfwSetInputMode(p_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
 /* is_window_closed
  */
 bool Renderer::is_window_closed() const {

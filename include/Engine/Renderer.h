@@ -28,6 +28,7 @@ class Renderer {
         bool is_window_closed() const;
 
         void set_key_callback(GLFWkeyfun callback);
+        void set_mouse_callback(GLFWcursorposfun callback);
 
         GLFWwindow *get_window();
 
