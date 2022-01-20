@@ -74,6 +74,9 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
     // Clear window
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // Adjust view
+    m_view = glm::lookAt(camera.m_position, camera.m_position + camera.m_front, camera.m_up);
+
     // Render each object
     for (Object3D *object : objects) {
         // Select shader
@@ -81,16 +84,12 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
 
         // Create transformations
         m_model = glm::mat4(1.0);
-        m_view = glm::mat4(1.0);
 
         // Transform object
         m_model = glm::translate(m_model, object->m_position);
         m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.x), glm::vec3(1.0, 0.0, 0.0));
         m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.y), glm::vec3(0.0, 1.0, 0.0));
         m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.z), glm::vec3(0.0, 0.0, 1.0));
-
-        // Adjust view
-        m_view = glm::lookAt(camera.m_position, glm::vec3(0.0, 0.0, 0.0), camera.m_up);
 
         // Get matrix uniform locations
         unsigned int model_location = glGetUniformLocation(object->m_shader_program_id, "model");
