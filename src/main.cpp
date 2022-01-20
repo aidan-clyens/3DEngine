@@ -15,10 +15,19 @@
 #define SCREEN_WIDTH        1600
 #define SCREEN_HEIGHT       900
 
+#define MOUSE_SENSITIVITY   0.1
+
 
 // Global Variables
 bool running = false;
 double delta_time = 0;
+
+bool first_mouse = false;;
+double last_mouse_pos_x = SCREEN_WIDTH / 2;
+double last_mouse_pos_y = SCREEN_HEIGHT / 2;
+double mouse_offset_x = 0;
+double mouse_offset_y = 0;
+bool mouse_updated = false;
 
 
 // Class definitions
@@ -39,10 +48,10 @@ void process_input(GLFWwindow *window, Camera &camera) {
     const float speed = 2.5 * delta_time;
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        camera.translate_y(speed);
+        camera.translate_x(speed);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        camera.translate_y(-speed);
+        camera.translate_x(-speed);
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         camera.translate_z(-speed);
@@ -56,10 +65,26 @@ void process_input(GLFWwindow *window, Camera &camera) {
     }
 }
 
+/* process_input
+ */
 void process_mouse_input(GLFWwindow *window, double x, double y) {
-    std::cout << x << ", " << y << std::endl;
-}
+    if (first_mouse) {
+        last_mouse_pos_x = x;
+        last_mouse_pos_y = y;
+        first_mouse = false;
+    }
 
+    mouse_offset_x = x - last_mouse_pos_x;
+    mouse_offset_y = last_mouse_pos_y - y;
+
+    last_mouse_pos_x = x;
+    last_mouse_pos_y = y;
+
+    mouse_offset_x *= MOUSE_SENSITIVITY;
+    mouse_offset_y *= MOUSE_SENSITIVITY;
+
+    mouse_updated = true;
+}
 
 /* main
  */
@@ -108,6 +133,11 @@ int main(int argc, char **argv) {
         last_frame = current_frame;
 
         process_input(renderer.get_window(), camera);
+
+        if (mouse_updated) {
+            camera.set_mouse_offset(mouse_offset_x, mouse_offset_y);
+            mouse_updated = false;
+        }
 
         rotation.x += rotation_speed * delta_time;
         rotation.y += rotation_speed * delta_time;
