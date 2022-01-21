@@ -1,159 +1,129 @@
 // Includes
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <iostream>
-#include <vector>
-
-#include "Engine/Renderer.h"
+#include "Engine/Engine.h"
 #include "Engine/Object3D.h"
 #include "Engine/Shader.h"
-#include "Engine/Camera.h"
 
+#include <iostream>
 
 // Defines
-#define SCREEN_WIDTH        1600
-#define SCREEN_HEIGHT       900
+#define SCREEN_WIDTH 1600
+#define SCREEN_HEIGHT 900
 
-#define MOUSE_SENSITIVITY   0.1
-
-
-// Global Variables
-bool running = false;
-double delta_time = 0;
-
-bool first_mouse = false;;
-double last_mouse_pos_x = SCREEN_WIDTH / 2;
-double last_mouse_pos_y = SCREEN_HEIGHT / 2;
-double mouse_offset_x = 0;
-double mouse_offset_y = 0;
-bool mouse_updated = false;
-
+#define MOUSE_SENSITIVITY 0.1
 
 // Class definitions
-/* Cube
+/* Game
  */
-class Cube : public Object3D {
+class Game : public Engine {
     public:
-        Cube(glm::vec3 pos, glm::vec3 rotation, float width):
-        Object3D(pos, rotation, glm::vec3(width, width, width))
-        {
+        /* process_mouse_input
+         */
+        void process_mouse_input(double x, double y) {
+            if (m_first_mouse) {
+                m_last_mouse_pos_x = x;
+                m_last_mouse_pos_y = y;
+                m_first_mouse = false;
+            }
 
+            m_mouse_offset_x = x - m_last_mouse_pos_x;
+            m_mouse_offset_y = m_last_mouse_pos_y - y;
+
+            m_last_mouse_pos_x = x;
+            m_last_mouse_pos_y = y;
+
+            m_mouse_offset_x *= MOUSE_SENSITIVITY;
+            m_mouse_offset_y *= MOUSE_SENSITIVITY;
+
+            m_mouse_updated = true;
         }
+
+        /* process_mouse_input
+         */
+        void process_keyboard_input() {
+            const float speed = 2.5 * m_delta_time;
+
+            if (get_key(KEY_W) == KEY_PRESS) {
+                m_camera.translate_x(speed);
+            }
+            if (get_key(KEY_S) == KEY_PRESS) {
+                m_camera.translate_x(-speed);
+            }
+            if (get_key(KEY_A) == KEY_PRESS) {
+                m_camera.translate_z(-speed);
+            }
+            if (get_key(KEY_D) == KEY_PRESS) {
+                m_camera.translate_z(speed);
+            }
+            if (get_key(KEY_SPACE) == KEY_PRESS) {
+                m_camera.translate_y(speed);
+            }
+            if (get_key(KEY_LEFT_SHIFT) == KEY_PRESS) {
+                m_camera.translate_y(-speed);
+            }
+
+            if (get_key(KEY_ESCAPE) == KEY_PRESS) {
+                m_running = false;
+            }
+        }
+
+        /* process_mouse_input
+         */
+        void setup() {
+            // Load shaders
+            Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
+
+            // Create objects
+            p_cube = new Object3D(glm::vec3(0, 0, 0), m_rotation, glm::vec3(1, 1, 1));
+            if (shader.is_valid()) {
+                p_cube->attach_shader(shader);
+            }
+
+            this->add_object(p_cube);
+        }
+
+        /* process_mouse_input
+         */
+        void update() {
+            this->process_keyboard_input();
+            
+            if (m_mouse_updated) {
+                m_camera.set_mouse_offset(m_mouse_offset_x, m_mouse_offset_y);
+                m_mouse_updated = false;
+            }
+
+            m_rotation.x += m_rotation_speed * m_delta_time;
+            m_rotation.y += m_rotation_speed * m_delta_time;
+
+            p_cube->set_rotation(m_rotation);
+        }
+    
+    private:
+        Object3D *p_cube;
+        glm::vec3 m_rotation = glm::vec3(0, 0, 0);
+
+        double m_rotation_speed = 25;
+
+        // Mouse
+        bool m_first_mouse = false;
+        double m_last_mouse_pos_x = SCREEN_WIDTH / 2;
+        double m_last_mouse_pos_y = SCREEN_HEIGHT / 2;
+        double m_mouse_offset_x = 0;
+        double m_mouse_offset_y = 0;
+        bool m_mouse_updated = false;
 };
-
-/* process_input
- */
-void process_input(GLFWwindow *window, Camera &camera) {
-    const float speed = 2.5 * delta_time;
-
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        camera.translate_x(speed);
-    }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        camera.translate_x(-speed);
-    }
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        camera.translate_z(-speed);
-    }
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        camera.translate_z(speed);
-    }
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        camera.translate_y(speed);
-    }
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        camera.translate_y(-speed);
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        running = false;
-    }
-}
-
-/* process_input
- */
-void process_mouse_input(GLFWwindow *window, double x, double y) {
-    if (first_mouse) {
-        last_mouse_pos_x = x;
-        last_mouse_pos_y = y;
-        first_mouse = false;
-    }
-
-    mouse_offset_x = x - last_mouse_pos_x;
-    mouse_offset_y = last_mouse_pos_y - y;
-
-    last_mouse_pos_x = x;
-    last_mouse_pos_y = y;
-
-    mouse_offset_x *= MOUSE_SENSITIVITY;
-    mouse_offset_y *= MOUSE_SENSITIVITY;
-
-    mouse_updated = true;
-}
 
 /* main
  */
 int main(int argc, char **argv) {
-    Renderer renderer(SCREEN_WIDTH, SCREEN_HEIGHT);
-    Camera camera(glm::vec3(0.0, 0.0, 3.0));
+    Game game;
 
-    if (!renderer.init()) {
-        std::cerr << "Failed to init Renderer" << std::endl;
-        renderer.close();
+    if (!game.init()) {
+        std::cerr << "Game Engine failed to initialize" << std::endl;
         return -1;
     }
 
-    renderer.set_mouse_callback(process_mouse_input);
-
-    // Load shaders
-    Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
-
-    // Create objects
-    std::vector<Object3D*> objects;
-
-    glm::vec3 rotation = glm::vec3(0, 0, 0);
-
-    Cube *cube = new Cube(glm::vec3(0, 0, -2), rotation, 1);
-    if (shader.is_valid()) {
-        cube->attach_shader(shader);
-    }
-    objects.push_back(cube);
-
-    double radius = 10;
-    double rotation_speed = 25;
-
-    // Main rendering loop
-    double current_frame = 0;
-    double last_frame = 0;
-    running = true;
-    while (!renderer.is_window_closed() && running) {
-        current_frame = glfwGetTime();
-        delta_time = current_frame - last_frame;
-        last_frame = current_frame;
-
-        process_input(renderer.get_window(), camera);
-
-        if (mouse_updated) {
-            camera.set_mouse_offset(mouse_offset_x, mouse_offset_y);
-            mouse_updated = false;
-        }
-
-        rotation.x += rotation_speed * delta_time;
-        rotation.y += rotation_speed * delta_time;
-
-        cube->set_rotation(rotation);
-
-        // camera.set_position(glm::vec3(sin(current_frame) * radius, 0.0, cos(current_frame) * radius));
-
-        renderer.render(objects, camera);
-    }
-
-    for (Object3D *object : objects) {
-        delete object;
-    }
-
-    renderer.close();
+    game.start();
+    game.cleanup();
 
     return 0;
 }
