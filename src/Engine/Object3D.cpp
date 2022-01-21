@@ -6,8 +6,7 @@
 Object3D::Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size):
 m_position(pos),
 m_rotation(rotation),
-m_size(size),
-m_shader_program_id(-1)
+m_size(size)
 {
     GLfloat half_size_x = m_size.x / 2;
     GLfloat half_size_y = m_size.y / 2;
@@ -83,6 +82,6 @@ void Object3D::set_rotation(glm::vec3 rotation) {
 
 /* attach_shader
  */
-void Object3D::attach_shader(unsigned int program_id) {
-    m_shader_program_id = program_id;
+void Object3D::attach_shader(Shader shader) {
+    m_shader = shader;
 }

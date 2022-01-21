@@ -2,6 +2,7 @@
 
 #include "Engine/Object3D.h"
 #include "Engine/Camera.h"
+#include "Engine/Shader.h"
 
 
 /* Renderer
@@ -80,7 +81,9 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
     // Render each object
     for (Object3D *object : objects) {
         // Select shader
-        glUseProgram(object->m_shader_program_id);
+        if (object->m_shader.is_valid()) {
+            object->m_shader.enable();
+        }
 
         // Create transformations
         m_model = glm::mat4(1.0);
@@ -92,14 +95,16 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
         m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.z), glm::vec3(0.0, 0.0, 1.0));
 
         // Get matrix uniform locations
-        unsigned int model_location = glGetUniformLocation(object->m_shader_program_id, "model");
-        unsigned int view_location = glGetUniformLocation(object->m_shader_program_id, "view");
-        unsigned int projection_location = glGetUniformLocation(object->m_shader_program_id, "projection");
+        if (object->m_shader.is_valid()) {
+            unsigned int model_location = glGetUniformLocation(object->m_shader.get_program_id(), "model");
+            unsigned int view_location = glGetUniformLocation(object->m_shader.get_program_id(), "view");
+            unsigned int projection_location = glGetUniformLocation(object->m_shader.get_program_id(), "projection");
 
-        // Pass matrices to shader
-        glUniformMatrix4fv(model_location, 1, GL_FALSE, &m_model[0][0]);
-        glUniformMatrix4fv(view_location, 1, GL_FALSE, &m_view[0][0]);
-        glUniformMatrix4fv(projection_location, 1, GL_FALSE, &m_projection[0][0]);
+            // Pass matrices to shader
+            glUniformMatrix4fv(model_location, 1, GL_FALSE, &m_model[0][0]);
+            glUniformMatrix4fv(view_location, 1, GL_FALSE, &m_view[0][0]);
+            glUniformMatrix4fv(projection_location, 1, GL_FALSE, &m_projection[0][0]);
+        }
 
         // Render object
         glBindVertexArray(object->m_vertex_array_object);
@@ -107,7 +112,9 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
         glBindVertexArray(0);
 
         // Deselect shader
-        glUseProgram(0);
+        if (object->m_shader.is_valid()) {
+            object->m_shader.disable();
+        }
     }
 
     // Swap buffer

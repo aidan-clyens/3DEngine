@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <iterator>
 
+#include "Engine/Shader.h"
+
 
 // Defines
 #define OBJECT3D_CUBE_NUM_FACES         6 * 6
@@ -28,7 +30,7 @@ class Object3D {
         void set_position(glm::vec3 position);
         void set_rotation(glm::vec3 rotation);
 
-        void attach_shader(unsigned int program_id);
+        void attach_shader(Shader shader);
 
     protected:
         glm::vec3 m_position;
@@ -39,5 +41,5 @@ class Object3D {
         unsigned int m_vertex_array_object;
         unsigned int m_element_buffer_object;
 
-        unsigned int m_shader_program_id;
+        Shader m_shader;
 };

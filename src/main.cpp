@@ -7,7 +7,7 @@
 
 #include "Engine/Renderer.h"
 #include "Engine/Object3D.h"
-#include "Engine/ShaderLoader.h"
+#include "Engine/Shader.h"
 #include "Engine/Camera.h"
 
 
@@ -96,7 +96,6 @@ void process_mouse_input(GLFWwindow *window, double x, double y) {
  */
 int main(int argc, char **argv) {
     Renderer renderer(SCREEN_WIDTH, SCREEN_HEIGHT);
-    ShaderLoader shader_loader;
     Camera camera(glm::vec3(0.0, 0.0, 3.0));
 
     if (!renderer.init()) {
@@ -108,14 +107,7 @@ int main(int argc, char **argv) {
     renderer.set_mouse_callback(process_mouse_input);
 
     // Load shaders
-    unsigned int vertex_shader_id;
-    unsigned int fragment_shader_id;
-    unsigned int shader_program_id;
-    if (shader_loader.load_shader("shaders/vertex.glsl", SHADER_VERTEX, vertex_shader_id) &&
-        shader_loader.load_shader("shaders/fragment.glsl", SHADER_FRAGMENT, fragment_shader_id)) {
-
-        shader_loader.link_shader_program(vertex_shader_id, fragment_shader_id, shader_program_id);
-    }
+    Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
 
     // Create objects
     std::vector<Object3D*> objects;
@@ -123,7 +115,9 @@ int main(int argc, char **argv) {
     glm::vec3 rotation = glm::vec3(0, 0, 0);
 
     Cube *cube = new Cube(glm::vec3(0, 0, -2), rotation, 1);
-    cube->attach_shader(shader_program_id);
+    if (shader.is_valid()) {
+        cube->attach_shader(shader);
+    }
     objects.push_back(cube);
 
     double radius = 10;
