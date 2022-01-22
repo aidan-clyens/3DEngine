@@ -73,6 +73,13 @@ void Shader::set_mat4(const std::string &variable, glm::mat4 matrix) {
     glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
 }
 
+/* set_vec3
+ */
+void Shader::set_vec3(const std::string &variable, glm::vec3 vector) {
+    unsigned int location = glGetUniformLocation(m_program_id, variable.c_str());
+    glUniform3fv(location, 1, &vector[0]);
+}
+
 /* load_shader
  */
 bool Shader::load_shader(const std::string &filename, eShaderType shader_type, unsigned int &shader_id) {

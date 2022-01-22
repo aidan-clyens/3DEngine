@@ -31,6 +31,7 @@ class Shader {
         unsigned int get_program_id() const;
 
         void set_mat4(const std::string &variable, glm::mat4 matrix);
+        void set_vec3(const std::string &variable, glm::vec3 vector);
 
     private:
         bool load_shader(const std::string &filename, eShaderType shader_type, unsigned int &shader_id);
