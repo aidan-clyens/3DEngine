@@ -88,6 +88,7 @@ class Game : public Engine {
             }
 
             this->add_object(p_light);
+            this->add_light(p_light);
 
             // Create objects
             p_cube1 = new Object3D(glm::vec3(0, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));

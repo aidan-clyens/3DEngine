@@ -64,8 +64,11 @@ m_size(size)
     glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer_object);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     // Initialize lighting data
     m_lighting_data.color = glm::vec3(1, 1, 1);
@@ -77,7 +80,6 @@ m_size(size)
  */
 Object3D::~Object3D() {
     glDeleteBuffers(1, &m_vertex_buffer_object);
-    // glDeleteBuffers(1, &m_element_buffer_object);
     glDeleteVertexArrays(1, &m_vertex_array_object);
 }
 

@@ -23,7 +23,7 @@ class Renderer {
         bool init();
         void close();
 
-        void render(std::vector<Object3D*> &objects, Camera &camera);
+        void render(std::vector<Object3D*> &objects, Camera &camera, Object3D *light);
 
         bool is_window_closed() const;
 

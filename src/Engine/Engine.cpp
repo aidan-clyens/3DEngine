@@ -42,7 +42,7 @@ void Engine::start() {
 
         this->update();
 
-        m_renderer.render(m_objects, m_camera);
+        m_renderer.render(m_objects, m_camera, p_light);
     }
 }
 
@@ -60,6 +60,12 @@ void Engine::cleanup() {
  */
 void Engine::add_object(Object3D *object) {
     m_objects.push_back(object);
+}
+
+/* add_light
+ */
+void Engine::add_light(Object3D *light) {
+    p_light = light;
 }
 
 /* get_key

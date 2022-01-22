@@ -71,7 +71,7 @@ void Renderer::close() {
 
 /* render
  */
-void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
+void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, Object3D *light) {
     // Clear window
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -99,11 +99,12 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
             object->m_shader.set_mat4("model", m_model);
             object->m_shader.set_mat4("view", m_view);
             object->m_shader.set_mat4("projection", m_projection);
-            
-            // Pass colors to shader
+
+            // Pass lighting data to shader
             object->m_shader.set_vec3("objectColor", object->m_lighting_data.color);
             object->m_shader.set_vec3("lightColor", object->m_lighting_data.light_color);
             object->m_shader.set_float("ambientStrength", object->m_lighting_data.ambient_strength);
+            object->m_shader.set_vec3("lightPos", light->m_position);
         }
 
         // Render object

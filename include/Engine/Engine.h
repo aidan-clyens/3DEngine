@@ -47,6 +47,7 @@ class Engine {
         void cleanup();
 
         void add_object(Object3D *object);
+        void add_light(Object3D *light);
 
         eKeyAction get_key(eKey key);
 
@@ -67,4 +68,5 @@ class Engine {
         Renderer m_renderer;
 
         std::vector<Object3D*> m_objects;
+        Object3D *p_light;
 };
