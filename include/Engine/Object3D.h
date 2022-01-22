@@ -32,10 +32,16 @@ class Object3D {
 
         void attach_shader(Shader shader);
 
+        void set_color(glm::vec3 color);
+        void set_light_color(glm::vec3 color);
+
     protected:
         glm::vec3 m_position;
         glm::vec3 m_rotation;
         glm::vec3 m_size;
+
+        glm::vec3 m_color;
+        glm::vec3 m_light_color;
 
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;

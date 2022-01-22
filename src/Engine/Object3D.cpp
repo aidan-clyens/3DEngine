@@ -6,7 +6,9 @@
 Object3D::Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size):
 m_position(pos),
 m_rotation(rotation),
-m_size(size)
+m_size(size),
+m_color(glm::vec3(1, 1, 1)),
+m_light_color(glm::vec3(1, 1, 1))
 {
     GLfloat half_size_x = m_size.x / 2;
     GLfloat half_size_y = m_size.y / 2;
@@ -84,4 +86,16 @@ void Object3D::set_rotation(glm::vec3 rotation) {
  */
 void Object3D::attach_shader(Shader shader) {
     m_shader = shader;
+}
+
+/* set_color
+ */
+void Object3D::set_color(glm::vec3 color) {
+    m_color = color;
+}
+
+/* set_light_color
+ */
+void Object3D::set_light_color(glm::vec3 color) {
+    m_light_color = color;
 }

@@ -11,6 +11,9 @@
 
 #define MOUSE_SENSITIVITY 0.1
 
+#define WHITE glm::vec3(1, 1, 1)
+#define ORANGE glm::vec3(1, 0.5, 0.31)
+
 // Class definitions
 /* Game
  */
@@ -72,8 +75,18 @@ class Game : public Engine {
             // Load shaders
             Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
 
+            // Create light source
+            p_light = new Object3D(glm::vec3(2, 1, -3), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
+            p_light->set_color(WHITE);
+            if (shader.is_valid()) {
+                p_light->attach_shader(shader);
+            }
+
+            this->add_object(p_light);
+
             // Create objects
             p_cube = new Object3D(glm::vec3(0, 0, 0), m_rotation, glm::vec3(1, 1, 1));
+            p_cube->set_color(ORANGE);
             if (shader.is_valid()) {
                 p_cube->attach_shader(shader);
             }
@@ -98,6 +111,7 @@ class Game : public Engine {
         }
     
     private:
+        Object3D *p_light;
         Object3D *p_cube;
         glm::vec3 m_rotation = glm::vec3(0, 0, 0);
 

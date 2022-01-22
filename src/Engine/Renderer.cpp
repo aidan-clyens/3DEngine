@@ -57,7 +57,7 @@ bool Renderer::init() {
     glEnable(GL_DEPTH_TEST);
 
     // Use wireframe mode
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     return true;
 }
@@ -94,12 +94,15 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
         m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.y), glm::vec3(0.0, 1.0, 0.0));
         m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.z), glm::vec3(0.0, 0.0, 1.0));
 
-        // Get matrix uniform locations
         if (object->m_shader.is_valid()) {
             // Pass matrices to shader
             object->m_shader.set_mat4("model", m_model);
             object->m_shader.set_mat4("view", m_view);
             object->m_shader.set_mat4("projection", m_projection);
+            
+            // Pass colors to shader
+            object->m_shader.set_vec3("objectColor", object->m_color);
+            object->m_shader.set_vec3("lightColor", object->m_light_color);
         }
 
         // Render object
