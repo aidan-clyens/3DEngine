@@ -96,14 +96,10 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
 
         // Get matrix uniform locations
         if (object->m_shader.is_valid()) {
-            unsigned int model_location = glGetUniformLocation(object->m_shader.get_program_id(), "model");
-            unsigned int view_location = glGetUniformLocation(object->m_shader.get_program_id(), "view");
-            unsigned int projection_location = glGetUniformLocation(object->m_shader.get_program_id(), "projection");
-
             // Pass matrices to shader
-            glUniformMatrix4fv(model_location, 1, GL_FALSE, &m_model[0][0]);
-            glUniformMatrix4fv(view_location, 1, GL_FALSE, &m_view[0][0]);
-            glUniformMatrix4fv(projection_location, 1, GL_FALSE, &m_projection[0][0]);
+            object->m_shader.set_mat4("model", m_model);
+            object->m_shader.set_mat4("view", m_view);
+            object->m_shader.set_mat4("projection", m_projection);
         }
 
         // Render object

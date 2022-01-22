@@ -3,6 +3,7 @@
 // Includes
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -27,8 +28,9 @@ class Shader {
         void disable();
 
         bool is_valid() const;
-
         unsigned int get_program_id() const;
+
+        void set_mat4(const std::string &variable, glm::mat4 matrix);
 
     private:
         bool load_shader(const std::string &filename, eShaderType shader_type, unsigned int &shader_id);

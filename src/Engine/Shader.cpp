@@ -66,6 +66,13 @@ unsigned int Shader::get_program_id() const {
     return m_program_id;
 }
 
+/* set_mat4
+ */
+void Shader::set_mat4(const std::string &variable, glm::mat4 matrix) {
+    unsigned int location = glGetUniformLocation(m_program_id, variable.c_str());
+    glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
+}
+
 /* load_shader
  */
 bool Shader::load_shader(const std::string &filename, eShaderType shader_type, unsigned int &shader_id) {
