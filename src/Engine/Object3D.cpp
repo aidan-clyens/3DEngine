@@ -74,6 +74,8 @@ m_size(size)
     m_lighting_data.color = glm::vec3(1, 1, 1);
     m_lighting_data.light_color = glm::vec3(1, 1, 1);
     m_lighting_data.ambient_strength = 1;
+    m_lighting_data.specular_strength = 0.5;
+    m_lighting_data.shininess = 32;
 }
 
 /* Object3D

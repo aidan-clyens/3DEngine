@@ -20,6 +20,8 @@ typedef struct {
     glm::vec3 color;
     glm::vec3 light_color;
     float ambient_strength;
+    float specular_strength;
+    float shininess;
 } LightingData;
 
 // Forward Declarations

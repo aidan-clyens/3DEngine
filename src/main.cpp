@@ -79,6 +79,8 @@ class Game : public Engine {
             object_lighting.color = ORANGE;
             object_lighting.light_color = WHITE;
             object_lighting.ambient_strength = 0.1;
+            object_lighting.specular_strength = 0.5;
+            object_lighting.shininess = 32;
 
             // Create light source
             p_light = new Object3D(glm::vec3(2, 2, -5), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
