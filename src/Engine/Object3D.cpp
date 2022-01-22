@@ -83,6 +83,24 @@ Object3D::~Object3D() {
     glDeleteVertexArrays(1, &m_vertex_array_object);
 }
 
+/* get_position
+ */
+glm::vec3 Object3D::get_position() const {
+    return m_position;
+}
+
+/* get_rotation
+ */
+glm::vec3 Object3D::get_rotation() const {
+    return m_rotation;
+}
+
+/* get_size
+ */
+glm::vec3 Object3D::get_size() const {
+    return m_size;
+}
+
 /* set_position
  */
 void Object3D::set_position(glm::vec3 position) {

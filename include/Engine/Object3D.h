@@ -34,6 +34,10 @@ class Object3D {
         Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size);
         virtual ~Object3D();
 
+        glm::vec3 get_position() const;
+        glm::vec3 get_rotation() const;
+        glm::vec3 get_size() const;
+
         void set_position(glm::vec3 position);
         void set_rotation(glm::vec3 rotation);
 
