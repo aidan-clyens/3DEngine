@@ -6,9 +6,7 @@
 Object3D::Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size):
 m_position(pos),
 m_rotation(rotation),
-m_size(size),
-m_color(glm::vec3(1, 1, 1)),
-m_light_color(glm::vec3(1, 1, 1))
+m_size(size)
 {
     GLfloat half_size_x = m_size.x / 2;
     GLfloat half_size_y = m_size.y / 2;
@@ -60,6 +58,11 @@ m_light_color(glm::vec3(1, 1, 1))
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)0);
     glEnableVertexAttribArray(0);
+
+    // Initialize lighting data
+    m_lighting_data.color = glm::vec3(1, 1, 1);
+    m_lighting_data.light_color = glm::vec3(1, 1, 1);
+    m_lighting_data.ambient_strength = 1;
 }
 
 /* Object3D
@@ -90,12 +93,20 @@ void Object3D::attach_shader(Shader shader) {
 
 /* set_color
  */
+void Object3D::set_lighting_data(LightingData data) {
+    m_lighting_data.color = data.color;
+    m_lighting_data.light_color = data.light_color;
+    m_lighting_data.ambient_strength = data.ambient_strength;
+}
+
+/* set_color
+ */
 void Object3D::set_color(glm::vec3 color) {
-    m_color = color;
+    m_lighting_data.color = color;
 }
 
 /* set_light_color
  */
 void Object3D::set_light_color(glm::vec3 color) {
-    m_light_color = color;
+    m_lighting_data.light_color = color;
 }

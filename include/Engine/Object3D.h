@@ -15,7 +15,14 @@
 #define OBJECT3D_CUBE_NUM_FACES         6 * 6
 #define OBJECT3D_CUBE_NUM_VERTICES      OBJECT3D_CUBE_NUM_FACES * 3
 
+// Structs
+typedef struct {
+    glm::vec3 color;
+    glm::vec3 light_color;
+    float ambient_strength;
+} LightingData;
 
+// Forward Declarations
 class Renderer;
 
 /* Object3D
@@ -32,6 +39,7 @@ class Object3D {
 
         void attach_shader(Shader shader);
 
+        void set_lighting_data(LightingData data);
         void set_color(glm::vec3 color);
         void set_light_color(glm::vec3 color);
 
@@ -40,8 +48,7 @@ class Object3D {
         glm::vec3 m_rotation;
         glm::vec3 m_size;
 
-        glm::vec3 m_color;
-        glm::vec3 m_light_color;
+        LightingData m_lighting_data;
 
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;

@@ -75,8 +75,13 @@ class Game : public Engine {
             // Load shaders
             Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
 
+            LightingData object_lighting;
+            object_lighting.color = ORANGE;
+            object_lighting.light_color = WHITE;
+            object_lighting.ambient_strength = 0.1;
+
             // Create light source
-            p_light = new Object3D(glm::vec3(2, 1, -3), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
+            p_light = new Object3D(glm::vec3(2, 2, -5), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
             p_light->set_color(WHITE);
             if (shader.is_valid()) {
                 p_light->attach_shader(shader);
@@ -85,13 +90,29 @@ class Game : public Engine {
             this->add_object(p_light);
 
             // Create objects
-            p_cube = new Object3D(glm::vec3(0, 0, 0), m_rotation, glm::vec3(1, 1, 1));
-            p_cube->set_color(ORANGE);
+            p_cube1 = new Object3D(glm::vec3(0, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
+            p_cube1->set_lighting_data(object_lighting);
             if (shader.is_valid()) {
-                p_cube->attach_shader(shader);
+                p_cube1->attach_shader(shader);
             }
 
-            this->add_object(p_cube);
+            this->add_object(p_cube1);
+
+            p_cube2 = new Object3D(glm::vec3(-2, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
+            p_cube2->set_lighting_data(object_lighting);
+            if (shader.is_valid()) {
+                p_cube2->attach_shader(shader);
+            }
+
+            this->add_object(p_cube2);
+
+            p_cube3 = new Object3D(glm::vec3(2, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
+            p_cube3->set_lighting_data(object_lighting);
+            if (shader.is_valid()) {
+                p_cube3->attach_shader(shader);
+            }
+
+            this->add_object(p_cube3);
         }
 
         /* process_mouse_input
@@ -107,12 +128,14 @@ class Game : public Engine {
             m_rotation.x += m_rotation_speed * m_delta_time;
             m_rotation.y += m_rotation_speed * m_delta_time;
 
-            p_cube->set_rotation(m_rotation);
+            // p_cube->set_rotation(m_rotation);
         }
     
     private:
         Object3D *p_light;
-        Object3D *p_cube;
+        Object3D *p_cube1;
+        Object3D *p_cube2;
+        Object3D *p_cube3;
         glm::vec3 m_rotation = glm::vec3(0, 0, 0);
 
         double m_rotation_speed = 25;
