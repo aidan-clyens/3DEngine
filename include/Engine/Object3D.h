@@ -52,7 +52,6 @@ class Object3D {
 
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;
-        unsigned int m_element_buffer_object;
 
         Shader m_shader;
 };

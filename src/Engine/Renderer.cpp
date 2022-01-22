@@ -108,7 +108,7 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera) {
 
         // Render object
         glBindVertexArray(object->m_vertex_array_object);
-        glDrawElements(GL_TRIANGLES, OBJECT3D_CUBE_NUM_VERTICES, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, OBJECT3D_CUBE_NUM_VERTICES);
         glBindVertexArray(0);
 
         // Deselect shader
