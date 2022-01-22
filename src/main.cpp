@@ -69,7 +69,7 @@ class Game : public Engine {
             }
         }
 
-        /* process_mouse_input
+        /* setup
          */
         void setup() {
             // Load shaders
@@ -118,7 +118,7 @@ class Game : public Engine {
             this->add_object(p_cube3);
         }
 
-        /* process_mouse_input
+        /* update
          */
         void update() {
             this->process_keyboard_input();
@@ -131,7 +131,9 @@ class Game : public Engine {
             m_rotation.x += m_rotation_speed * m_delta_time;
             m_rotation.y += m_rotation_speed * m_delta_time;
 
-            // p_cube->set_rotation(m_rotation);
+            p_cube1->set_rotation(m_rotation);
+            p_cube2->set_rotation(m_rotation);
+            p_cube3->set_rotation(m_rotation);
         }
     
     private:
