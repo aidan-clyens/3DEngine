@@ -2,6 +2,7 @@
 #include "Engine/Engine.h"
 #include "Engine/Object3D.h"
 #include "Engine/Shader.h"
+#include "Engine/Texture2D.h"
 
 #include <iostream>
 
@@ -73,8 +74,13 @@ class Game : public Engine {
          */
         void setup() {
             // Load shaders
-            Shader shader("shaders/vertex.glsl", "shaders/fragment.glsl");
+            Shader texture_shader("shaders/vertex.glsl", "shaders/texture_fragment.glsl");
+            Shader color_shader("shaders/vertex.glsl", "shaders/color_fragment.glsl");
 
+            // Load textures
+            Texture2D texture("textures/grass.png", 0);
+
+            // Configure lighting
             LightingData object_lighting;
             object_lighting.color = ORANGE;
             object_lighting.light_color = WHITE;
@@ -82,11 +88,18 @@ class Game : public Engine {
             object_lighting.specular_strength = 0.5;
             object_lighting.shininess = 32;
 
+            LightingData grass_lighting;
+            grass_lighting.color = WHITE;
+            grass_lighting.light_color = WHITE;
+            grass_lighting.ambient_strength = 0.1;
+            grass_lighting.specular_strength = 0;
+            grass_lighting.shininess = 1;
+
             // Create light source
             p_light = new Object3D(glm::vec3(2, 2, -5), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
             p_light->set_color(WHITE);
-            if (shader.is_valid()) {
-                p_light->attach_shader(shader);
+            if (color_shader.is_valid()) {
+                p_light->attach_shader(color_shader);
             }
 
             this->add_object(p_light);
@@ -94,25 +107,26 @@ class Game : public Engine {
 
             // Create objects
             p_cube1 = new Object3D(glm::vec3(0, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
-            p_cube1->set_lighting_data(object_lighting);
-            if (shader.is_valid()) {
-                p_cube1->attach_shader(shader);
+            p_cube1->set_lighting_data(grass_lighting);
+            if (texture_shader.is_valid()) {
+                p_cube1->attach_shader(texture_shader);
             }
+            p_cube1->attach_texture(texture);
 
             this->add_object(p_cube1);
 
             p_cube2 = new Object3D(glm::vec3(-2, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
             p_cube2->set_lighting_data(object_lighting);
-            if (shader.is_valid()) {
-                p_cube2->attach_shader(shader);
+            if (color_shader.is_valid()) {
+                p_cube2->attach_shader(color_shader);
             }
 
             this->add_object(p_cube2);
 
             p_cube3 = new Object3D(glm::vec3(2, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
             p_cube3->set_lighting_data(object_lighting);
-            if (shader.is_valid()) {
-                p_cube3->attach_shader(shader);
+            if (color_shader.is_valid()) {
+                p_cube3->attach_shader(color_shader);
             }
 
             this->add_object(p_cube3);
@@ -131,9 +145,9 @@ class Game : public Engine {
             m_rotation.x += m_rotation_speed * m_delta_time;
             m_rotation.y += m_rotation_speed * m_delta_time;
 
-            p_cube1->set_rotation(m_rotation);
-            p_cube2->set_rotation(m_rotation);
-            p_cube3->set_rotation(m_rotation);
+            // p_cube1->set_rotation(m_rotation);
+            // p_cube2->set_rotation(m_rotation);
+            // p_cube3->set_rotation(m_rotation);
         }
     
     private:

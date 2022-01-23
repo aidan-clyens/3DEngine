@@ -6,54 +6,56 @@
 Object3D::Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size):
 m_position(pos),
 m_rotation(rotation),
-m_size(size)
+m_size(size),
+m_use_texture(false)
 {
     GLfloat half_size_x = m_size.x / 2;
     GLfloat half_size_y = m_size.y / 2;
     GLfloat half_size_z = m_size.z / 2;
 
     float vertices[] = {
-        -half_size_x, -half_size_x, -half_size_x,  0.0f,  0.0f, -1.0f,
-        half_size_x, -half_size_x, -half_size_x,  0.0f,  0.0f, -1.0f, 
-        half_size_x,  half_size_x, -half_size_x,  0.0f,  0.0f, -1.0f,
-        half_size_x,  half_size_x, -half_size_x,  0.0f,  0.0f, -1.0f, 
-        -half_size_x,  half_size_x, -half_size_x,  0.0f,  0.0f, -1.0f, 
-        -half_size_x, -half_size_x, -half_size_x,  0.0f,  0.0f, -1.0f, 
+        // positions          // normals           // texture coords
+        -half_size_x, -half_size_y, -half_size_z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+        half_size_x, -half_size_y, -half_size_z, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
+        half_size_x, half_size_y, -half_size_z, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+        half_size_x, half_size_y, -half_size_z, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
+        -half_size_x, half_size_y, -half_size_z, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
+        -half_size_x, -half_size_y, -half_size_z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
 
-        -half_size_x, -half_size_x,  half_size_x,  0.0f,  0.0f, 1.0f,
-        half_size_x, -half_size_x,  half_size_x,  0.0f,  0.0f, 1.0f,
-        half_size_x,  half_size_x,  half_size_x,  0.0f,  0.0f, 1.0f,
-        half_size_x,  half_size_x,  half_size_x,  0.0f,  0.0f, 1.0f,
-        -half_size_x,  half_size_x,  half_size_x,  0.0f,  0.0f, 1.0f,
-        -half_size_x, -half_size_x,  half_size_x,  0.0f,  0.0f, 1.0f,
+        -half_size_x, -half_size_y, half_size_z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        half_size_x, -half_size_y, half_size_z, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+        half_size_x, half_size_y, half_size_z, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        half_size_x, half_size_y, half_size_z, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        -half_size_x, half_size_y, half_size_z, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -half_size_x, -half_size_y, half_size_z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 
-        -half_size_x,  half_size_x,  half_size_x, -1.0f,  0.0f,  0.0f,
-        -half_size_x,  half_size_x, -half_size_x, -1.0f,  0.0f,  0.0f,
-        -half_size_x, -half_size_x, -half_size_x, -1.0f,  0.0f,  0.0f,
-        -half_size_x, -half_size_x, -half_size_x, -1.0f,  0.0f,  0.0f,
-        -half_size_x, -half_size_x,  half_size_x, -1.0f,  0.0f,  0.0f,
-        -half_size_x,  half_size_x,  half_size_x, -1.0f,  0.0f,  0.0f,
+        -half_size_x, half_size_y, half_size_z, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -half_size_x, half_size_y, -half_size_z, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -half_size_x, -half_size_y, -half_size_z, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -half_size_x, -half_size_y, -half_size_z, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -half_size_x, -half_size_y, half_size_z, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        -half_size_x, half_size_y, half_size_z, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 
-        half_size_x,  half_size_x,  half_size_x,  1.0f,  0.0f,  0.0f,
-        half_size_x,  half_size_x, -half_size_x,  1.0f,  0.0f,  0.0f,
-        half_size_x, -half_size_x, -half_size_x,  1.0f,  0.0f,  0.0f,
-        half_size_x, -half_size_x, -half_size_x,  1.0f,  0.0f,  0.0f,
-        half_size_x, -half_size_x,  half_size_x,  1.0f,  0.0f,  0.0f,
-        half_size_x,  half_size_x,  half_size_x,  1.0f,  0.0f,  0.0f,
+        half_size_x, half_size_y, half_size_z, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        half_size_x, half_size_y, -half_size_z, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        half_size_x, -half_size_y, -half_size_z, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        half_size_x, -half_size_y, -half_size_z, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        half_size_x, -half_size_y, half_size_z, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+        half_size_x, half_size_y, half_size_z, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 
-        -half_size_x, -half_size_x, -half_size_x,  0.0f, -1.0f,  0.0f,
-        half_size_x, -half_size_x, -half_size_x,  0.0f, -1.0f,  0.0f,
-        half_size_x, -half_size_x,  half_size_x,  0.0f, -1.0f,  0.0f,
-        half_size_x, -half_size_x,  half_size_x,  0.0f, -1.0f,  0.0f,
-        -half_size_x, -half_size_x,  half_size_x,  0.0f, -1.0f,  0.0f,
-        -half_size_x, -half_size_x, -half_size_x,  0.0f, -1.0f,  0.0f,
+        -half_size_x, -half_size_y, -half_size_z, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+        half_size_x, -half_size_y, -half_size_z, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+        half_size_x, -half_size_y, half_size_z, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        half_size_x, -half_size_y, half_size_z, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+        -half_size_x, -half_size_y, half_size_z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        -half_size_x, -half_size_y, -half_size_z, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
 
-        -half_size_x,  half_size_x, -half_size_x,  0.0f,  1.0f,  0.0f,
-        half_size_x,  half_size_x, -half_size_x,  0.0f,  1.0f,  0.0f,
-        half_size_x,  half_size_x,  half_size_x,  0.0f,  1.0f,  0.0f,
-        half_size_x,  half_size_x,  half_size_x,  0.0f,  1.0f,  0.0f,
-        -half_size_x,  half_size_x,  half_size_x,  0.0f,  1.0f,  0.0f,
-        -half_size_x,  half_size_x, -half_size_x,  0.0f,  1.0f,  0.0f
+        -half_size_x, half_size_y, -half_size_z, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        half_size_x, half_size_y, -half_size_z, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+        half_size_x, half_size_y, half_size_z, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        half_size_x, half_size_y, half_size_z, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        -half_size_x, half_size_y, half_size_z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+        -half_size_x, half_size_y, -half_size_z, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f
     };
 
     // Create VBO and VAO
@@ -64,11 +66,14 @@ m_size(size)
     glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer_object);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
     // Initialize lighting data
     m_lighting_data.color = glm::vec3(1, 1, 1);
@@ -119,6 +124,13 @@ void Object3D::set_rotation(glm::vec3 rotation) {
  */
 void Object3D::attach_shader(Shader shader) {
     m_shader = shader;
+}
+
+/* attach_texture
+ */
+void Object3D::attach_texture(Texture2D texture) {
+    m_texture = texture;
+    m_use_texture = true;
 }
 
 /* set_color

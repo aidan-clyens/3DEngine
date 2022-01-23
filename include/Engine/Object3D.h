@@ -9,6 +9,7 @@
 #include <iterator>
 
 #include "Engine/Shader.h"
+#include "Engine/Texture2D.h"
 
 
 // Defines
@@ -44,6 +45,7 @@ class Object3D {
         void set_rotation(glm::vec3 rotation);
 
         void attach_shader(Shader shader);
+        void attach_texture(Texture2D texture);
 
         void set_lighting_data(LightingData data);
         void set_color(glm::vec3 color);
@@ -59,5 +61,8 @@ class Object3D {
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;
 
+        bool m_use_texture;
+
         Shader m_shader;
+        Texture2D m_texture;
 };

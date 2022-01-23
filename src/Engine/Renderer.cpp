@@ -112,7 +112,13 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, Object3D 
 
         // Render object
         glBindVertexArray(object->m_vertex_array_object);
+        if (object->m_use_texture) {
+            object->m_texture.enable();
+        }
         glDrawArrays(GL_TRIANGLES, 0, OBJECT3D_CUBE_NUM_VERTICES);
+        if (object->m_use_texture) {
+            object->m_texture.disable();
+        }
         glBindVertexArray(0);
 
         // Deselect shader
