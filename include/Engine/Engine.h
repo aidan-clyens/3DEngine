@@ -47,7 +47,8 @@ class Engine {
         void cleanup();
 
         void add_object(Object3D *object);
-        void add_light(Object3D *light);
+
+        void set_light_direction(glm::vec3 direction);
 
         eKeyAction get_key(eKey key);
 
@@ -67,6 +68,7 @@ class Engine {
 
         Renderer m_renderer;
 
+        glm::vec3 m_light_direction;
+
         std::vector<Object3D*> m_objects;
-        Object3D *p_light;
 };

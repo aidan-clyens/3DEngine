@@ -85,42 +85,33 @@ class Game : public Engine {
 
             Light object_light;
             object_light.ambient = glm::vec3(0.5, 0.5, 0.5);
-            object_light.diffuse = glm::vec3(0.5, 0.5, 0.5);
+            object_light.diffuse = glm::vec3(0.8, 0.8, 0.8);
             object_light.specular = glm::vec3(0.2, 0.2, 0.2);
-
-            // Create light source
-            p_light = new Object3D(glm::vec3(2, 2, -5), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
-            if (color_shader.is_valid()) {
-                p_light->set_shader(color_shader);
-            }
-
-            this->add_object(p_light);
-            this->add_light(p_light);
 
             // Create objects
             p_cube1 = new Object3D(glm::vec3(0, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
-            p_cube1->set_material(object_material);
-            p_cube1->set_light(object_light);
             if (color_shader.is_valid()) {
                 p_cube1->set_shader(color_shader);
+                p_cube1->set_material(object_material);
+                p_cube1->set_light(object_light);
             }
 
             this->add_object(p_cube1);
 
             p_cube2 = new Object3D(glm::vec3(-2, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
-            p_cube2->set_material(object_material);
-            p_cube2->set_light(object_light);
             if (color_shader.is_valid()) {
                 p_cube2->set_shader(color_shader);
+                p_cube2->set_material(object_material);
+                p_cube2->set_light(object_light);
             }
 
             this->add_object(p_cube2);
 
             p_cube3 = new Object3D(glm::vec3(2, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
-            p_cube3->set_material(object_material);
-            p_cube3->set_light(object_light);
             if (color_shader.is_valid()) {
                 p_cube3->set_shader(color_shader);
+                p_cube3->set_material(object_material);
+                p_cube3->set_light(object_light);
             }
 
             this->add_object(p_cube3);
@@ -145,7 +136,6 @@ class Game : public Engine {
         }
     
     private:
-        Object3D *p_light;
         Object3D *p_cube1;
         Object3D *p_cube2;
         Object3D *p_cube3;

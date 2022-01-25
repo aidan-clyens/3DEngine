@@ -71,7 +71,7 @@ void Renderer::close() {
 
 /* render
  */
-void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, Object3D *light) {
+void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, glm::vec3 light_direction) {
     // Clear window
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -108,7 +108,7 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, Object3D 
             object->m_shader.set_vec3("light.ambient", object->m_light.ambient);
             object->m_shader.set_vec3("light.diffuse", object->m_light.diffuse);
             object->m_shader.set_vec3("light.specular", object->m_light.specular);
-            object->m_shader.set_vec3("lightPos", light->m_position);
+            object->m_shader.set_vec3("lightDir", light_direction);
             object->m_shader.set_vec3("viewPos", camera.m_position);
         }
 

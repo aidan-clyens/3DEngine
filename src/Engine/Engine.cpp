@@ -5,7 +5,8 @@
  */
 Engine::Engine():
 m_renderer(SCREEN_WIDTH, SCREEN_HEIGHT),
-m_camera(glm::vec3(0.0, 0.0, 3.0))
+m_camera(glm::vec3(0.0, 0.0, 3.0)),
+m_light_direction(glm::vec3(0.4, 0.5, -0.6))
 {
 
 }
@@ -42,7 +43,7 @@ void Engine::start() {
 
         this->update();
 
-        m_renderer.render(m_objects, m_camera, p_light);
+        m_renderer.render(m_objects, m_camera, m_light_direction);
     }
 }
 
@@ -62,10 +63,10 @@ void Engine::add_object(Object3D *object) {
     m_objects.push_back(object);
 }
 
-/* add_light
+/* set_light_direction
  */
-void Engine::add_light(Object3D *light) {
-    p_light = light;
+void Engine::set_light_direction(glm::vec3 direction) {
+    m_light_direction = direction;
 }
 
 /* get_key
