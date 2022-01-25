@@ -18,12 +18,11 @@
 
 // Structs
 typedef struct {
-    glm::vec3 color;
-    glm::vec3 light_color;
-    float ambient_strength;
-    float specular_strength;
+    glm::vec3 ambient;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
     float shininess;
-} LightingData;
+} Material;
 
 // Forward Declarations
 class Renderer;
@@ -44,19 +43,17 @@ class Object3D {
         void set_position(glm::vec3 position);
         void set_rotation(glm::vec3 rotation);
 
-        void attach_shader(Shader shader);
-        void attach_texture(Texture2D texture);
+        void set_shader(Shader shader);
+        void set_texture(Texture2D texture);
 
-        void set_lighting_data(LightingData data);
-        void set_color(glm::vec3 color);
-        void set_light_color(glm::vec3 color);
+        void set_material(Material material);
 
     protected:
         glm::vec3 m_position;
         glm::vec3 m_rotation;
         glm::vec3 m_size;
 
-        LightingData m_lighting_data;
+        Material m_material;
 
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;

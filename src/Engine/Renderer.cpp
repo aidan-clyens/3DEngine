@@ -101,11 +101,10 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, Object3D 
             object->m_shader.set_mat4("projection", m_projection);
 
             // Pass lighting data to shader
-            object->m_shader.set_vec3("objectColor", object->m_lighting_data.color);
-            object->m_shader.set_vec3("lightColor", object->m_lighting_data.light_color);
-            object->m_shader.set_float("ambientStrength", object->m_lighting_data.ambient_strength);
-            object->m_shader.set_float("specularStrength", object->m_lighting_data.specular_strength);
-            object->m_shader.set_float("shininess", object->m_lighting_data.shininess);
+            object->m_shader.set_vec3("material.ambient", object->m_material.ambient);
+            object->m_shader.set_vec3("material.diffuse", object->m_material.diffuse);
+            object->m_shader.set_vec3("material.specular", object->m_material.specular);
+            object->m_shader.set_float("material.shininess", object->m_material.shininess);
             object->m_shader.set_vec3("lightPos", light->m_position);
             object->m_shader.set_vec3("viewPos", camera.m_position);
         }

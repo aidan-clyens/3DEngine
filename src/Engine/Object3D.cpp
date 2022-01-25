@@ -76,11 +76,10 @@ m_use_texture(false)
     glEnableVertexAttribArray(2);
 
     // Initialize lighting data
-    m_lighting_data.color = glm::vec3(1, 1, 1);
-    m_lighting_data.light_color = glm::vec3(1, 1, 1);
-    m_lighting_data.ambient_strength = 1;
-    m_lighting_data.specular_strength = 0.5;
-    m_lighting_data.shininess = 32;
+    m_material.ambient = glm::vec3(1, 1, 1);
+    m_material.diffuse = glm::vec3(1, 1, 1);
+    m_material.specular = glm::vec3(1, 1, 1);
+    m_material.shininess = 32;
 }
 
 /* Object3D
@@ -120,35 +119,21 @@ void Object3D::set_rotation(glm::vec3 rotation) {
     m_rotation = rotation;
 }
 
-/* attach_shader
+/* set_shader
  */
-void Object3D::attach_shader(Shader shader) {
+void Object3D::set_shader(Shader shader) {
     m_shader = shader;
 }
 
-/* attach_texture
+/* set_texture
  */
-void Object3D::attach_texture(Texture2D texture) {
+void Object3D::set_texture(Texture2D texture) {
     m_texture = texture;
     m_use_texture = true;
 }
 
-/* set_color
+/* set_material
  */
-void Object3D::set_lighting_data(LightingData data) {
-    m_lighting_data.color = data.color;
-    m_lighting_data.light_color = data.light_color;
-    m_lighting_data.ambient_strength = data.ambient_strength;
-}
-
-/* set_color
- */
-void Object3D::set_color(glm::vec3 color) {
-    m_lighting_data.color = color;
-}
-
-/* set_light_color
- */
-void Object3D::set_light_color(glm::vec3 color) {
-    m_lighting_data.light_color = color;
+void Object3D::set_material(Material material) {
+    m_material = material;
 }
