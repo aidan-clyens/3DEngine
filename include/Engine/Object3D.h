@@ -13,8 +13,9 @@
 
 
 // Defines
-#define OBJECT3D_CUBE_NUM_FACES         6 * 6
-#define OBJECT3D_CUBE_NUM_VERTICES      OBJECT3D_CUBE_NUM_FACES * 3
+#define OBJECT3D_CUBE_NUM_FACES             6
+#define OBJECT3D_CUBE_FACE_NUM_VERTICES     6
+#define OBJECT3D_CUBE_NUM_VERTICES          OBJECT3D_CUBE_NUM_FACES * OBJECT3D_CUBE_FACE_NUM_VERTICES * 3
 
 // Structs
 typedef struct {
@@ -29,6 +30,16 @@ typedef struct {
     glm::vec3 diffuse;
     glm::vec3 specular;
 } Light;
+
+// Enums
+typedef enum {
+    CUBE_BACK,
+    CUBE_FRONT,
+    CUBE_LEFT,
+    CUBE_RIGHT,
+    CUBE_BOTTOM,
+    CUBE_TOP
+} eCubeFace;
 
 // Forward Declarations
 class Renderer;
@@ -55,6 +66,8 @@ class Object3D {
 
         void set_material(Material material);
 
+        void set_face_enabled(eCubeFace face, bool enabled);
+
     protected:
         glm::vec3 m_position;
         glm::vec3 m_rotation;
@@ -65,6 +78,8 @@ class Object3D {
 
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;
+
+        bool m_faces_enabled[OBJECT3D_CUBE_NUM_FACES];
 
         bool m_use_texture;
 

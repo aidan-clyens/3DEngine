@@ -15,6 +15,7 @@ m_use_texture(false)
 
     float vertices[] = {
         // positions          // normals           // texture coords
+        // back face
         -half_size_x, -half_size_y, -half_size_z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
         half_size_x, -half_size_y, -half_size_z, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
         half_size_x, half_size_y, -half_size_z, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
@@ -22,6 +23,7 @@ m_use_texture(false)
         -half_size_x, half_size_y, -half_size_z, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
         -half_size_x, -half_size_y, -half_size_z, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
 
+        // front face
         -half_size_x, -half_size_y, half_size_z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
         half_size_x, -half_size_y, half_size_z, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
         half_size_x, half_size_y, half_size_z, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
@@ -29,6 +31,7 @@ m_use_texture(false)
         -half_size_x, half_size_y, half_size_z, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
         -half_size_x, -half_size_y, half_size_z, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 
+        // left face
         -half_size_x, half_size_y, half_size_z, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
         -half_size_x, half_size_y, -half_size_z, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
         -half_size_x, -half_size_y, -half_size_z, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
@@ -36,6 +39,7 @@ m_use_texture(false)
         -half_size_x, -half_size_y, half_size_z, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
         -half_size_x, half_size_y, half_size_z, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 
+        // right face
         half_size_x, half_size_y, half_size_z, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
         half_size_x, half_size_y, -half_size_z, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
         half_size_x, -half_size_y, -half_size_z, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
@@ -43,6 +47,7 @@ m_use_texture(false)
         half_size_x, -half_size_y, half_size_z, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
         half_size_x, half_size_y, half_size_z, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
 
+        // bottom face
         -half_size_x, -half_size_y, -half_size_z, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
         half_size_x, -half_size_y, -half_size_z, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
         half_size_x, -half_size_y, half_size_z, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
@@ -50,6 +55,7 @@ m_use_texture(false)
         -half_size_x, -half_size_y, half_size_z, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
         -half_size_x, -half_size_y, -half_size_z, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
 
+        // top face
         -half_size_x, half_size_y, -half_size_z, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
         half_size_x, half_size_y, -half_size_z, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
         half_size_x, half_size_y, half_size_z, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
@@ -57,6 +63,11 @@ m_use_texture(false)
         -half_size_x, half_size_y, half_size_z, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
         -half_size_x, half_size_y, -half_size_z, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f
     };
+
+    // Enable faces
+    for (int i = 0; i < OBJECT3D_CUBE_NUM_FACES; i++) {
+        m_faces_enabled[i] = true;
+    }
 
     // Create VBO and VAO
     glGenVertexArrays(1, &m_vertex_array_object);
@@ -146,4 +157,10 @@ void Object3D::set_material(Material material) {
  */
 void Object3D::set_light(Light light) {
     m_light = light;
+}
+
+/* set_face_enabled
+ */
+void Object3D::set_face_enabled(eCubeFace face, bool enabled) {
+    m_faces_enabled[(int)face] = enabled;
 }
