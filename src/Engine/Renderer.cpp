@@ -105,6 +105,9 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, Object3D 
             object->m_shader.set_vec3("material.diffuse", object->m_material.diffuse);
             object->m_shader.set_vec3("material.specular", object->m_material.specular);
             object->m_shader.set_float("material.shininess", object->m_material.shininess);
+            object->m_shader.set_vec3("light.ambient", object->m_light.ambient);
+            object->m_shader.set_vec3("light.diffuse", object->m_light.diffuse);
+            object->m_shader.set_vec3("light.specular", object->m_light.specular);
             object->m_shader.set_vec3("lightPos", light->m_position);
             object->m_shader.set_vec3("viewPos", camera.m_position);
         }

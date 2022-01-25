@@ -75,11 +75,15 @@ m_use_texture(false)
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    // Initialize lighting data
+    // Initialize material lighting data
     m_material.ambient = glm::vec3(1, 1, 1);
     m_material.diffuse = glm::vec3(1, 1, 1);
     m_material.specular = glm::vec3(1, 1, 1);
     m_material.shininess = 32;
+
+    m_light.ambient = glm::vec3(1, 1, 1);
+    m_light.diffuse = glm::vec3(1, 1, 1);
+    m_light.specular = glm::vec3(1, 1, 1);
 }
 
 /* Object3D
@@ -136,4 +140,10 @@ void Object3D::set_texture(Texture2D texture) {
  */
 void Object3D::set_material(Material material) {
     m_material = material;
+}
+
+/* set_light
+ */
+void Object3D::set_light(Light light) {
+    m_light = light;
 }

@@ -83,6 +83,11 @@ class Game : public Engine {
             object_material.specular = WHITE;
             object_material.shininess = 32;
 
+            Light object_light;
+            object_light.ambient = glm::vec3(0.5, 0.5, 0.5);
+            object_light.diffuse = glm::vec3(0.5, 0.5, 0.5);
+            object_light.specular = glm::vec3(0.2, 0.2, 0.2);
+
             // Create light source
             p_light = new Object3D(glm::vec3(2, 2, -5), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
             if (color_shader.is_valid()) {
@@ -95,6 +100,7 @@ class Game : public Engine {
             // Create objects
             p_cube1 = new Object3D(glm::vec3(0, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
             p_cube1->set_material(object_material);
+            p_cube1->set_light(object_light);
             if (color_shader.is_valid()) {
                 p_cube1->set_shader(color_shader);
             }
@@ -103,6 +109,7 @@ class Game : public Engine {
 
             p_cube2 = new Object3D(glm::vec3(-2, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
             p_cube2->set_material(object_material);
+            p_cube2->set_light(object_light);
             if (color_shader.is_valid()) {
                 p_cube2->set_shader(color_shader);
             }
@@ -111,6 +118,7 @@ class Game : public Engine {
 
             p_cube3 = new Object3D(glm::vec3(2, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
             p_cube3->set_material(object_material);
+            p_cube3->set_light(object_light);
             if (color_shader.is_valid()) {
                 p_cube3->set_shader(color_shader);
             }

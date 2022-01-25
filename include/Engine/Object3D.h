@@ -24,6 +24,12 @@ typedef struct {
     float shininess;
 } Material;
 
+typedef struct {
+    glm::vec3 ambient;
+    glm::vec3 diffuse;
+    glm::vec3 specular;
+} Light;
+
 // Forward Declarations
 class Renderer;
 
@@ -45,6 +51,7 @@ class Object3D {
 
         void set_shader(Shader shader);
         void set_texture(Texture2D texture);
+        void set_light(Light light);
 
         void set_material(Material material);
 
@@ -54,6 +61,7 @@ class Object3D {
         glm::vec3 m_size;
 
         Material m_material;
+        Light m_light;
 
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;
