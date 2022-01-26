@@ -113,22 +113,7 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, glm::vec3
         }
 
         // Render object
-        glBindVertexArray(object->m_vertex_array_object);
-        if (object->m_use_texture) {
-            object->m_texture.enable();
-        }
-
-        // Draw selected faces
-        for (int i = 0; i < OBJECT3D_CUBE_NUM_FACES; i++) {
-            if (object->m_faces_enabled[i]) {
-                glDrawArrays(GL_TRIANGLES, (i * OBJECT3D_CUBE_FACE_NUM_VERTICES), OBJECT3D_CUBE_FACE_NUM_VERTICES);
-            }
-        }
-
-        if (object->m_use_texture) {
-            object->m_texture.disable();
-        }
-        glBindVertexArray(0);
+        object->render();
 
         // Deselect shader
         if (object->m_shader.is_valid()) {

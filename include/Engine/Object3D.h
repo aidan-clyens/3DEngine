@@ -15,7 +15,7 @@
 // Defines
 #define OBJECT3D_CUBE_NUM_FACES             6
 #define OBJECT3D_CUBE_FACE_NUM_VERTICES     6
-#define OBJECT3D_CUBE_NUM_VERTICES          OBJECT3D_CUBE_NUM_FACES * OBJECT3D_CUBE_FACE_NUM_VERTICES * 3
+#define OBJECT3D_CUBE_NUM_VERTICES          OBJECT3D_CUBE_NUM_FACES * OBJECT3D_CUBE_FACE_NUM_VERTICES;
 
 // Structs
 typedef struct {
@@ -53,6 +53,8 @@ class Object3D {
         Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size);
         virtual ~Object3D();
 
+        void render();
+
         glm::vec3 get_position() const;
         glm::vec3 get_rotation() const;
         glm::vec3 get_size() const;
@@ -75,6 +77,10 @@ class Object3D {
 
         Material m_material;
         Light m_light;
+
+        float *p_vertex_buffer;
+        unsigned int m_vertex_buffer_size;
+        unsigned int m_num_vertices;
 
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;
