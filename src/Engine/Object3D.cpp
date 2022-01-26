@@ -1,77 +1,17 @@
 #include "Engine/Object3D.h"
 
 
-float vertices[] = {
-    // positions          // normals           // texture coords
-    // back face
-    -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
-    0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f,
-    -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
-
-    // front face
-    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-    0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-
-    // left face
-    -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-
-    // right face
-    0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-    0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
-    0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-    0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-
-    // bottom face
-    -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 1.0f,
-    0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-    0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-
-    // top face
-    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-    0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-    0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f
-};
-
-
 /* Object3D
  */
 Object3D::Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size):
 m_position(pos),
 m_rotation(rotation),
 m_size(size),
-m_use_texture(false)
+m_use_texture(false),
+m_vertex_buffer_size(0),
+m_num_vertices(0),
+m_vertex_buffer_created(false)
 {
-    // Enable faces
-    for (int i = 0; i < OBJECT3D_CUBE_NUM_FACES; i++) {
-        m_faces_enabled[i] = true;
-    }
-
-    m_vertex_buffer_size = sizeof(float) * 8 * OBJECT3D_CUBE_NUM_VERTICES;
-    m_num_vertices = OBJECT3D_CUBE_NUM_VERTICES;
-    p_vertex_buffer = new float[m_vertex_buffer_size];
-
-    memcpy(p_vertex_buffer, vertices, m_vertex_buffer_size);
-
     // Create VBO and VAO
     glGenVertexArrays(1, &m_vertex_array_object);
     glGenBuffers(1, &m_vertex_buffer_object);
@@ -93,12 +33,17 @@ Object3D::~Object3D() {
     glDeleteBuffers(1, &m_vertex_buffer_object);
     glDeleteVertexArrays(1, &m_vertex_array_object);
 
-    delete p_vertex_buffer;
+    if (m_vertex_buffer_created) {
+        delete p_vertex_buffer;
+    }
 }
 
 /* render
  */
 void Object3D::render() {
+    if (m_vertex_buffer_size == 0)
+        return;
+
     glBindVertexArray(m_vertex_array_object);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer_object);
     glBufferData(GL_ARRAY_BUFFER, m_vertex_buffer_size, p_vertex_buffer, GL_STATIC_DRAW);
@@ -179,10 +124,4 @@ void Object3D::set_material(Material material) {
  */
 void Object3D::set_light(Light light) {
     m_light = light;
-}
-
-/* set_face_enabled
- */
-void Object3D::set_face_enabled(eCubeFace face, bool enabled) {
-    m_faces_enabled[(int)face] = enabled;
 }
