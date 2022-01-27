@@ -1,6 +1,6 @@
 project(EngineCore)
 
-add_library(${PROJECT_NAME} Engine.cpp Object3D.cpp Renderer.cpp Camera.cpp Shader.cpp Texture2D.cpp Cube.cpp)
+add_library(${PROJECT_NAME} Engine.cpp Object3D.cpp Renderer.cpp Camera.cpp Shader.cpp Texture.cpp Texture2D.cpp Cube.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC ../../include)
 target_include_directories(${PROJECT_NAME} PUBLIC ../../thirdparty/)
 target_include_directories(${PROJECT_NAME} PUBLIC ../../thirdparty/glfw)

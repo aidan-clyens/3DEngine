@@ -109,7 +109,7 @@ void Object3D::set_shader(Shader shader) {
 
 /* set_texture
  */
-void Object3D::set_texture(Texture2D texture) {
+void Object3D::set_texture(Texture texture) {
     m_texture = texture;
     m_use_texture = true;
 }

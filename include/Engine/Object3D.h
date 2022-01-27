@@ -9,7 +9,7 @@
 #include <iterator>
 
 #include "Engine/Shader.h"
-#include "Engine/Texture2D.h"
+#include "Engine/Texture.h"
 
 
 // Structs
@@ -48,7 +48,7 @@ class Object3D {
         void set_rotation(glm::vec3 rotation);
 
         void set_shader(Shader shader);
-        void set_texture(Texture2D texture);
+        void set_texture(Texture texture);
         void set_light(Light light);
 
         void set_material(Material material);
@@ -72,5 +72,5 @@ class Object3D {
         bool m_use_texture;
 
         Shader m_shader;
-        Texture2D m_texture;
+        Texture m_texture;
 };
