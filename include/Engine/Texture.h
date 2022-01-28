@@ -14,6 +14,7 @@ class Texture {
         virtual ~Texture();
 
         void load(const std::string &texture_path, unsigned int index, unsigned int texture_type);
+        void load(unsigned char *data, unsigned int index, unsigned int texture_type);
 
         void enable();
         void disable();

@@ -22,6 +22,17 @@ void Texture::load(const std::string &texture_path, unsigned int index, unsigned
     p_data = load_image_data(texture_path, &m_texture_width, &m_texture_height, &m_num_channels);
 }
 
+/* load
+ */
+void Texture::load(unsigned char *data, unsigned int index, unsigned int texture_type) {
+    m_index = index;
+    m_texture_type = texture_type;
+
+    glGenTextures(1, &m_texture_id);
+
+    p_data = data;
+}
+
 /* ~Texture
  */
 Texture::~Texture() {

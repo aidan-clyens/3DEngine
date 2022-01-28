@@ -12,6 +12,21 @@ Texture2D::Texture2D() {
 void Texture2D::load(const std::string &texture_path, unsigned int index) {
     Texture::load(texture_path, index, GL_TEXTURE_2D);
 
+    this->_load();
+    this->free_data();
+}
+
+/* load
+ */
+void Texture2D::load(unsigned char *data, unsigned int index) {
+    Texture::load(data, index, GL_TEXTURE_2D);
+
+    this->_load();
+}
+
+/* _load
+ */
+void Texture2D::_load() {
     if (p_data) {
         GLenum format;
         if (m_num_channels == 1) {
@@ -33,6 +48,4 @@ void Texture2D::load(const std::string &texture_path, unsigned int index) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     }
-
-    this->free_data();
 }
