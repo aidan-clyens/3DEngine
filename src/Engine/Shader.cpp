@@ -13,11 +13,11 @@ m_is_valid(false)
 
 /* Shader
  */
-Shader::Shader(const std::string &vertex_shader_path, const std::string &fragment_shader_path):
-m_vertex_shader_path(vertex_shader_path),
-m_fragment_shader_path(fragment_shader_path),
-m_is_valid(false)
-{
+void Shader::load(const std::string &vertex_shader_path, const std::string &fragment_shader_path) {
+    m_vertex_shader_path = vertex_shader_path;
+    m_fragment_shader_path = fragment_shader_path;
+    m_is_valid = false;
+
     unsigned int vertex_shader_id;
     unsigned int fragment_shader_id;
     if (this->load_shader(m_vertex_shader_path, SHADER_VERTEX, vertex_shader_id) &&

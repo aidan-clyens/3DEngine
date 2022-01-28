@@ -22,7 +22,8 @@ typedef enum
 class Shader {
     public:
         Shader();
-        Shader(const std::string &vertex_shader_path, const std::string &fragment_shader_path);
+
+        void load(const std::string &vertex_shader_path, const std::string &fragment_shader_path);
 
         void enable();
         void disable();

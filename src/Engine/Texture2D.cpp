@@ -7,11 +7,11 @@ Texture2D::Texture2D() {
 
 }
 
-/* Texture2D
+/* load
  */
-Texture2D::Texture2D(const std::string &texture_path, unsigned int index):
-Texture(texture_path, index, GL_TEXTURE_2D)
-{
+void Texture2D::load(const std::string &texture_path, unsigned int index) {
+    Texture::load(texture_path, index, GL_TEXTURE_2D);
+
     if (p_data) {
         GLenum format;
         if (m_num_channels == 1) {
