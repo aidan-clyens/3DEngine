@@ -1,9 +1,5 @@
 #include "Engine/Texture.h"
-
-#ifndef STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_IMPLEMENTATION
-#endif
-#include "stb_image.h"
+#include "Engine/utils/load_image.h"
 
 
 /* Texture
@@ -23,7 +19,7 @@ m_texture_type(texture_type)
 {
     glGenTextures(1, &m_texture_id);
 
-    p_data = stbi_load(texture_path.c_str(), &m_texture_width, &m_texture_height, &m_num_channels, 0);
+    p_data = load_image_data(texture_path, &m_texture_width, &m_texture_height, &m_num_channels);
 }
 
 /* ~Texture
@@ -46,5 +42,5 @@ void Texture::disable() {
 }
 
 void Texture::free_data() {
-    stbi_image_free(p_data);
+    free_image_data(p_data);
 }
