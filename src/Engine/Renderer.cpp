@@ -112,6 +112,7 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, glm::vec3
             object->m_shader.set_vec3("light.specular", object->m_light.specular);
             object->m_shader.set_vec3("lightDir", light_direction);
             object->m_shader.set_vec3("viewPos", camera.m_position);
+            object->m_shader.set_int("objectTexture", 0);
         }
 
         // Render object

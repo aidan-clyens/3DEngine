@@ -31,6 +31,7 @@ class Shader {
         bool is_valid() const;
         unsigned int get_program_id() const;
 
+        void set_int(const std::string &variable, int value);
         void set_float(const std::string &variable, float value);
         void set_mat4(const std::string &variable, glm::mat4 matrix);
         void set_vec3(const std::string &variable, glm::vec3 vector);

@@ -66,6 +66,13 @@ unsigned int Shader::get_program_id() const {
     return m_program_id;
 }
 
+/* set_int
+ */
+void Shader::set_int(const std::string &variable, int value) {
+    unsigned int location = glGetUniformLocation(m_program_id, variable.c_str());
+    glUniform1i(location, value);
+}
+
 /* set_float
  */
 void Shader::set_float(const std::string &variable, float value) {
