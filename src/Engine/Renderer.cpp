@@ -88,17 +88,16 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, glm::vec3
         }
 
         // Create transformations
-        m_model = glm::mat4(1.0);
+        object->m_model = glm::mat4(1.0);
 
         // Transform object
-        m_model = glm::translate(m_model, object->m_position);
-        m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.x), glm::vec3(1.0, 0.0, 0.0));
-        m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.y), glm::vec3(0.0, 1.0, 0.0));
-        m_model = glm::rotate(m_model, glm::radians((float)object->m_rotation.z), glm::vec3(0.0, 0.0, 1.0));
+        object->m_model = glm::translate(object->m_model, object->m_position);
+        object->m_model = glm::rotate(object->m_model, glm::radians((float)object->m_rotation.x), glm::vec3(1.0, 0.0, 0.0));
+        object->m_model = glm::rotate(object->m_model, glm::radians((float)object->m_rotation.y), glm::vec3(0.0, 1.0, 0.0));
+        object->m_model = glm::rotate(object->m_model, glm::radians((float)object->m_rotation.z), glm::vec3(0.0, 0.0, 1.0));
 
         if (object->m_shader.is_valid()) {
             // Pass matrices to shader
-            object->m_shader.set_mat4("model", m_model);
             object->m_shader.set_mat4("view", m_view);
             object->m_shader.set_mat4("projection", m_projection);
 
@@ -107,9 +106,11 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, glm::vec3
             object->m_shader.set_vec3("material.diffuse", object->m_material.diffuse);
             object->m_shader.set_vec3("material.specular", object->m_material.specular);
             object->m_shader.set_float("material.shininess", object->m_material.shininess);
+
             object->m_shader.set_vec3("light.ambient", object->m_light.ambient);
             object->m_shader.set_vec3("light.diffuse", object->m_light.diffuse);
             object->m_shader.set_vec3("light.specular", object->m_light.specular);
+
             object->m_shader.set_vec3("lightDir", light_direction);
             object->m_shader.set_vec3("viewPos", camera.m_position);
             object->m_shader.set_int("objectTexture", 0);

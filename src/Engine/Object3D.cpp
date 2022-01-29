@@ -13,6 +13,7 @@ m_num_vertices(0)
     // Create VBO and VAO
     glGenVertexArrays(1, &m_vertex_array_object);
     glGenBuffers(1, &m_vertex_buffer_object);
+    glGenBuffers(1, &m_instance_buffer_object);
 
     // Initialize material lighting data
     m_material.ambient = glm::vec3(1, 1, 1);
@@ -29,6 +30,7 @@ m_num_vertices(0)
  */
 Object3D::~Object3D() {
     glDeleteBuffers(1, &m_vertex_buffer_object);
+    glDeleteBuffers(1, &m_instance_buffer_object);
     glDeleteVertexArrays(1, &m_vertex_array_object);
 }
 
@@ -39,6 +41,8 @@ void Object3D::render() {
         return;
 
     glBindVertexArray(m_vertex_array_object);
+
+    // Vertex buffer object
     glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer_object);
     glBufferData(GL_ARRAY_BUFFER, m_vertex_buffer.size + m_normal_buffer.size + m_uv_buffer.size, nullptr, GL_STATIC_DRAW);
     glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertex_buffer.size, m_vertex_buffer.data);
@@ -53,6 +57,27 @@ void Object3D::render() {
 
     glVertexAttribPointer(2, m_uv_buffer.stride, GL_FLOAT, GL_FALSE, m_uv_buffer.stride * sizeof(float), (void *)(m_vertex_buffer.size + m_normal_buffer.size));
     glEnableVertexAttribArray(2);
+
+    // Instance buffer object
+    glBindBuffer(GL_ARRAY_BUFFER, m_instance_buffer_object);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4), &m_model, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)0);
+    glEnableVertexAttribArray(3);
+
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(sizeof(glm::vec4)));
+    glEnableVertexAttribArray(4);
+
+    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(2 * sizeof(glm::vec4)));
+    glEnableVertexAttribArray(5);
+
+    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(3 * sizeof(glm::vec4)));
+    glEnableVertexAttribArray(6);
+
+    glVertexAttribDivisor(3, 1);
+    glVertexAttribDivisor(4, 1);
+    glVertexAttribDivisor(5, 1);
+    glVertexAttribDivisor(6, 1);
 
     if (m_use_texture) {
         m_texture.enable();

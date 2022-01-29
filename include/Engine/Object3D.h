@@ -64,6 +64,8 @@ class Object3D {
         glm::vec3 m_rotation;
         glm::vec3 m_size;
 
+        glm::mat4 m_model;
+
         Material m_material;
         Light m_light;
 
@@ -75,6 +77,7 @@ class Object3D {
 
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;
+        unsigned int m_instance_buffer_object;
 
         bool m_use_texture;
 
