@@ -8,9 +8,7 @@ m_position(pos),
 m_rotation(rotation),
 m_size(size),
 m_use_texture(false),
-m_vertex_buffer_size(0),
-m_num_vertices(0),
-m_vertex_buffer_created(false)
+m_num_vertices(0)
 {
     // Create VBO and VAO
     glGenVertexArrays(1, &m_vertex_array_object);
@@ -32,29 +30,28 @@ m_vertex_buffer_created(false)
 Object3D::~Object3D() {
     glDeleteBuffers(1, &m_vertex_buffer_object);
     glDeleteVertexArrays(1, &m_vertex_array_object);
-
-    if (m_vertex_buffer_created) {
-        delete p_vertex_buffer;
-    }
 }
 
 /* render
  */
 void Object3D::render() {
-    if (m_vertex_buffer_size == 0)
+    if (m_num_vertices == 0)
         return;
 
     glBindVertexArray(m_vertex_array_object);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertex_buffer_object);
-    glBufferData(GL_ARRAY_BUFFER, m_vertex_buffer_size, p_vertex_buffer, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_vertex_buffer.size + m_normal_buffer.size + m_uv_buffer.size, nullptr, GL_STATIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertex_buffer.size, m_vertex_buffer.data);
+    glBufferSubData(GL_ARRAY_BUFFER, m_vertex_buffer.size, m_normal_buffer.size, m_normal_buffer.data);
+    glBufferSubData(GL_ARRAY_BUFFER, m_vertex_buffer.size + m_normal_buffer.size, m_uv_buffer.size, m_vertex_buffer.data);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
+    glVertexAttribPointer(0, m_vertex_buffer.stride, GL_FLOAT, GL_FALSE, m_vertex_buffer.stride * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
+    glVertexAttribPointer(1, m_normal_buffer.stride, GL_FLOAT, GL_FALSE, m_normal_buffer.stride * sizeof(float), (void *)(m_vertex_buffer.size));
     glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
+    glVertexAttribPointer(2, m_uv_buffer.stride, GL_FLOAT, GL_FALSE, m_uv_buffer.stride * sizeof(float), (void *)(m_vertex_buffer.size + m_normal_buffer.size));
     glEnableVertexAttribArray(2);
 
     if (m_use_texture) {

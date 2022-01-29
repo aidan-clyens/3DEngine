@@ -26,6 +26,12 @@ typedef struct {
     glm::vec3 specular;
 } Light;
 
+typedef struct {
+    float *data;
+    unsigned int size;
+    unsigned int stride;
+} Buffer;
+
 // Forward Declarations
 class Renderer;
 
@@ -61,10 +67,11 @@ class Object3D {
         Material m_material;
         Light m_light;
 
-        float *p_vertex_buffer;
-        unsigned int m_vertex_buffer_size;
+        Buffer m_vertex_buffer;
+        Buffer m_normal_buffer;
+        Buffer m_uv_buffer;
+
         unsigned int m_num_vertices;
-        bool m_vertex_buffer_created;
 
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;
