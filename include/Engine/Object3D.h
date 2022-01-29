@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <algorithm>
 #include <iterator>
@@ -25,6 +26,12 @@ typedef struct {
     glm::vec3 diffuse;
     glm::vec3 specular;
 } Light;
+
+typedef struct {
+    glm::vec3 position;
+    glm::vec3 rotation;
+    glm::vec3 size;
+} Transform;
 
 typedef struct {
     float *data;
@@ -60,9 +67,7 @@ class Object3D {
         void set_material(Material material);
 
     protected:
-        glm::vec3 m_position;
-        glm::vec3 m_rotation;
-        glm::vec3 m_size;
+        Transform m_transform;
 
         glm::mat4 m_model;
 

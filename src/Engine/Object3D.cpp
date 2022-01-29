@@ -4,9 +4,6 @@
 /* Object3D
  */
 Object3D::Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size):
-m_position(pos),
-m_rotation(rotation),
-m_size(size),
 m_use_texture(false),
 m_num_vertices(0)
 {
@@ -24,6 +21,20 @@ m_num_vertices(0)
     m_light.ambient = glm::vec3(1, 1, 1);
     m_light.diffuse = glm::vec3(1, 1, 1);
     m_light.specular = glm::vec3(1, 1, 1);
+
+    // Initialize transform
+    m_transform.position = pos;
+    m_transform.rotation = rotation;
+    m_transform.size = size;
+
+    // Create transformations
+    m_model = glm::mat4(1.0);
+
+    // Transform object
+    m_model = glm::translate(m_model, m_transform.position);
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.x), glm::vec3(1.0, 0.0, 0.0));
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.y), glm::vec3(0.0, 1.0, 0.0));
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.z), glm::vec3(0.0, 0.0, 1.0));
 }
 
 /* ~Object3D
@@ -96,31 +107,49 @@ void Object3D::render() {
 /* get_position
  */
 glm::vec3 Object3D::get_position() const {
-    return m_position;
+    return m_transform.position;
 }
 
 /* get_rotation
  */
 glm::vec3 Object3D::get_rotation() const {
-    return m_rotation;
+    return m_transform.rotation;
 }
 
 /* get_size
  */
 glm::vec3 Object3D::get_size() const {
-    return m_size;
+    return m_transform.size;
 }
 
 /* set_position
  */
 void Object3D::set_position(glm::vec3 position) {
-    m_position = position;
+    m_transform.position = position;
+
+    // Create transformations
+    m_model = glm::mat4(1.0);
+
+    // Transform object
+    m_model = glm::translate(m_model, m_transform.position);
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.x), glm::vec3(1.0, 0.0, 0.0));
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.y), glm::vec3(0.0, 1.0, 0.0));
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.z), glm::vec3(0.0, 0.0, 1.0));
 }
 
 /* set_rotation
  */
 void Object3D::set_rotation(glm::vec3 rotation) {
-    m_rotation = rotation;
+    m_transform.rotation = rotation;
+
+    // Create transformations
+    m_model = glm::mat4(1.0);
+
+    // Transform object
+    m_model = glm::translate(m_model, m_transform.position);
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.x), glm::vec3(1.0, 0.0, 0.0));
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.y), glm::vec3(0.0, 1.0, 0.0));
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.z), glm::vec3(0.0, 0.0, 1.0));
 }
 
 /* set_shader
