@@ -44,7 +44,7 @@ void Texture2D::_load() {
         }
 
         glBindTexture(GL_TEXTURE_2D, m_texture_id);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, m_texture_width, m_texture_height, 0, format, GL_UNSIGNED_BYTE, p_data);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, m_texture_width, m_texture_height, 0, format, GL_UNSIGNED_BYTE, (unsigned char*)p_data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

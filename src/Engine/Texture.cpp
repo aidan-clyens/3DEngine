@@ -24,7 +24,7 @@ void Texture::load(const std::string &texture_path, unsigned int index, unsigned
 
 /* load
  */
-void Texture::load(unsigned char *data, unsigned int index, unsigned int texture_type) {
+void Texture::load(void *data, unsigned int index, unsigned int texture_type) {
     m_index = index;
     m_texture_type = texture_type;
 
@@ -42,7 +42,7 @@ Texture::~Texture() {
 /* enable
  */
 void Texture::enable() {
-    glActiveTexture(GL_TEXTURE0 + m_index);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(m_texture_type, m_texture_id);
 }
 
@@ -53,5 +53,5 @@ void Texture::disable() {
 }
 
 void Texture::free_data() {
-    free_image_data(p_data);
+    free_image_data((unsigned char*)p_data);
 }
