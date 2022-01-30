@@ -122,6 +122,12 @@ glm::vec3 Object3D::get_size() const {
     return m_transform.size;
 }
 
+/* get_transform
+ */
+Transform Object3D::get_transform() const {
+    return m_transform;
+}
+
 /* set_position
  */
 void Object3D::set_position(glm::vec3 position) {
@@ -141,6 +147,21 @@ void Object3D::set_position(glm::vec3 position) {
  */
 void Object3D::set_rotation(glm::vec3 rotation) {
     m_transform.rotation = rotation;
+
+    // Create transformations
+    m_model = glm::mat4(1.0);
+
+    // Transform object
+    m_model = glm::translate(m_model, m_transform.position);
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.x), glm::vec3(1.0, 0.0, 0.0));
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.y), glm::vec3(0.0, 1.0, 0.0));
+    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.z), glm::vec3(0.0, 0.0, 1.0));
+}
+
+/* set_transform
+ */
+void Object3D::set_transform(Transform transform) {
+    m_transform = transform;
 
     // Create transformations
     m_model = glm::mat4(1.0);

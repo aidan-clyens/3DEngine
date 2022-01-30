@@ -87,15 +87,6 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, glm::vec3
             object->m_shader.enable();
         }
 
-        // Create transformations
-        object->m_model = glm::mat4(1.0);
-
-        // Transform object
-        object->m_model = glm::translate(object->m_model, object->m_position);
-        object->m_model = glm::rotate(object->m_model, glm::radians((float)object->m_rotation.x), glm::vec3(1.0, 0.0, 0.0));
-        object->m_model = glm::rotate(object->m_model, glm::radians((float)object->m_rotation.y), glm::vec3(0.0, 1.0, 0.0));
-        object->m_model = glm::rotate(object->m_model, glm::radians((float)object->m_rotation.z), glm::vec3(0.0, 0.0, 1.0));
-
         if (object->m_shader.is_valid()) {
             // Pass matrices to shader
             object->m_shader.set_mat4("view", m_view);

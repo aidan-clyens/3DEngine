@@ -41,24 +41,28 @@ typedef struct {
 
 // Forward Declarations
 class Renderer;
+class Object3DGroup;
 
 /* Object3D
  */
 class Object3D {
     friend class Renderer;
+    friend class Object3DGroup;
 
     public:
         Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size);
         virtual ~Object3D();
 
-        void render();
+        virtual void render();
 
         glm::vec3 get_position() const;
         glm::vec3 get_rotation() const;
         glm::vec3 get_size() const;
+        Transform get_transform() const;
 
         void set_position(glm::vec3 position);
         void set_rotation(glm::vec3 rotation);
+        void set_transform(Transform transform);
 
         void set_shader(Shader shader);
         void set_texture(Texture texture);
