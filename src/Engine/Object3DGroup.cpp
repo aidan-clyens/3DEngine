@@ -3,6 +3,36 @@
 
 /* Object3DGroup
  */
+Object3DGroup::Object3DGroup(Object3D *instance):
+Object3D(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)),
+m_instance(instance)
+{
+    m_num_vertices = instance->m_num_vertices;
+
+    m_vertex_buffer.stride = instance->m_vertex_buffer.stride;
+    m_vertex_buffer.size = instance->m_vertex_buffer.size;
+    m_vertex_buffer.data = new float[m_vertex_buffer.size];
+
+    m_normal_buffer.stride = instance->m_normal_buffer.stride;
+    m_normal_buffer.size = instance->m_normal_buffer.size;
+    m_normal_buffer.data = new float[m_normal_buffer.size];
+
+    m_uv_buffer.stride = instance->m_uv_buffer.stride;
+    m_uv_buffer.size = instance->m_uv_buffer.size;
+    m_uv_buffer.data = new float[m_uv_buffer.size];
+
+    memcpy(m_vertex_buffer.data, instance->m_vertex_buffer.data, m_vertex_buffer.size);
+    memcpy(m_normal_buffer.data, instance->m_normal_buffer.data, m_normal_buffer.size);
+    memcpy(m_uv_buffer.data, instance->m_uv_buffer.data, m_uv_buffer.size);
+
+    this->set_shader(instance->m_shader);
+    this->set_texture(instance->m_texture);
+    this->set_material(instance->m_material);
+    this->set_light(instance->m_light);
+}
+
+/* Object3DGroup
+ */
 Object3DGroup::Object3DGroup(Object3D *instance, std::vector<Transform> transforms):
 Object3D(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)),
 m_instance(instance)
@@ -111,4 +141,19 @@ void Object3DGroup::render() {
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+}
+
+/* add_transform
+ */
+void Object3DGroup::add_transform(Transform transform) {
+    // Create transformations
+    glm::mat4 model = glm::mat4(1.0);
+
+    // Transform object
+    model = glm::translate(model, transform.position);
+    model = glm::rotate(model, glm::radians((float)transform.rotation.x), glm::vec3(1.0, 0.0, 0.0));
+    model = glm::rotate(model, glm::radians((float)transform.rotation.y), glm::vec3(0.0, 1.0, 0.0));
+    model = glm::rotate(model, glm::radians((float)transform.rotation.z), glm::vec3(0.0, 0.0, 1.0));
+
+    m_models.push_back(model);
 }
