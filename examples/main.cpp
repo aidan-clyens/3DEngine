@@ -12,8 +12,8 @@
 
 #define MOUSE_SENSITIVITY 0.1
 
-#define WHITE glm::vec3(1, 1, 1)
-#define ORANGE glm::vec3(1, 0.5, 0.31)
+#define WHITE vec3(1, 1, 1)
+#define ORANGE vec3(1, 0.5, 0.31)
 
 // Class definitions
 /* Game
@@ -84,12 +84,12 @@ class Game : public Engine {
             object_material.shininess = 32;
 
             Light object_light;
-            object_light.ambient = glm::vec3(0.5, 0.5, 0.5);
-            object_light.diffuse = glm::vec3(0.8, 0.8, 0.8);
-            object_light.specular = glm::vec3(0.2, 0.2, 0.2);
+            object_light.ambient = vec3(0.5, 0.5, 0.5);
+            object_light.diffuse = vec3(0.8, 0.8, 0.8);
+            object_light.specular = vec3(0.2, 0.2, 0.2);
 
             // Create objects
-            p_cube1 = new Cube(glm::vec3(0, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
+            p_cube1 = new Cube(vec3(0, -0.5, -1.5), m_rotation, vec3(1, 1, 1));
             if (color_shader.is_valid()) {
                 p_cube1->set_shader(color_shader);
                 p_cube1->set_material(object_material);
@@ -98,7 +98,7 @@ class Game : public Engine {
 
             this->add_object(p_cube1);
 
-            p_cube2 = new Cube(glm::vec3(-2, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
+            p_cube2 = new Cube(vec3(-2, -0.5, -1.5), m_rotation, vec3(1, 1, 1));
             if (color_shader.is_valid()) {
                 p_cube2->set_shader(color_shader);
                 p_cube2->set_material(object_material);
@@ -107,7 +107,7 @@ class Game : public Engine {
 
             this->add_object(p_cube2);
 
-            p_cube3 = new Cube(glm::vec3(2, -0.5, -1.5), m_rotation, glm::vec3(1, 1, 1));
+            p_cube3 = new Cube(vec3(2, -0.5, -1.5), m_rotation, vec3(1, 1, 1));
             if (color_shader.is_valid()) {
                 p_cube3->set_shader(color_shader);
                 p_cube3->set_material(object_material);
@@ -139,7 +139,7 @@ class Game : public Engine {
         Cube *p_cube1;
         Cube *p_cube2;
         Cube *p_cube3;
-        glm::vec3 m_rotation = glm::vec3(0, 0, 0);
+        vec3 m_rotation = vec3(0, 0, 0);
 
         double m_rotation_speed = 25;
 

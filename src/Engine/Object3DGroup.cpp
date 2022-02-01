@@ -4,7 +4,7 @@
 /* Object3DGroup
  */
 Object3DGroup::Object3DGroup(Object3D *instance):
-Object3D(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)),
+Object3D(vec3(0, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1)),
 m_instance(instance)
 {
     m_num_vertices = instance->m_num_vertices;
@@ -34,18 +34,18 @@ m_instance(instance)
 /* Object3DGroup
  */
 Object3DGroup::Object3DGroup(Object3D *instance, std::vector<Transform> transforms):
-Object3D(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)),
+Object3D(vec3(0, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1)),
 m_instance(instance)
 {
     for (int i = 0; i < transforms.size(); i++) {
         // Create transformations
-        glm::mat4 model = glm::mat4(1.0);
+        mat4 model = mat4(1.0);
 
         // Transform object
         model = glm::translate(model, transforms[i].position);
-        model = glm::rotate(model, glm::radians((float)transforms[i].rotation.x), glm::vec3(1.0, 0.0, 0.0));
-        model = glm::rotate(model, glm::radians((float)transforms[i].rotation.y), glm::vec3(0.0, 1.0, 0.0));
-        model = glm::rotate(model, glm::radians((float)transforms[i].rotation.z), glm::vec3(0.0, 0.0, 1.0));
+        model = glm::rotate(model, glm::radians((float)transforms[i].rotation.x), vec3(1.0, 0.0, 0.0));
+        model = glm::rotate(model, glm::radians((float)transforms[i].rotation.y), vec3(0.0, 1.0, 0.0));
+        model = glm::rotate(model, glm::radians((float)transforms[i].rotation.z), vec3(0.0, 0.0, 1.0));
 
         m_models.push_back(model);
     }
@@ -110,18 +110,18 @@ void Object3DGroup::render() {
 
     // Instance buffer object
     glBindBuffer(GL_ARRAY_BUFFER, m_instance_buffer_object);
-    glBufferData(GL_ARRAY_BUFFER, m_models.size() * sizeof(glm::mat4), &m_models.data()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_models.size() * sizeof(mat4), &m_models.data()[0], GL_STATIC_DRAW);
 
-    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)0);
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(mat4), (void *)0);
     glEnableVertexAttribArray(3);
 
-    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(sizeof(glm::vec4)));
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(mat4), (void *)(sizeof(glm::vec4)));
     glEnableVertexAttribArray(4);
 
-    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(2 * sizeof(glm::vec4)));
+    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(mat4), (void *)(2 * sizeof(glm::vec4)));
     glEnableVertexAttribArray(5);
 
-    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void *)(3 * sizeof(glm::vec4)));
+    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(mat4), (void *)(3 * sizeof(glm::vec4)));
     glEnableVertexAttribArray(6);
 
     glVertexAttribDivisor(3, 1);
@@ -147,13 +147,13 @@ void Object3DGroup::render() {
  */
 void Object3DGroup::add_transform(Transform transform) {
     // Create transformations
-    glm::mat4 model = glm::mat4(1.0);
+    mat4 model = mat4(1.0);
 
     // Transform object
     model = glm::translate(model, transform.position);
-    model = glm::rotate(model, glm::radians((float)transform.rotation.x), glm::vec3(1.0, 0.0, 0.0));
-    model = glm::rotate(model, glm::radians((float)transform.rotation.y), glm::vec3(0.0, 1.0, 0.0));
-    model = glm::rotate(model, glm::radians((float)transform.rotation.z), glm::vec3(0.0, 0.0, 1.0));
+    model = glm::rotate(model, glm::radians((float)transform.rotation.x), vec3(1.0, 0.0, 0.0));
+    model = glm::rotate(model, glm::radians((float)transform.rotation.y), vec3(0.0, 1.0, 0.0));
+    model = glm::rotate(model, glm::radians((float)transform.rotation.z), vec3(0.0, 0.0, 1.0));
 
     m_models.push_back(model);
 }

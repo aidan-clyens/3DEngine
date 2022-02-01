@@ -1,6 +1,7 @@
 #pragma once
 
 // Includes
+#include "Engine/utils/types.h"
 #include "Engine/Texture.h"
 
 #include <glad/glad.h>

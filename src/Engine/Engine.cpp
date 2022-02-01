@@ -5,8 +5,8 @@
  */
 Engine::Engine():
 m_renderer(SCREEN_WIDTH, SCREEN_HEIGHT),
-m_camera(glm::vec3(0.0, 0.0, 3.0)),
-m_light_direction(glm::vec3(0.4, 0.5, -0.6))
+m_camera(vec3(0.0, 0.0, 3.0)),
+m_light_direction(vec3(0.4, 0.5, -0.6))
 {
 
 }
@@ -65,7 +65,7 @@ void Engine::add_object(Object3D *object) {
 
 /* set_light_direction
  */
-void Engine::set_light_direction(glm::vec3 direction) {
+void Engine::set_light_direction(vec3 direction) {
     m_light_direction = direction;
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 // Includes
+#include "Engine/utils/types.h"
 #include "Engine/Object3D.h"
 
 #include <vector>
@@ -19,6 +20,6 @@ class Object3DGroup : public Object3D {
     
     private:
         Object3D *m_instance;
-        std::vector<glm::mat4> m_models;
+        std::vector<mat4> m_models;
         int m_num_vertices;
 };

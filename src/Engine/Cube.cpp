@@ -153,7 +153,7 @@ float uvs[] = {
 
 /* Cube
  */
-Cube::Cube(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size):
+Cube::Cube(vec3 pos, vec3 rotation, vec3 size):
 Object3D(pos, rotation, size)
 {
     m_num_vertices = CUBE_NUM_VERTICES;

@@ -3,34 +3,34 @@
 // Includes
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <algorithm>
 #include <iterator>
 
+#include "Engine/utils/types.h"
 #include "Engine/Shader.h"
 #include "Engine/Texture.h"
 
 
 // Structs
 typedef struct {
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
     float shininess;
 } Material;
 
 typedef struct {
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
 } Light;
 
 typedef struct {
-    glm::vec3 position;
-    glm::vec3 rotation;
-    glm::vec3 size;
+    vec3 position;
+    vec3 rotation;
+    vec3 size;
 } Transform;
 
 typedef struct {
@@ -50,18 +50,18 @@ class Object3D {
     friend class Object3DGroup;
 
     public:
-        Object3D(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size);
+        Object3D(vec3 pos, vec3 rotation, vec3 size);
         virtual ~Object3D();
 
         virtual void render();
 
-        glm::vec3 get_position() const;
-        glm::vec3 get_rotation() const;
-        glm::vec3 get_size() const;
+        vec3 get_position() const;
+        vec3 get_rotation() const;
+        vec3 get_size() const;
         Transform get_transform() const;
 
-        void set_position(glm::vec3 position);
-        void set_rotation(glm::vec3 rotation);
+        void set_position(vec3 position);
+        void set_rotation(vec3 rotation);
         void set_transform(Transform transform);
 
         void set_shader(Shader shader);
@@ -73,7 +73,7 @@ class Object3D {
     protected:
         Transform m_transform;
 
-        glm::mat4 m_model;
+        mat4 m_model;
 
         Material m_material;
         Light m_light;

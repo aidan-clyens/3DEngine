@@ -3,10 +3,10 @@
 
 /* Camera
  */
-Camera::Camera(glm::vec3 position):
+Camera::Camera(vec3 position):
 m_position(position),
-m_front(glm::vec3(0.0, 0.0, -1.0)),
-m_up(glm::vec3(0.0, 1.0, 0.0)),
+m_front(vec3(0.0, 0.0, -1.0)),
+m_up(vec3(0.0, 1.0, 0.0)),
 m_yaw(0),
 m_pitch(0)
 {
@@ -15,7 +15,7 @@ m_pitch(0)
 
 /* set_position
  */
-void Camera::set_position(glm::vec3 position) {
+void Camera::set_position(vec3 position) {
     m_position = position;
 }
 
@@ -32,7 +32,7 @@ void Camera::set_mouse_offset(double offset_x, double offset_y) {
         m_pitch = -89.0;
     }
 
-    glm::vec3 direction;
+    vec3 direction;
     direction.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
     direction.y = sin(glm::radians(m_pitch));
     direction.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));

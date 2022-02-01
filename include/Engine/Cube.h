@@ -22,7 +22,7 @@ typedef enum {
  */
 class Cube : public Object3D {
     public:
-        Cube(glm::vec3 pos, glm::vec3 rotation, glm::vec3 size);
+        Cube(vec3 pos, vec3 rotation, vec3 size);
         virtual ~Cube();
 
         void set_face_enabled(eCubeFace face, bool enabled);

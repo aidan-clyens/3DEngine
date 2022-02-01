@@ -1,9 +1,10 @@
 #pragma once
 
 // Includes
+#include "Engine/utils/types.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -33,8 +34,8 @@ class Shader {
 
         void set_int(const std::string &variable, int value);
         void set_float(const std::string &variable, float value);
-        void set_mat4(const std::string &variable, glm::mat4 matrix);
-        void set_vec3(const std::string &variable, glm::vec3 vector);
+        void set_mat4(const std::string &variable, mat4 matrix);
+        void set_vec3(const std::string &variable, vec3 vector);
 
     private:
         bool load_shader(const std::string &filename, eShaderType shader_type, unsigned int &shader_id);

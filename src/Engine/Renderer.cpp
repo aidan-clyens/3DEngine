@@ -10,8 +10,8 @@
 Renderer::Renderer(int width, int height):
 m_width(width),
 m_height(height),
-m_model(glm::mat4(1.0)),
-m_view(glm::mat4(1.0)),
+m_model(mat4(1.0)),
+m_view(mat4(1.0)),
 m_projection(glm::perspective(glm::radians((float)45.0), (float)width / (float)height, (float)0.1, (float)100.0))
 {
 
@@ -73,7 +73,7 @@ void Renderer::close() {
 
 /* render
  */
-void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, glm::vec3 light_direction) {
+void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, vec3 light_direction) {
     // Clear window
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

@@ -3,10 +3,11 @@
 // Includes
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 
 #include <iostream>
 #include <vector>
+
+#include "Engine/utils/types.h"
 
 
 class Object3D;
@@ -22,7 +23,7 @@ class Renderer {
         bool init();
         void close();
 
-        void render(std::vector<Object3D*> &objects, Camera &camera, glm::vec3 light_direction);
+        void render(std::vector<Object3D*> &objects, Camera &camera, vec3 light_direction);
 
         bool is_window_closed() const;
 
@@ -38,7 +39,7 @@ class Renderer {
         int m_height;
         GLFWwindow *p_window;
 
-        glm::mat4 m_model;
-        glm::mat4 m_view;
-        glm::mat4 m_projection;
+        mat4 m_model;
+        mat4 m_view;
+        mat4 m_projection;
 };
