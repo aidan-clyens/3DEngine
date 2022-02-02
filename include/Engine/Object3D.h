@@ -9,6 +9,7 @@
 #include <iterator>
 
 #include "Engine/utils/types.h"
+#include "Engine/ECS/ECS.h"
 #include "Engine/Shader.h"
 #include "Engine/Texture.h"
 
@@ -45,7 +46,7 @@ class Object3DGroup;
 
 /* Object3D
  */
-class Object3D {
+class Object3D : public Entity {
     friend class Renderer;
     friend class Object3DGroup;
 
