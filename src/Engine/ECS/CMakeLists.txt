@@ -1,6 +1,6 @@
 project(ECS)
 
-add_library(${PROJECT_NAME} ECS.cpp Mesh.cpp)
+add_library(${PROJECT_NAME} ECS.cpp Mesh.cpp MeshInstances.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC ../../../include)
 target_include_directories(${PROJECT_NAME} PUBLIC ../../../thirdparty/glm)
 target_include_directories(${PROJECT_NAME} PUBLIC ../../../thirdparty/glad/include)
