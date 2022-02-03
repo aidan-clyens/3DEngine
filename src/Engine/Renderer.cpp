@@ -1,6 +1,6 @@
 #include "Engine/Renderer.h"
 
-#include "Engine/Object3D.h"
+#include "Engine/ECS/Mesh.h"
 #include "Engine/Camera.h"
 #include "Engine/Shader.h"
 
@@ -73,7 +73,7 @@ void Renderer::close() {
 
 /* render
  */
-void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, vec3 light_direction) {
+void Renderer::render(std::vector<Mesh*> &meshes, Camera &camera, vec3 light_direction) {
     // Clear window
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -81,38 +81,38 @@ void Renderer::render(std::vector<Object3D*> &objects, Camera &camera, vec3 ligh
     m_view = glm::lookAt(camera.m_position, camera.m_position + camera.m_front, camera.m_up);
 
     // Render each object
-    for (Object3D *object : objects) {
+    for (Mesh *mesh : meshes) {
         // Select shader
-        if (object->m_shader.is_valid()) {
-            object->m_shader.enable();
+        if (mesh->m_shader.is_valid()) {
+            mesh->m_shader.enable();
         }
 
-        if (object->m_shader.is_valid()) {
+        if (mesh->m_shader.is_valid()) {
             // Pass matrices to shader
-            object->m_shader.set_mat4("view", m_view);
-            object->m_shader.set_mat4("projection", m_projection);
+            mesh->m_shader.set_mat4("view", m_view);
+            mesh->m_shader.set_mat4("projection", m_projection);
 
             // Pass lighting data to shader
-            object->m_shader.set_vec3("material.ambient", object->m_material.ambient);
-            object->m_shader.set_vec3("material.diffuse", object->m_material.diffuse);
-            object->m_shader.set_vec3("material.specular", object->m_material.specular);
-            object->m_shader.set_float("material.shininess", object->m_material.shininess);
+            mesh->m_shader.set_vec3("material.ambient", mesh->m_material.ambient);
+            mesh->m_shader.set_vec3("material.diffuse", mesh->m_material.diffuse);
+            mesh->m_shader.set_vec3("material.specular", mesh->m_material.specular);
+            mesh->m_shader.set_float("material.shininess", mesh->m_material.shininess);
 
-            object->m_shader.set_vec3("light.ambient", object->m_light.ambient);
-            object->m_shader.set_vec3("light.diffuse", object->m_light.diffuse);
-            object->m_shader.set_vec3("light.specular", object->m_light.specular);
+            mesh->m_shader.set_vec3("light.ambient", mesh->m_light.ambient);
+            mesh->m_shader.set_vec3("light.diffuse", mesh->m_light.diffuse);
+            mesh->m_shader.set_vec3("light.specular", mesh->m_light.specular);
 
-            object->m_shader.set_vec3("lightDir", light_direction);
-            object->m_shader.set_vec3("viewPos", camera.m_position);
-            object->m_shader.set_int("objectTexture", 0);
+            mesh->m_shader.set_vec3("lightDir", light_direction);
+            mesh->m_shader.set_vec3("viewPos", camera.m_position);
+            mesh->m_shader.set_int("objectTexture", 0);
         }
 
         // Render object
-        object->render();
+        mesh->render();
 
         // Deselect shader
-        if (object->m_shader.is_valid()) {
-            object->m_shader.disable();
+        if (mesh->m_shader.is_valid()) {
+            mesh->m_shader.disable();
         }
     }
 

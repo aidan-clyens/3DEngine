@@ -10,7 +10,7 @@
 #include "Engine/utils/types.h"
 
 
-class Object3D;
+class Mesh;
 class Camera;
 
 
@@ -23,7 +23,7 @@ class Renderer {
         bool init();
         void close();
 
-        void render(std::vector<Object3D*> &objects, Camera &camera, vec3 light_direction);
+        void render(std::vector<Mesh*> &meshes, Camera &camera, vec3 light_direction);
 
         bool is_window_closed() const;
 

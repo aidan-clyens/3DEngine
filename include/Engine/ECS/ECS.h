@@ -1,12 +1,21 @@
 #pragma once
 
 // Includes
+#include "Engine/utils/types.h"
+
 #include <unordered_map>
 
 // Enums
 typedef enum {
-
+    COMP_MESH = 0
 } eComponentType;
+
+// Structs
+typedef struct {
+    vec3 position;
+    vec3 rotation;
+    vec3 size;
+} Transform;
 
 /* Component
  */
@@ -15,15 +24,18 @@ class Component {
 };
 
 // Typedefs
-typedef std::unordered_map<int, Component> ComponentMap;
-typedef std::unordered_map<int, Component>::iterator ComponentMapIterator;
+typedef std::unordered_map<int, Component*> ComponentMap;
+typedef std::unordered_map<int, Component*>::iterator ComponentMapIterator;
 
 /* Entity
  */
 class Entity {
     public:
-        void add_component(int id, Component component);
-        Component get_component(int id);
+        Entity();
+        virtual ~Entity();
+
+        void add_component(int id, Component *component);
+        Component *get_component(int id);
 
         bool has_component(int id);
 

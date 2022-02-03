@@ -3,14 +3,13 @@
 #include "Engine/Cube.h"
 #include "Engine/Shader.h"
 #include "Engine/Texture2D.h"
+#include "Engine/ECS/Mesh.h"
 
 #include <iostream>
 
 // Defines
 #define SCREEN_WIDTH 1600
 #define SCREEN_HEIGHT 900
-
-#define MOUSE_SENSITIVITY 0.1
 
 #define WHITE vec3(1, 1, 1)
 #define ORANGE vec3(1, 0.5, 0.31)
@@ -52,49 +51,37 @@ class Game : public Engine {
         /* setup
          */
         void setup() {
+            p_camera->set_position(vec3(0, 0, 3));
+
             // Load shaders
-            Shader color_shader;
-            color_shader.load("shaders/vertex.glsl", "shaders/color_fragment.glsl");
+            m_shader.load("shaders/vertex.glsl", "shaders/color_fragment.glsl");
 
             // Configure lighting
-            Material object_material;
-            object_material.ambient = ORANGE;
-            object_material.diffuse = ORANGE;
-            object_material.specular = WHITE;
-            object_material.shininess = 32;
+            m_material.ambient = ORANGE;
+            m_material.diffuse = ORANGE;
+            m_material.specular = WHITE;
+            m_material.shininess = 32;
 
-            Light object_light;
-            object_light.ambient = vec3(0.5, 0.5, 0.5);
-            object_light.diffuse = vec3(0.8, 0.8, 0.8);
-            object_light.specular = vec3(0.2, 0.2, 0.2);
+            m_light.ambient = vec3(0.5, 0.5, 0.5);
+            m_light.diffuse = vec3(0.8, 0.8, 0.8);
+            m_light.specular = vec3(0.2, 0.2, 0.2);
+
+            p_cube = new Object3D(vec3(0, -0.5, -1.5), vec3(0, 0, 0), vec3(1, 1, 1));
+            p_cube->add_component(COMP_MESH, new Cube());
+
+            Mesh *mesh = (Mesh*)p_cube->get_component(COMP_MESH);
 
             // Create objects
-            p_cube1 = new Cube(vec3(0, -0.5, -1.5), m_rotation, vec3(1, 1, 1));
-            if (color_shader.is_valid()) {
-                p_cube1->set_shader(color_shader);
-                p_cube1->set_material(object_material);
-                p_cube1->set_light(object_light);
+            if (m_shader.is_valid()) {
+                mesh->set_shader(m_shader);
+                mesh->set_material(m_material);
+                mesh->set_light(m_light);
+            }
+            else {
+                std::cerr << "Shader invalid" << std::endl;
             }
 
-            this->add_object(p_cube1);
-
-            p_cube2 = new Cube(vec3(-2, -0.5, -1.5), m_rotation, vec3(1, 1, 1));
-            if (color_shader.is_valid()) {
-                p_cube2->set_shader(color_shader);
-                p_cube2->set_material(object_material);
-                p_cube2->set_light(object_light);
-            }
-
-            this->add_object(p_cube2);
-
-            p_cube3 = new Cube(vec3(2, -0.5, -1.5), m_rotation, vec3(1, 1, 1));
-            if (color_shader.is_valid()) {
-                p_cube3->set_shader(color_shader);
-                p_cube3->set_material(object_material);
-                p_cube3->set_light(object_light);
-            }
-
-            this->add_object(p_cube3);
+            this->add_object(p_cube);
         }
 
         /* update
@@ -102,34 +89,20 @@ class Game : public Engine {
         void update() {
             this->process_keyboard_input();
             
-            if (m_mouse_updated) {
-                p_camera->set_mouse_offset(m_mouse_offset_x, m_mouse_offset_y);
-                m_mouse_updated = false;
+            if (p_input_manager->is_mouse_updated()) {
+                vec2 mouse_pos = p_input_manager->get_mouse_position();
+
+                p_camera->set_mouse_offset(mouse_pos.x, mouse_pos.y);
+                p_input_manager->set_mouse_handled(true);
             }
-
-            m_rotation.x += m_rotation_speed * m_delta_time;
-            m_rotation.y += m_rotation_speed * m_delta_time;
-
-            // p_cube1->set_rotation(m_rotation);
-            // p_cube2->set_rotation(m_rotation);
-            // p_cube3->set_rotation(m_rotation);
         }
     
     private:
-        Cube *p_cube1;
-        Cube *p_cube2;
-        Cube *p_cube3;
-        vec3 m_rotation = vec3(0, 0, 0);
+        Object3D *p_cube;
 
-        double m_rotation_speed = 25;
-
-        // Mouse
-        bool m_first_mouse = false;
-        double m_last_mouse_pos_x = SCREEN_WIDTH / 2;
-        double m_last_mouse_pos_y = SCREEN_HEIGHT / 2;
-        double m_mouse_offset_x = 0;
-        double m_mouse_offset_y = 0;
-        bool m_mouse_updated = false;
+        Shader m_shader;
+        Material m_material;
+        Light m_light;
 };
 
 /* main

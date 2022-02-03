@@ -2,6 +2,7 @@
 
 // Includes
 #include "Engine/utils/types.h"
+#include "Engine/ECS/Mesh.h"
 #include "Engine/Renderer.h"
 #include "Engine/Object3D.h"
 #include "Engine/Camera.h"
@@ -52,4 +53,5 @@ class Engine {
         vec3 m_light_direction;
 
         std::vector<Object3D*> m_objects;
+        std::vector<Mesh*> m_meshes;
 };

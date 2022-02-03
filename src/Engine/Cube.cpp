@@ -153,9 +153,7 @@ float uvs[] = {
 
 /* Cube
  */
-Cube::Cube(vec3 pos, vec3 rotation, vec3 size):
-Object3D(pos, rotation, size)
-{
+Cube::Cube() {
     m_num_vertices = CUBE_NUM_VERTICES;
 
     m_vertex_buffer.stride = 3;

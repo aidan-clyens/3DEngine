@@ -1,10 +1,9 @@
-#include "Engine/Object3DGroup.h"
+#include "Engine/MeshInstances.h"
 
 
-/* Object3DGroup
+/* MeshInstances
  */
-Object3DGroup::Object3DGroup(Object3D *instance):
-Object3D(vec3(0, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1)),
+MeshInstances::MeshInstances(Mesh *instance):
 m_instance(instance)
 {
     m_num_vertices = instance->m_num_vertices;
@@ -31,10 +30,9 @@ m_instance(instance)
     this->set_light(instance->m_light);
 }
 
-/* Object3DGroup
+/* MeshInstances
  */
-Object3DGroup::Object3DGroup(Object3D *instance, std::vector<Transform> transforms):
-Object3D(vec3(0, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1)),
+MeshInstances::MeshInstances(Mesh *instance, std::vector<Transform> transforms):
 m_instance(instance)
 {
     for (int i = 0; i < transforms.size(); i++) {
@@ -74,9 +72,9 @@ m_instance(instance)
     this->set_light(instance->m_light);
 }
 
-/* ~Object3DGroup
+/* ~MeshInstances
  */
-Object3DGroup::~Object3DGroup() {
+MeshInstances::~MeshInstances() {
     delete m_vertex_buffer.data;
     delete m_normal_buffer.data;
     delete m_uv_buffer.data;
@@ -86,7 +84,7 @@ Object3DGroup::~Object3DGroup() {
 
 /* render
  */
-void Object3DGroup::render() {
+void MeshInstances::render() {
     if (m_num_vertices == 0)
         return;
 
@@ -145,7 +143,7 @@ void Object3DGroup::render() {
 
 /* add_transform
  */
-void Object3DGroup::add_transform(Transform transform) {
+void MeshInstances::add_transform(Transform transform) {
     // Create transformations
     mat4 model = mat4(1.0);
 

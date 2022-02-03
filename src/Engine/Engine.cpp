@@ -47,7 +47,7 @@ void Engine::start() {
 
         this->update();
 
-        m_renderer.render(m_objects, *p_camera, m_light_direction);
+        m_renderer.render(m_meshes, *p_camera, m_light_direction);
     }
 }
 
@@ -65,6 +65,10 @@ void Engine::cleanup() {
  */
 void Engine::add_object(Object3D *object) {
     m_objects.push_back(object);
+
+    if (object->has_component(COMP_MESH)) {
+        m_meshes.push_back((Mesh*)object->get_component(COMP_MESH));
+    }
 }
 
 /* set_light_direction

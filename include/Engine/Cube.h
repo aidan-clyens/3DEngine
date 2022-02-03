@@ -1,7 +1,7 @@
 #pragma once 
 
 // Includes
-#include "Engine/Object3D.h"
+#include "Engine/ECS/Mesh.h"
 
 // Defines
 #define CUBE_NUM_FACES          6
@@ -20,9 +20,9 @@ typedef enum {
 
 /* Cube
  */
-class Cube : public Object3D {
+class Cube : public Mesh {
     public:
-        Cube(vec3 pos, vec3 rotation, vec3 size);
+        Cube();
         virtual ~Cube();
 
         void set_face_enabled(eCubeFace face, bool enabled);

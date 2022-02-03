@@ -1,15 +1,27 @@
 #include "Engine/ECS/ECS.h"
 
 
+/* Entity
+ */
+Entity::Entity() {
+
+}
+
+/* ~Entity
+ */
+Entity::~Entity() {
+
+}
+
 /* add_component
  */
-void Entity::add_component(int id, Component component) {
+void Entity::add_component(int id, Component *component) {
     m_components[id] = component;
 }
 
 /* get_component
  */
-Component Entity::get_component(int id) {
+Component *Entity::get_component(int id) {
     return m_components[id];
 }
 
