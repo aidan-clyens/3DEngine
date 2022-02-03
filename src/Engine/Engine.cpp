@@ -5,6 +5,7 @@
  */
 Engine::Engine():
 m_renderer(SCREEN_WIDTH, SCREEN_HEIGHT),
+p_input_manager(InputManager::get_instance()),
 m_camera(vec3(0.0, 0.0, 3.0)),
 m_light_direction(vec3(0.4, 0.5, -0.6))
 {
@@ -21,6 +22,9 @@ bool Engine::init() {
     }
 
     glfwSetWindowUserPointer(m_renderer.get_window(), this);
+
+    p_input_manager->set_render_window(m_renderer.get_window());
+    p_input_manager->set_screen_dimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     m_renderer.set_mouse_callback(this->_process_mouse_input);
 
@@ -69,12 +73,6 @@ void Engine::set_light_direction(vec3 direction) {
     m_light_direction = direction;
 }
 
-/* get_key
- */
-eKeyAction Engine::get_key(eKey key) {
-    return (eKeyAction)glfwGetKey(m_renderer.get_window(), key);
-}
-
 /* setup
  */
 void Engine::setup() {
@@ -90,7 +88,7 @@ void Engine::update() {
 /* process_mouse_input
  */
 void Engine::process_mouse_input(double x, double y) {
-
+    p_input_manager->process_mouse_input(x, y);
 }
 
 /* _process_mouse_input

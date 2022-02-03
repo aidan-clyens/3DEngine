@@ -22,50 +22,29 @@ class Game : public Engine {
     public:
         /* process_mouse_input
          */
-        void process_mouse_input(double x, double y) {
-            if (m_first_mouse) {
-                m_last_mouse_pos_x = x;
-                m_last_mouse_pos_y = y;
-                m_first_mouse = false;
-            }
-
-            m_mouse_offset_x = x - m_last_mouse_pos_x;
-            m_mouse_offset_y = m_last_mouse_pos_y - y;
-
-            m_last_mouse_pos_x = x;
-            m_last_mouse_pos_y = y;
-
-            m_mouse_offset_x *= MOUSE_SENSITIVITY;
-            m_mouse_offset_y *= MOUSE_SENSITIVITY;
-
-            m_mouse_updated = true;
-        }
-
-        /* process_mouse_input
-         */
         void process_keyboard_input() {
             const float speed = 2.5 * m_delta_time;
 
-            if (get_key(KEY_W) == KEY_PRESS) {
+            if (p_input_manager->get_key(KEY_W) == KEY_PRESS) {
                 m_camera.translate_x(speed);
             }
-            if (get_key(KEY_S) == KEY_PRESS) {
+            if (p_input_manager->get_key(KEY_S) == KEY_PRESS) {
                 m_camera.translate_x(-speed);
             }
-            if (get_key(KEY_A) == KEY_PRESS) {
+            if (p_input_manager->get_key(KEY_A) == KEY_PRESS) {
                 m_camera.translate_z(-speed);
             }
-            if (get_key(KEY_D) == KEY_PRESS) {
+            if (p_input_manager->get_key(KEY_D) == KEY_PRESS) {
                 m_camera.translate_z(speed);
             }
-            if (get_key(KEY_SPACE) == KEY_PRESS) {
+            if (p_input_manager->get_key(KEY_SPACE) == KEY_PRESS) {
                 m_camera.translate_y(speed);
             }
-            if (get_key(KEY_LEFT_SHIFT) == KEY_PRESS) {
+            if (p_input_manager->get_key(KEY_LEFT_SHIFT) == KEY_PRESS) {
                 m_camera.translate_y(-speed);
             }
 
-            if (get_key(KEY_ESCAPE) == KEY_PRESS) {
+            if (p_input_manager->get_key(KEY_ESCAPE) == KEY_PRESS) {
                 m_running = false;
             }
         }
@@ -74,7 +53,8 @@ class Game : public Engine {
          */
         void setup() {
             // Load shaders
-            Shader color_shader("shaders/vertex.glsl", "shaders/color_fragment.glsl");
+            Shader color_shader;
+            color_shader.load("shaders/vertex.glsl", "shaders/color_fragment.glsl");
 
             // Configure lighting
             Material object_material;
