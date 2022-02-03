@@ -26,22 +26,22 @@ class Game : public Engine {
             const float speed = 2.5 * m_delta_time;
 
             if (p_input_manager->get_key(KEY_W) == KEY_PRESS) {
-                m_camera.translate_x(speed);
+                p_camera->translate_x(speed);
             }
             if (p_input_manager->get_key(KEY_S) == KEY_PRESS) {
-                m_camera.translate_x(-speed);
+                p_camera->translate_x(-speed);
             }
             if (p_input_manager->get_key(KEY_A) == KEY_PRESS) {
-                m_camera.translate_z(-speed);
+                p_camera->translate_z(-speed);
             }
             if (p_input_manager->get_key(KEY_D) == KEY_PRESS) {
-                m_camera.translate_z(speed);
+                p_camera->translate_z(speed);
             }
             if (p_input_manager->get_key(KEY_SPACE) == KEY_PRESS) {
-                m_camera.translate_y(speed);
+                p_camera->translate_y(speed);
             }
             if (p_input_manager->get_key(KEY_LEFT_SHIFT) == KEY_PRESS) {
-                m_camera.translate_y(-speed);
+                p_camera->translate_y(-speed);
             }
 
             if (p_input_manager->get_key(KEY_ESCAPE) == KEY_PRESS) {
@@ -103,7 +103,7 @@ class Game : public Engine {
             this->process_keyboard_input();
             
             if (m_mouse_updated) {
-                m_camera.set_mouse_offset(m_mouse_offset_x, m_mouse_offset_y);
+                p_camera->set_mouse_offset(m_mouse_offset_x, m_mouse_offset_y);
                 m_mouse_updated = false;
             }
 

@@ -5,8 +5,8 @@
  */
 Engine::Engine():
 m_renderer(SCREEN_WIDTH, SCREEN_HEIGHT),
+p_camera(new Camera(vec3(0, 0, 0))),
 p_input_manager(InputManager::get_instance()),
-m_camera(vec3(0.0, 0.0, 3.0)),
 m_light_direction(vec3(0.4, 0.5, -0.6))
 {
 
@@ -47,7 +47,7 @@ void Engine::start() {
 
         this->update();
 
-        m_renderer.render(m_objects, m_camera, m_light_direction);
+        m_renderer.render(m_objects, *p_camera, m_light_direction);
     }
 }
 
@@ -71,6 +71,13 @@ void Engine::add_object(Object3D *object) {
  */
 void Engine::set_light_direction(vec3 direction) {
     m_light_direction = direction;
+}
+
+/* set_camera
+ */
+void Engine::set_camera(Camera *camera) {
+    delete p_camera;
+    p_camera = camera;
 }
 
 /* setup

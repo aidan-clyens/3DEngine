@@ -28,6 +28,8 @@ class Engine {
 
         void set_light_direction(vec3 direction);
 
+        void set_camera(Camera *camera);
+
         // To be implemented by user
         virtual void setup();
         virtual void update();
@@ -37,7 +39,8 @@ class Engine {
     protected:
         InputManager *p_input_manager;
 
-        Camera m_camera;
+        Camera *p_camera;
+
         double m_delta_time;
         bool m_running;
 
