@@ -1,6 +1,6 @@
 // Includes
 #include "Engine/Engine.h"
-#include "Engine/Cube.h"
+#include "Engine/CubeMesh.h"
 #include "Engine/Shader.h"
 #include "Engine/Texture2D.h"
 #include "Engine/ECS/Mesh.h"
@@ -67,7 +67,7 @@ class Game : public Engine {
             m_light.specular = vec3(0.2, 0.2, 0.2);
 
             p_cube = new Object3D(vec3(0, -0.5, -1.5), vec3(0, 0, 0), vec3(1, 1, 1));
-            p_cube->add_component(COMP_MESH, new Cube());
+            p_cube->add_component(COMP_MESH, new CubeMesh());
 
             Mesh *mesh = (Mesh*)p_cube->get_component(COMP_MESH);
 

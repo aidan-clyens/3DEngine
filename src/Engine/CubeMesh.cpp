@@ -1,4 +1,4 @@
-#include "Engine/Cube.h"
+#include "Engine/CubeMesh.h"
 
 
 float vertices[] = {
@@ -151,9 +151,9 @@ float uvs[] = {
     0.0f, 0.0f
 };
 
-/* Cube
+/* CubeMesh
  */
-Cube::Cube() {
+CubeMesh::CubeMesh() {
     m_num_vertices = CUBE_NUM_VERTICES;
 
     m_vertex_buffer.stride = 3;
@@ -178,9 +178,9 @@ Cube::Cube() {
     }
 }
 
-/* ~Cube
+/* ~CubeMesh
  */
-Cube::~Cube() {
+CubeMesh::~CubeMesh() {
     delete m_vertex_buffer.data;
     delete m_normal_buffer.data;
     delete m_uv_buffer.data;
@@ -188,6 +188,6 @@ Cube::~Cube() {
 
 /* set_face_enabled
  */
-void Cube::set_face_enabled(eCubeFace face, bool enabled) {
+void CubeMesh::set_face_enabled(eCubeFace face, bool enabled) {
     m_faces_enabled[(int)face] = enabled;
 }

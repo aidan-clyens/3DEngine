@@ -18,12 +18,12 @@ typedef enum {
     CUBE_TOP
 } eCubeFace;
 
-/* Cube
+/* CubeMesh
  */
-class Cube : public Mesh {
+class CubeMesh : public Mesh {
     public:
-        Cube();
-        virtual ~Cube();
+        CubeMesh();
+        virtual ~CubeMesh();
 
         void set_face_enabled(eCubeFace face, bool enabled);
 
