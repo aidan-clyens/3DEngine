@@ -3,15 +3,12 @@
 // Includes
 #include "Engine/utils/types.h"
 #include "Engine/ECS/ECS.h"
+#include "Engine/ECS/Rigidbody.h"
 #include "Engine/Object3D.h"
 
 #include "btBulletDynamicsCommon.h"
 
 #include <vector>
-
-// Defines
-#define DEG_TO_RAD 0.01745329251994329576923690768489
-#define RAD_TO_DEG 57.295779513082320876798154814105
 
 /* Physics
  */
@@ -20,14 +17,14 @@ class Physics {
         Physics();
         virtual ~Physics();
 
-        void add_rigid_body(Object3D *object, float mass);
+        void add_rigid_body(Rigidbody *body);
 
         void update(float delta_time);
 
         void cleanup();
 
     private:
-        std::vector<Object3D*> m_objects;
+        std::vector<Rigidbody*> m_bodies;
 
         btDiscreteDynamicsWorld *p_dynamics_world;
 

@@ -25,29 +25,9 @@ Physics::~Physics() {
 
 /* add_rigid_body
  */
-void Physics::add_rigid_body(Object3D *object, float mass) {
-    m_objects.push_back(object);
-
-    Transform transform = object->get_transform();
-
-    btCollisionShape *shape = new btBoxShape(btVector3(btScalar(transform.size.x / 2), btScalar(transform.size.y / 2), btScalar(transform.size.z / 2)));
-    btTransform new_transform;
-
-    new_transform.setIdentity();
-    new_transform.setOrigin(btVector3(transform.position.x, transform.position.y, transform.position.z));
-    new_transform.setRotation(btQuaternion(btScalar(transform.rotation.z * DEG_TO_RAD), btScalar(transform.rotation.y * DEG_TO_RAD), btScalar(transform.rotation.x * DEG_TO_RAD)));
-
-    btScalar bt_mass(mass);
-    btVector3 inertia(0, 0, 0);
-    if (bt_mass != 0.f) {
-        shape->calculateLocalInertia(bt_mass, inertia);
-    }
-
-    btDefaultMotionState *motion_state = new btDefaultMotionState(new_transform);
-    btRigidBody::btRigidBodyConstructionInfo rb_info(bt_mass, motion_state, shape, inertia);
-    btRigidBody *body = new btRigidBody(rb_info);
-
-    p_dynamics_world->addRigidBody(body);
+void Physics::add_rigid_body(Rigidbody *body) {
+    m_bodies.push_back(body);
+    p_dynamics_world->addRigidBody(body->get_body());
 }
 
 /* update
@@ -55,8 +35,8 @@ void Physics::add_rigid_body(Object3D *object, float mass) {
 void Physics::update(float delta_time) {
     p_dynamics_world->stepSimulation(delta_time);
 
-    for (int j = p_dynamics_world->getNumCollisionObjects() - 1; j >= 0; j--) {
-        btCollisionObject *obj = p_dynamics_world->getCollisionObjectArray()[j];
+    for (int i = 0; i < m_bodies.size(); i++) {
+        btCollisionObject *obj = p_dynamics_world->getCollisionObjectArray()[i];
         btRigidBody *body = btRigidBody::upcast(obj);
         btTransform trans;
         if (body && body->getMotionState()) {
@@ -77,10 +57,10 @@ void Physics::update(float delta_time) {
         rotation.z = (float)yaw * RAD_TO_DEG;
 
         Transform transform;
-        transform = m_objects[j]->get_transform();
+        transform = m_bodies[i]->get_transform();
         transform.position = pos;
         transform.rotation = rotation;
-        m_objects[j]->set_transform(transform);
+        m_bodies[i]->set_transform(transform);
     }
 }
 

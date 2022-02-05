@@ -4,6 +4,7 @@
 #include "Engine/Shader.h"
 #include "Engine/Texture2D.h"
 #include "Engine/ECS/Mesh.h"
+#include "Engine/ECS/Rigidbody.h"
 
 #include <iostream>
 
@@ -72,22 +73,22 @@ class Game : public Engine {
             // Create ground
             p_ground = new Object3D(vec3(0, -2, 0), vec3(0, 0, 0), vec3(50, 1, 50));
             p_ground->add_component(COMP_MESH, new CubeMesh());
+            p_ground->add_component(COMP_RIGIDBODY, new Rigidbody(p_ground, 0));
 
-            CubeMesh *mesh = (CubeMesh*)p_ground->get_component(COMP_MESH);
             Transform transform = p_ground->get_transform();
+            CubeMesh *mesh = (CubeMesh*)p_ground->get_component(COMP_MESH);
 
             mesh->set_shader(m_shader);
             mesh->set_material(m_material);
             mesh->set_light(m_light);
-            mesh->set_transform(p_ground->get_transform());
-
-            m_physics.add_rigid_body(p_ground, 0);
+            mesh->set_transform(transform);
 
             this->add_object(p_ground);
 
             // Create cube
             p_cube = new Object3D(vec3(0, 2, -3), vec3(0, 30, 0), vec3(1, 1, 1));
             p_cube->add_component(COMP_MESH, new CubeMesh());
+            p_cube->add_component(COMP_RIGIDBODY, new Rigidbody(p_cube, 1));
 
             Mesh *cube_mesh = (CubeMesh*)p_cube->get_component(COMP_MESH);
             transform = p_cube->get_transform();
@@ -98,9 +99,7 @@ class Game : public Engine {
             cube_mesh->set_shader(m_shader);
             cube_mesh->set_material(m_material);
             cube_mesh->set_light(m_light);
-            cube_mesh->set_transform(p_cube->get_transform());
-
-            m_physics.add_rigid_body(p_cube, 1);
+            cube_mesh->set_transform(transform);
 
             this->add_object(p_cube);
         }

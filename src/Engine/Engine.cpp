@@ -75,6 +75,10 @@ void Engine::add_object(Object3D *object) {
     if (object->has_component(COMP_MESH)) {
         m_meshes.push_back((Mesh*)object->get_component(COMP_MESH));
     }
+
+    if (object->has_component(COMP_RIGIDBODY)) {
+        m_physics.add_rigid_body((Rigidbody*)object->get_component(COMP_RIGIDBODY));
+    }
 }
 
 /* set_light_direction
