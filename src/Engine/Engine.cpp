@@ -12,6 +12,10 @@ m_light_direction(vec3(0.4, 0.5, -0.6))
 
 }
 
+Engine::~Engine() {
+
+}
+
 /* init
  */
 bool Engine::init() {
@@ -47,6 +51,7 @@ void Engine::start() {
 
         this->update();
 
+        m_physics.update(m_delta_time);
         m_renderer.render(m_meshes, *p_camera, m_light_direction);
     }
 }
@@ -58,6 +63,7 @@ void Engine::cleanup() {
         delete object;
     }
 
+    m_physics.cleanup();
     m_renderer.close();
 }
 
@@ -82,6 +88,10 @@ void Engine::set_light_direction(vec3 direction) {
 void Engine::set_camera(Camera *camera) {
     delete p_camera;
     p_camera = camera;
+}
+
+void Engine::set_mouse_visible(bool value) {
+    m_renderer.set_mouse_visible(value);
 }
 
 /* setup

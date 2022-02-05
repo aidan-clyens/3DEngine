@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_subdirectory(src)
 add_subdirectory(examples)
 
+add_subdirectory(thirdparty/bullet3)
 add_subdirectory(thirdparty/glfw)
 add_subdirectory(thirdparty/glad)
 add_subdirectory(thirdparty/glm)

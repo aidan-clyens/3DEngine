@@ -30,6 +30,8 @@ class Renderer {
         void set_key_callback(GLFWkeyfun callback);
         void set_mouse_callback(GLFWcursorposfun callback);
 
+        void set_mouse_visible(bool value);
+
         GLFWwindow *get_window();
 
     private:

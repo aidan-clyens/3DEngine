@@ -1,4 +1,2 @@
-project(EngineExamples)
-
-add_executable(${PROJECT_NAME} main.cpp)
-target_link_libraries(${PROJECT_NAME} EngineCore)
+add_subdirectory(SimpleCube)
+add_subdirectory(RigidBody)

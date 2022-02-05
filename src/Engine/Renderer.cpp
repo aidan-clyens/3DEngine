@@ -133,7 +133,17 @@ void Renderer::set_key_callback(GLFWkeyfun callback) {
  */
 void Renderer::set_mouse_callback(GLFWcursorposfun callback) {
     glfwSetCursorPosCallback(p_window, callback);
-    glfwSetInputMode(p_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+/* set_mouse_visible
+ */
+void Renderer::set_mouse_visible(bool value) {
+    if (value) {
+        glfwSetInputMode(p_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+    else {
+        glfwSetInputMode(p_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
 }
 
 /* is_window_closed

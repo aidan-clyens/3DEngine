@@ -7,6 +7,7 @@
 #include "Engine/Object3D.h"
 #include "Engine/Camera.h"
 #include "Engine/InputManager.h"
+#include "Engine/Physics.h"
 
 #include <vector>
 #include <iostream>
@@ -20,6 +21,7 @@
 class Engine {
     public:
         Engine();
+        virtual ~Engine();
 
         bool init();
         void start();
@@ -31,6 +33,8 @@ class Engine {
 
         void set_camera(Camera *camera);
 
+        void set_mouse_visible(bool value);
+
         // To be implemented by user
         virtual void setup();
         virtual void update();
@@ -39,6 +43,7 @@ class Engine {
 
     protected:
         InputManager *p_input_manager;
+        Physics m_physics;
 
         Camera *p_camera;
 
