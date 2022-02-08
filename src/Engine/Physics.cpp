@@ -36,31 +36,7 @@ void Physics::update(float delta_time) {
     p_dynamics_world->stepSimulation(delta_time);
 
     for (int i = 0; i < m_bodies.size(); i++) {
-        btCollisionObject *obj = p_dynamics_world->getCollisionObjectArray()[i];
-        btRigidBody *body = btRigidBody::upcast(obj);
-        btTransform trans;
-        if (body && body->getMotionState()) {
-            body->getMotionState()->getWorldTransform(trans);
-        }
-        else {
-            trans = obj->getWorldTransform();
-        }
-
-        vec3 pos = vec3(float(trans.getOrigin().getX()), float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
-        btQuaternion q = trans.getRotation();
-
-        vec3 rotation = vec3(0, 0, 0);
-        btScalar yaw, pitch, roll;      // Z, Y, X
-        q.getEulerZYX(yaw, pitch, roll);
-        rotation.x = (float)roll * RAD_TO_DEG;
-        rotation.y = (float)pitch * RAD_TO_DEG;
-        rotation.z = (float)yaw * RAD_TO_DEG;
-
-        Transform transform;
-        transform = m_bodies[i]->get_transform();
-        transform.position = pos;
-        transform.rotation = rotation;
-        m_bodies[i]->set_transform(transform);
+        m_bodies[i]->update(delta_time);
     }
 }
 

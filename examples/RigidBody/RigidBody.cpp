@@ -21,35 +21,6 @@
  */
 class Game : public Engine {
     public:
-        /* process_mouse_input
-         */
-        void process_keyboard_input() {
-            const float speed = 2.5 * m_delta_time;
-
-            if (p_input_manager->get_key(KEY_W) == KEY_PRESS) {
-                p_camera->translate_x(speed);
-            }
-            if (p_input_manager->get_key(KEY_S) == KEY_PRESS) {
-                p_camera->translate_x(-speed);
-            }
-            if (p_input_manager->get_key(KEY_A) == KEY_PRESS) {
-                p_camera->translate_z(-speed);
-            }
-            if (p_input_manager->get_key(KEY_D) == KEY_PRESS) {
-                p_camera->translate_z(speed);
-            }
-            if (p_input_manager->get_key(KEY_SPACE) == KEY_PRESS) {
-                p_camera->translate_y(speed);
-            }
-            if (p_input_manager->get_key(KEY_LEFT_SHIFT) == KEY_PRESS) {
-                p_camera->translate_y(-speed);
-            }
-
-            if (p_input_manager->get_key(KEY_ESCAPE) == KEY_PRESS) {
-                m_running = false;
-            }
-        }
-
         /* setup
          */
         void setup() {
@@ -85,41 +56,37 @@ class Game : public Engine {
 
             this->add_object(p_ground);
 
-            // Create cube
-            p_cube = new Object3D(vec3(0, 2, -3), vec3(0, 30, 0), vec3(1, 1, 1));
-            p_cube->add_component(COMP_MESH, new CubeMesh());
-            p_cube->add_component(COMP_RIGIDBODY, new Rigidbody(p_cube, 1));
+            // Create cubes
+            for (int i = 0; i < 4; i++) {
+                m_cubes.push_back(new Object3D(vec3((2*i - 3), 2*i, -5), vec3(0, 30, 0), vec3(1, 1, 1)));
+                m_cubes[i]->add_component(COMP_MESH, new CubeMesh());
+                m_cubes[i]->add_component(COMP_RIGIDBODY, new Rigidbody(m_cubes[i], 1));
 
-            Mesh *cube_mesh = (CubeMesh*)p_cube->get_component(COMP_MESH);
-            transform = p_cube->get_transform();
+                Mesh *cube_mesh = (CubeMesh*)m_cubes[i]->get_component(COMP_MESH);
+                transform = m_cubes[i]->get_transform();
 
-            m_material.ambient = ORANGE;
-            m_material.diffuse = ORANGE;
+                m_material.ambient = ORANGE;
+                m_material.diffuse = ORANGE;
 
-            cube_mesh->set_shader(m_shader);
-            cube_mesh->set_material(m_material);
-            cube_mesh->set_light(m_light);
-            cube_mesh->set_transform(transform);
+                cube_mesh->set_shader(m_shader);
+                cube_mesh->set_material(m_material);
+                cube_mesh->set_light(m_light);
+                cube_mesh->set_transform(transform);
 
-            this->add_object(p_cube);
+                this->add_object(m_cubes[i]);
+            }
         }
 
         /* update
          */
         void update() {
-            // this->process_keyboard_input();
 
-            // if (p_input_manager->is_mouse_updated()) {
-            //     vec2 mouse_pos = p_input_manager->get_mouse_position();
-
-            //     p_camera->set_mouse_offset(mouse_pos.x, mouse_pos.y);
-            //     p_input_manager->set_mouse_handled(true);
-            // }
         }
     
     private:
         Object3D *p_ground;
-        Object3D *p_cube;
+
+        std::vector<Object3D*> m_cubes;
 
         Shader m_shader;
         Material m_material;

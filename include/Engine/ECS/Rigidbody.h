@@ -13,15 +13,24 @@
  */
 class Rigidbody : public Component {
     public:
-        Rigidbody(Object3D *object, float mass);
+        Rigidbody(Object3D *object, float mass, bool dynamic=false);
+        virtual ~Rigidbody();
+
+        virtual void update(float delta_time);
 
         void set_transform(Transform transform);
         Transform get_transform() const;
 
         btRigidBody *get_body();
 
+        bool is_dynamic() const;
+
     private:
         btScalar m_mass;
         Object3D *p_object;
+        btTransform m_transform;
+        btDefaultMotionState *p_motion_state;
         btRigidBody *p_body;
+
+        bool m_is_dynamic;
 };
