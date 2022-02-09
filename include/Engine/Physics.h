@@ -21,6 +21,8 @@ class Physics {
 
         void update(float delta_time);
 
+        btDiscreteDynamicsWorld *get_dynamics_world();
+
         void cleanup();
 
     private:

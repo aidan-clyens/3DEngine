@@ -1,2 +1,3 @@
 add_subdirectory(SimpleCube)
 add_subdirectory(RigidBody)
+add_subdirectory(CharacterController)

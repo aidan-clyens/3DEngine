@@ -1,4 +1,5 @@
 #include "Engine/ECS/Rigidbody.h"
+#include "Engine/Physics.h"
 
 
 /* Rigidbody
@@ -36,6 +37,13 @@ m_is_dynamic(dynamic)
         p_body->setAngularFactor(0);
         p_body->setActivationState(DISABLE_DEACTIVATION);
     }
+
+    // Create ghost object synchronized with 
+    p_ghost_object = new btPairCachingGhostObject();
+
+    p_ghost_object->setCollisionShape(shape);
+    p_ghost_object->setUserPointer(this);
+    p_ghost_object->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
 }
 
 /* ~Rigidbody
@@ -43,6 +51,7 @@ m_is_dynamic(dynamic)
 Rigidbody::~Rigidbody() {
     delete p_motion_state;
     delete p_body;
+    delete p_ghost_object;
 }
 
 /* update
@@ -84,10 +93,22 @@ Transform Rigidbody::get_transform() const {
     return p_object->get_transform();
 }
 
+/* set_physics_world
+ */
+void Rigidbody::set_physics_world(Physics *world) {
+    p_physics_world = world;
+}
+
 /* get_body
  */
 btRigidBody *Rigidbody::get_body() {
     return p_body;
+}
+
+/* get_collision_object
+ */
+btPairCachingGhostObject *Rigidbody::get_collision_object() {
+    return p_ghost_object;
 }
 
 /* is_dynamic

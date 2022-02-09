@@ -26,8 +26,10 @@ Physics::~Physics() {
 /* add_rigid_body
  */
 void Physics::add_rigid_body(Rigidbody *body) {
+    body->set_physics_world(this);
     m_bodies.push_back(body);
     p_dynamics_world->addRigidBody(body->get_body());
+    p_dynamics_world->addCollisionObject(body->get_collision_object(), btBroadphaseProxy::KinematicFilter, btBroadphaseProxy::StaticFilter | btBroadphaseProxy::DefaultFilter);
 }
 
 /* update
@@ -38,6 +40,12 @@ void Physics::update(float delta_time) {
     for (int i = 0; i < m_bodies.size(); i++) {
         m_bodies[i]->update(delta_time);
     }
+}
+
+/* get_dynamics_world
+ */
+btDiscreteDynamicsWorld *Physics::get_dynamics_world() {
+    return p_dynamics_world;
 }
 
 /* cleanup
