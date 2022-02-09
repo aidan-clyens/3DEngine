@@ -3,6 +3,7 @@
 // Includes
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Engine/ECS/ECS.h"
 #include "Engine/utils/types.h"
 
 
@@ -11,7 +12,7 @@ class Renderer;
 
 /* Camera
  */
-class Camera {
+class Camera : public Component {
     friend class Renderer;
 
     public:
@@ -24,6 +25,10 @@ class Camera {
         void translate_x(float speed);
         void translate_y(float speed);
         void translate_z(float speed);
+
+        vec3 front() const;
+        vec3 up() const;
+        vec3 right() const;
 
     private:
         vec3 m_position;

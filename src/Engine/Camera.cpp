@@ -57,3 +57,21 @@ void Camera::translate_y(float speed) {
 void Camera::translate_z(float speed) {
     m_position += speed * glm::normalize(glm::cross(m_front, m_up));
 }
+
+/* front
+ */
+vec3 Camera::front() const {
+    return m_front;
+}
+
+/* up
+ */
+vec3 Camera::up() const {
+    return m_up;
+}
+
+/* right
+ */
+vec3 Camera::right() const {
+    return glm::normalize(glm::cross(m_front, m_up));
+}

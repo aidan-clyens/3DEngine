@@ -8,7 +8,8 @@
 // Enums
 typedef enum {
     COMP_MESH = 0,
-    COMP_RIGIDBODY = 1
+    COMP_RIGIDBODY = 1,
+    COMP_CAMERA = 2
 } eComponentType;
 
 // Structs
