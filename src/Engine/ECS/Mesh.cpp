@@ -31,10 +31,11 @@ m_num_vertices(0)
     m_model = mat4(1.0);
 
     // Transform object
-    m_model = glm::translate(m_model, m_transform.position);
     m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.x), vec3(1.0, 0.0, 0.0));
     m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.y), vec3(0.0, 1.0, 0.0));
     m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.z), vec3(0.0, 0.0, 1.0));
+    m_model = glm::translate(m_model, m_transform.position);
+    m_model = glm::scale(m_model, m_transform.size);
 }
 
 /* ~Mesh
@@ -113,11 +114,11 @@ void Mesh::set_transform(Transform transform) {
     m_model = mat4(1.0);
 
     // Transform object
-    m_model = glm::scale(m_model, m_transform.size);
-    m_model = glm::translate(m_model, m_transform.position);
     m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.x), vec3(1.0, 0.0, 0.0));
     m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.y), vec3(0.0, 1.0, 0.0));
     m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.z), vec3(0.0, 0.0, 1.0));
+    m_model = glm::translate(m_model, m_transform.position);
+    m_model = glm::scale(m_model, m_transform.size);
 }
 
 /* set_shader
