@@ -13,5 +13,5 @@ class TextureCubeMap : public Texture {
     public:
         TextureCubeMap();
 
-        void load(std::vector<unsigned char*> faces, int width, int height, int num_channels, unsigned int index);
+        void load(std::vector<unsigned char*> faces, int width, int height, int num_channels);
 };

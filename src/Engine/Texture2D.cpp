@@ -9,8 +9,8 @@ Texture2D::Texture2D() {
 
 /* load
  */
-void Texture2D::load(const std::string &texture_path, unsigned int index) {
-    Texture::load(texture_path, index, GL_TEXTURE_2D);
+void Texture2D::load(const std::string &texture_path) {
+    Texture::load(texture_path, GL_TEXTURE_2D);
 
     this->_load();
     this->free_data();
@@ -18,12 +18,12 @@ void Texture2D::load(const std::string &texture_path, unsigned int index) {
 
 /* load
  */
-void Texture2D::load(unsigned char *data, int width, int height, int num_channels, unsigned int index) {
+void Texture2D::load(unsigned char *data, int width, int height, int num_channels) {
     m_texture_width = width;
     m_texture_height = height;
     m_num_channels = num_channels;
 
-    Texture::load(data, index, GL_TEXTURE_2D);
+    Texture::load(data, GL_TEXTURE_2D);
 
     this->_load();
 }

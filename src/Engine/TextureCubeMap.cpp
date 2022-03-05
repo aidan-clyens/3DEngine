@@ -11,12 +11,12 @@ TextureCubeMap::TextureCubeMap() {
 
 /* load
  */
-void TextureCubeMap::load(std::vector<unsigned char*> faces, int width, int height, int num_channels, unsigned int index) {
+void TextureCubeMap::load(std::vector<unsigned char*> faces, int width, int height, int num_channels) {
     m_texture_width = width;
     m_texture_height = height;
     m_num_channels = num_channels;
 
-    Texture::load(faces.data(), index, GL_TEXTURE_CUBE_MAP);
+    Texture::load(faces.data(), GL_TEXTURE_CUBE_MAP);
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture_id);
 

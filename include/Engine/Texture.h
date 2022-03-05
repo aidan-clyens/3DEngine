@@ -8,15 +8,20 @@
 
 #include <string>
 
+class Renderer;
+
 /* Texture
  */
 class Texture {
+    friend class Renderer;
+
     public:
         Texture();
         virtual ~Texture();
 
-        void load(const std::string &texture_path, unsigned int index, unsigned int texture_type);
-        void load(void *data, unsigned int index, unsigned int texture_type);
+        void load(unsigned int texture_type);
+        void load(const std::string &texture_path, unsigned int texture_type);
+        void load(void *data, unsigned int texture_type);
 
         void enable();
         void disable();
@@ -25,7 +30,6 @@ class Texture {
         void free_data();
 
         unsigned int m_texture_id;
-        unsigned int m_index;
         unsigned int m_texture_type;
 
         int m_texture_width;

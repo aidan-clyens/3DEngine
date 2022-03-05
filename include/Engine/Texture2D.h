@@ -16,8 +16,8 @@ class Texture2D : public Texture {
     public:
         Texture2D();
 
-        void load(const std::string &texture_path, unsigned int index);
-        void load(unsigned char *data, int width, int height, int num_channels, unsigned int index);
+        void load(const std::string &texture_path);
+        void load(unsigned char *data, int width, int height, int num_channels);
 
     private:
         void _load();

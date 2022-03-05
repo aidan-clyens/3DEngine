@@ -61,6 +61,47 @@ bool Renderer::init() {
     // Use wireframe mode
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+    // Create frame buffer objectss
+    glGenFramebuffers(1, &m_depth_map_buffer_object);
+
+    // Load depth shader
+    m_depth_shader.load("shaders/depth_vertex.glsl", "shaders/depth_fragment.glsl");
+    if (!m_depth_shader.is_valid()) {
+        std::cerr << "Depth shader failed to load" << std::endl;
+    }
+
+    m_debug_depth_shader.load("shaders/debug_depth_vertex.glsl", "shaders/debug_depth_fragment.glsl");
+    if (!m_debug_depth_shader.is_valid()) {
+        std::cerr << "Debug depth shader failed to load" << std::endl;
+    }
+
+    m_depth_texture.load();
+
+    glBindFramebuffer(GL_FRAMEBUFFER, m_depth_map_buffer_object);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depth_texture.m_texture_id, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    // Debug
+    float quad_vertices[] = {
+        // positions        // texture Coords
+        -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+    };
+
+    glGenVertexArrays(1, &m_debug_quad_array_object);
+    glGenBuffers(1, &m_debug_quad_buffer_object);
+    glBindVertexArray(m_debug_quad_array_object);
+    glBindBuffer(GL_ARRAY_BUFFER, m_debug_quad_buffer_object);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertices), &quad_vertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+
     return true;
 }
 
@@ -74,7 +115,39 @@ void Renderer::close() {
 /* render
  */
 void Renderer::render(std::vector<Mesh*> &meshes, Camera &camera, vec3 light_direction) {
-    // Clear window
+    // Pass 1: Render to depth map
+    float near_plane = 1.0f;
+    float far_plane = 7.5f;
+
+    vec3 light_position = vec3(-2.0f, 4.0f, -1.0f);
+
+    mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+    mat4 light_view = glm::lookAt(light_position, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    mat4 light_space = light_projection * light_view;
+
+    // Pass light space matrix to shader
+    if (m_depth_shader.is_valid()) {
+        m_depth_shader.enable();
+        m_depth_shader.set_mat4("lightSpaceMatrix", light_space);
+    }
+
+    glViewport(0, 0, DEPTH_TEXTURE_WIDTH, DEPTH_TEXTURE_HEIGHT);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_depth_map_buffer_object);
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    // Render each object
+    for (Mesh *mesh : meshes) {
+        // Render object
+        mesh->render();
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    if (m_depth_shader.is_valid()) {
+        m_depth_shader.disable();
+    }
+
+    // Pass 2: Render scene as normal
+    glViewport(0, 0, m_width, m_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Adjust view
