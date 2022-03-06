@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <string>
 #include <iostream>
 #include <vector>
 
@@ -20,7 +21,7 @@ class Camera;
  */
 class Renderer {
     public:
-        Renderer(int width, int height);
+        Renderer(int width, int height, const std::string &path);
 
         bool init();
         void close();
@@ -45,6 +46,8 @@ class Renderer {
         int m_width;
         int m_height;
         GLFWwindow *p_window;
+
+        std::string m_path;
 
         mat4 m_model;
         mat4 m_view;

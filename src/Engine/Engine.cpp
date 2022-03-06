@@ -4,7 +4,18 @@
 /* Engine
  */
 Engine::Engine():
-m_renderer(SCREEN_WIDTH, SCREEN_HEIGHT),
+m_renderer(SCREEN_WIDTH, SCREEN_HEIGHT, ""),
+p_camera(new Camera(vec3(0, 0, 0))),
+p_input_manager(InputManager::get_instance()),
+m_light_direction(vec3(0.4, 0.5, -0.6))
+{
+
+}
+
+/* Engine
+ */
+Engine::Engine(const std::string &path):
+m_renderer(SCREEN_WIDTH, SCREEN_HEIGHT, path),
 p_camera(new Camera(vec3(0, 0, 0))),
 p_input_manager(InputManager::get_instance()),
 m_light_direction(vec3(0.4, 0.5, -0.6))

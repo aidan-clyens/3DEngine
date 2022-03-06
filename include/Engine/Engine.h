@@ -9,6 +9,7 @@
 #include "Engine/InputManager.h"
 #include "Engine/Physics.h"
 
+#include <string>
 #include <vector>
 #include <iostream>
 
@@ -21,6 +22,7 @@
 class Engine {
     public:
         Engine();
+        Engine(const std::string &path);
         virtual ~Engine();
 
         bool init();

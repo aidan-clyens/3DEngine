@@ -7,9 +7,10 @@
 
 /* Renderer
  */
-Renderer::Renderer(int width, int height):
+Renderer::Renderer(int width, int height, const std::string &path):
 m_width(width),
 m_height(height),
+m_path(path),
 m_model(mat4(1.0)),
 m_view(mat4(1.0)),
 m_projection(glm::perspective(glm::radians((float)45.0), (float)width / (float)height, (float)0.1, (float)100.0))
@@ -65,12 +66,12 @@ bool Renderer::init() {
     glGenFramebuffers(1, &m_depth_map_buffer_object);
 
     // Load depth shader
-    m_depth_shader.load("shaders/depth_vertex.glsl", "shaders/depth_fragment.glsl");
+    m_depth_shader.load(m_path + "shaders/depth_vertex.glsl", m_path + "shaders/depth_fragment.glsl");
     if (!m_depth_shader.is_valid()) {
         std::cerr << "Depth shader failed to load" << std::endl;
     }
 
-    m_debug_depth_shader.load("shaders/debug_depth_vertex.glsl", "shaders/debug_depth_fragment.glsl");
+    m_debug_depth_shader.load(m_path + "shaders/debug_depth_vertex.glsl", m_path + "shaders/debug_depth_fragment.glsl");
     if (!m_debug_depth_shader.is_valid()) {
         std::cerr << "Debug depth shader failed to load" << std::endl;
     }
