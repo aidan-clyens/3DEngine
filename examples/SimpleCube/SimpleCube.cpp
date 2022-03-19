@@ -53,17 +53,14 @@ class Game : public Engine {
         /* setup
          */
         void setup() {
+            // this->set_mouse_visible(false);
             p_camera->set_position(vec3(0, 0, 3));
-            this->set_light_direction(vec3(-1, 1, 0));
-
-            // Load shaders
-            m_shader.load("shaders/vertex.glsl", "shaders/color_fragment.glsl");
+            this->set_light_position(vec3(-2.0f, 4.0f, -1.0f));
 
             // Lighting
             m_light.ambient = vec3(0.5, 0.5, 0.5);
-            m_light.diffuse = vec3(0.8, 0.8, 0.8);
-            m_light.specular = vec3(0.2, 0.2, 0.2);
-            m_material.specular = WHITE;
+            m_light.diffuse = vec3(0.2, 0.2, 0.2);
+            m_light.specular = vec3(0.001, 0.001, 0.001);
 
             Transform transform;
             transform.position = vec3(0, -2, 0);
@@ -76,13 +73,13 @@ class Game : public Engine {
             transform.rotation = vec3(0, 30, 0);
             transform.size = vec3(1, 1, 1);
 
-            this->add_object(this->create_cube(transform, ORANGE, 8));
+            this->add_object(this->create_cube(transform, ORANGE, 4));
 
             transform.position = vec3(2, -1, -4);
             transform.rotation = vec3(0, -10, 0);
             transform.size = vec3(1, 4, 1);
 
-            this->add_object(this->create_cube(transform, BLUE, 8));
+            this->add_object(this->create_cube(transform, BLUE, 4));
         }
 
         /* update
@@ -110,18 +107,13 @@ class Game : public Engine {
             CubeMesh *mesh = (CubeMesh *)cube->get_component(COMP_MESH);
 
             // Create objects
-            if (m_shader.is_valid()) {
-                m_material.ambient = color;
-                m_material.diffuse = color;
+            m_material.specular = WHITE;
+            m_material.ambient = color;
+            m_material.diffuse = color;
 
-                mesh->set_shader(m_shader);
-                mesh->set_material(m_material);
-                mesh->set_light(m_light);
-                mesh->set_transform(transform);
-            }
-            else {
-                std::cerr << "Shader invalid" << std::endl;
-            }
+            mesh->set_material(m_material);
+            mesh->set_light(m_light);
+            mesh->set_transform(transform);
 
             return cube;
         }
@@ -129,7 +121,6 @@ class Game : public Engine {
     private:
         Object3D *p_cube;
 
-        Shader m_shader;
         Material m_material;
         Light m_light;
 };

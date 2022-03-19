@@ -26,7 +26,7 @@ class Renderer {
         bool init();
         void close();
 
-        void render(std::vector<Mesh*> &meshes, Camera &camera, vec3 light_direction);
+        void render(std::vector<Mesh*> &meshes, Camera &camera, vec3 light_position);
 
         bool is_window_closed() const;
 
@@ -55,6 +55,9 @@ class Renderer {
 
         // Frame buffer objects
         unsigned int m_depth_map_buffer_object;
+
+        // Shader
+        Shader m_object_shader;
 
         // Depth map
         Shader m_depth_shader;

@@ -55,6 +55,8 @@ class Mesh : public Component {
         void set_material(Material material);
         void set_light(Light light);
 
+        bool has_shader() const;
+
     protected:
         Transform m_transform;
 
@@ -73,6 +75,7 @@ class Mesh : public Component {
         unsigned int m_vertex_array_object;
         unsigned int m_instance_buffer_object;
 
+        bool m_use_shader;
         bool m_use_texture;
 
         Shader m_shader;

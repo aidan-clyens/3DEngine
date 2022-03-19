@@ -4,6 +4,7 @@
 /* Mesh
  */
 Mesh::Mesh():
+m_use_shader(false),
 m_use_texture(false),
 m_num_vertices(0)
 {
@@ -125,6 +126,7 @@ void Mesh::set_transform(Transform transform) {
  */
 void Mesh::set_shader(Shader shader) {
     m_shader = shader;
+    m_use_shader = true;
 }
 
 /* set_texture
@@ -144,4 +146,10 @@ void Mesh::set_material(Material material) {
  */
 void Mesh::set_light(Light light) {
     m_light = light;
+}
+
+/* has_shader
+ */
+bool Mesh::has_shader() const {
+    return m_use_shader;
 }

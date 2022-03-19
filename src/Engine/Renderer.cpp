@@ -65,7 +65,12 @@ bool Renderer::init() {
     // Create frame buffer objectss
     glGenFramebuffers(1, &m_depth_map_buffer_object);
 
-    // Load depth shader
+    // Load shaders
+    m_object_shader.load(m_path + "shaders/vertex.glsl", m_path + "shaders/fragment.glsl");
+    if (!m_object_shader.is_valid()) {
+        std::cerr << "Object shader failed to load" << std::endl;
+    }
+
     m_depth_shader.load(m_path + "shaders/depth_vertex.glsl", m_path + "shaders/depth_fragment.glsl");
     if (!m_depth_shader.is_valid()) {
         std::cerr << "Depth shader failed to load" << std::endl;
@@ -115,12 +120,11 @@ void Renderer::close() {
 
 /* render
  */
-void Renderer::render(std::vector<Mesh*> &meshes, Camera &camera, vec3 light_direction) {
+void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera, vec3 light_position)
+{
     // Pass 1: Render to depth map
     float near_plane = 1.0f;
     float far_plane = 7.5f;
-
-    vec3 light_position = vec3(-2.0f, 4.0f, -1.0f);
 
     mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
     mat4 light_view = glm::lookAt(light_position, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
@@ -157,36 +161,48 @@ void Renderer::render(std::vector<Mesh*> &meshes, Camera &camera, vec3 light_dir
     // Render each object
     for (Mesh *mesh : meshes) {
         // Select shader
-        if (mesh->m_shader.is_valid()) {
-            mesh->m_shader.enable();
+        if (mesh->has_shader()) {
+            if (mesh->m_shader.is_valid()) {
+                mesh->m_shader.enable();
+            }
         }
+        else {
+            if (m_object_shader.is_valid()) {
+                m_object_shader.enable();
 
-        if (mesh->m_shader.is_valid()) {
-            // Pass matrices to shader
-            mesh->m_shader.set_mat4("view", m_view);
-            mesh->m_shader.set_mat4("projection", m_projection);
+                // Pass matrices to shader
+                m_object_shader.set_mat4("view", m_view);
+                m_object_shader.set_mat4("projection", m_projection);
 
-            // Pass lighting data to shader
-            mesh->m_shader.set_vec3("material.ambient", mesh->m_material.ambient);
-            mesh->m_shader.set_vec3("material.diffuse", mesh->m_material.diffuse);
-            mesh->m_shader.set_vec3("material.specular", mesh->m_material.specular);
-            mesh->m_shader.set_float("material.shininess", mesh->m_material.shininess);
+                // Pass lighting data to shader
+                m_object_shader.set_vec3("material.ambient", mesh->m_material.ambient);
+                m_object_shader.set_vec3("material.diffuse", mesh->m_material.diffuse);
+                m_object_shader.set_vec3("material.specular", mesh->m_material.specular);
+                m_object_shader.set_float("material.shininess", mesh->m_material.shininess);
 
-            mesh->m_shader.set_vec3("light.ambient", mesh->m_light.ambient);
-            mesh->m_shader.set_vec3("light.diffuse", mesh->m_light.diffuse);
-            mesh->m_shader.set_vec3("light.specular", mesh->m_light.specular);
+                m_object_shader.set_vec3("light.ambient", mesh->m_light.ambient);
+                m_object_shader.set_vec3("light.diffuse", mesh->m_light.diffuse);
+                m_object_shader.set_vec3("light.specular", mesh->m_light.specular);
 
-            mesh->m_shader.set_vec3("lightDir", light_direction);
-            mesh->m_shader.set_vec3("viewPos", camera.m_position);
-            mesh->m_shader.set_int("objectTexture", 0);
+                m_object_shader.set_vec3("lightPos", light_position);
+                m_object_shader.set_vec3("viewPos", camera.m_position);
+                m_object_shader.set_int("objectTexture", 0);
+            }
         }
 
         // Render object
         mesh->render();
 
         // Deselect shader
-        if (mesh->m_shader.is_valid()) {
-            mesh->m_shader.disable();
+        if (mesh->has_shader()) {
+            if (mesh->m_shader.is_valid()) {
+                mesh->m_shader.disable();
+            }
+        }
+        else {
+            if (m_object_shader.is_valid()) {
+                m_object_shader.disable();
+            }
         }
     }
 

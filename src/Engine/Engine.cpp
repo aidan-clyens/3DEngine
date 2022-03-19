@@ -7,7 +7,7 @@ Engine::Engine():
 m_renderer(SCREEN_WIDTH, SCREEN_HEIGHT, ""),
 p_camera(new Camera(vec3(0, 0, 0))),
 p_input_manager(InputManager::get_instance()),
-m_light_direction(vec3(0.4, 0.5, -0.6))
+m_light_position(vec3(0.4, 0.5, -0.6))
 {
 
 }
@@ -18,7 +18,7 @@ Engine::Engine(const std::string &path):
 m_renderer(SCREEN_WIDTH, SCREEN_HEIGHT, path),
 p_camera(new Camera(vec3(0, 0, 0))),
 p_input_manager(InputManager::get_instance()),
-m_light_direction(vec3(0.4, 0.5, -0.6))
+m_light_position(vec3(0.4, 0.5, -0.6))
 {
 
 }
@@ -63,7 +63,7 @@ void Engine::start() {
         this->update();
 
         m_physics.update(m_delta_time);
-        m_renderer.render(m_meshes, *p_camera, m_light_direction);
+        m_renderer.render(m_meshes, *p_camera, m_light_position);
     }
 }
 
@@ -92,10 +92,10 @@ void Engine::add_object(Object3D *object) {
     }
 }
 
-/* set_light_direction
+/* set_light_position
  */
-void Engine::set_light_direction(vec3 direction) {
-    m_light_direction = direction;
+void Engine::set_light_position(vec3 position) {
+    m_light_position = position;
 }
 
 /* set_camera
