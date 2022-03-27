@@ -25,7 +25,7 @@ class Game : public Engine {
          */
         void setup() {
             p_camera->set_position(vec3(0, 0, 3));
-            this->set_light_direction(vec3(-1, 1, 0));
+            this->set_light_position(vec3(-1, 1, 0));
             // this->set_mouse_visible(false);
 
             // Load shaders
