@@ -15,7 +15,8 @@
 // Enums
 typedef enum {
     MATERIAL_COLOR,
-    MATERIAL_TEXTURE_2D
+    MATERIAL_TEXTURE_2D,
+    MATERIAL_TEXTURE_CUBE
 } eMaterialType;
 
 // Structs

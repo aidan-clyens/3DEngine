@@ -11,6 +11,24 @@ TextureCubeMap::TextureCubeMap() {
 
 /* load
  */
+void TextureCubeMap::load(std::vector<std::string> faces_files_paths) {
+    int texture_width, texture_height, num_channels;
+    std::vector<unsigned char *> faces;
+
+    for (int i = 0; i < faces_files_paths.size(); i++) {
+        unsigned char *texture_data = load_image_data(faces_files_paths[i], &texture_width, &texture_height, &num_channels);
+        faces.push_back(texture_data);
+    }
+
+    this->load(faces, texture_width, texture_height, num_channels);
+
+    for (int i = 0; i < faces_files_paths.size(); i++) {
+        free_image_data((unsigned char *)faces[i]);
+    }
+}
+
+/* load
+ */
 void TextureCubeMap::load(std::vector<unsigned char*> faces, int width, int height, int num_channels) {
     m_texture_width = width;
     m_texture_height = height;

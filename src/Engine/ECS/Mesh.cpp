@@ -140,6 +140,9 @@ void Mesh::set_texture(Texture texture) {
         case GL_TEXTURE_2D:
             m_material_type = MATERIAL_TEXTURE_2D;
             break;
+        case GL_TEXTURE_CUBE_MAP:
+            m_material_type = MATERIAL_TEXTURE_CUBE;
+            break;
         default:
             m_material_type = MATERIAL_COLOR;
             break;

@@ -8,6 +8,7 @@ out VS_OUT {
     vec3 FragPos;
     vec3 Normal;
     vec2 TexCoord;
+    vec3 TexCoord3;
 } vs_out;
 
 uniform mat4 view;
@@ -19,4 +20,5 @@ void main()
     vs_out.FragPos = vec3(aModel * vec4(aPos, 1.0));
     vs_out.Normal = aNormal;
     vs_out.TexCoord = aTexCoord;
+    vs_out.TexCoord3 = aPos;
 }

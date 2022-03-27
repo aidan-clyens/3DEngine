@@ -186,14 +186,21 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera, vec3 light_po
 
                 m_object_shader.set_vec3("lightPos", light_position);
                 m_object_shader.set_vec3("viewPos", camera.m_position);
-                m_object_shader.set_int("objectTexture", 0);
 
                 switch (mesh->get_material_type()) {
                     case MATERIAL_COLOR:
                         m_object_shader.set_bool("useTexture2D", false);
+                        m_object_shader.set_bool("useTextureCube", false);
                         break;
                     case MATERIAL_TEXTURE_2D:
                         m_object_shader.set_bool("useTexture2D", true);
+                        m_object_shader.set_bool("useTextureCube", false);
+                        m_object_shader.set_int("objectTexture", 0);
+                        break;
+                    case MATERIAL_TEXTURE_CUBE:
+                        m_object_shader.set_bool("useTexture2D", false);
+                        m_object_shader.set_bool("useTextureCube", true);
+                        m_object_shader.set_int("objectTextureCube", 0);
                         break;
                 }
             }

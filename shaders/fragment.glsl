@@ -4,6 +4,7 @@ in VS_OUT {
     vec3 FragPos;
     vec3 Normal;
     vec2 TexCoord;
+    vec3 TexCoord3;
 } fs_in;
 
 out vec4 FragColor;
@@ -28,8 +29,10 @@ uniform Material material;
 uniform Light light;
 
 uniform bool useTexture2D;
+uniform bool useTextureCube;
 
 uniform sampler2D objectTexture;
+uniform samplerCube objectTextureCube;
 
 
 void main()
@@ -41,6 +44,10 @@ void main()
     {
         ambient *= vec3(texture(objectTexture, fs_in.TexCoord));
     }
+    else if (useTextureCube)
+    {
+        ambient *= vec3(texture(objectTextureCube, fs_in.TexCoord3));
+    }
 
     // diffuse
     vec3 norm = normalize(fs_in.Normal);
@@ -50,6 +57,10 @@ void main()
     if (useTexture2D)
     {
         diffuse *= vec3(texture(objectTexture, fs_in.TexCoord));
+    }
+    else if (useTextureCube)
+    {
+        diffuse *= vec3(texture(objectTextureCube, fs_in.TexCoord3));
     }
 
     // specular
