@@ -26,6 +26,8 @@ class Texture {
         void enable();
         void disable();
 
+        unsigned int get_texture_type() const;
+
     protected:
         void free_data();
 

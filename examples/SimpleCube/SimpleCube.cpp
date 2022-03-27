@@ -1,5 +1,6 @@
 // Includes
 #include "Engine/Engine.h"
+#include "Engine/SquareMesh.h"
 #include "Engine/CubeMesh.h"
 #include "Engine/Shader.h"
 #include "Engine/Texture2D.h"
@@ -57,6 +58,8 @@ class Game : public Engine {
             p_camera->set_position(vec3(0, 0, 3));
             this->set_light_position(vec3(-2.0f, 4.0f, -1.0f));
 
+            m_texture_2d.load("examples/SimpleCube/res/brick.png");
+
             // Lighting
             m_light.ambient = vec3(0.5, 0.5, 0.5);
             m_light.diffuse = vec3(0.2, 0.2, 0.2);
@@ -69,17 +72,26 @@ class Game : public Engine {
 
             this->add_object(this->create_cube(transform, GREY, 4));
 
+            // Cube 1
             transform.position = vec3(0, -1, -3);
             transform.rotation = vec3(0, 30, 0);
             transform.size = vec3(1, 1, 1);
 
             this->add_object(this->create_cube(transform, ORANGE, 4));
 
+            // Cube 2
             transform.position = vec3(2, -1, -4);
             transform.rotation = vec3(0, -10, 0);
             transform.size = vec3(1, 4, 1);
 
             this->add_object(this->create_cube(transform, BLUE, 4));
+
+            // Square
+            transform.position = vec3(0, 0, -4);
+            transform.rotation = vec3(0, 0, 0);
+            transform.size = vec3(1, 1, 1);
+
+            this->add_object(this->create_square(transform, m_texture_2d));
         }
 
         /* update
@@ -98,30 +110,45 @@ class Game : public Engine {
         /* create_cube
          */
         Object3D *create_cube(Transform transform, vec3 color, int shininess) {
-            // Configure lighting
-            m_material.shininess = shininess;
+            // Configure material
+            Material material;
+            material.specular = WHITE;
+            material.ambient = color;
+            material.diffuse = color;
+            material.shininess = shininess;
 
+            // Create object
             Object3D *cube = new Object3D(transform.position, transform.rotation, transform.size);
             cube->add_component(COMP_MESH, new CubeMesh());
 
             CubeMesh *mesh = (CubeMesh *)cube->get_component(COMP_MESH);
 
-            // Create objects
-            m_material.specular = WHITE;
-            m_material.ambient = color;
-            m_material.diffuse = color;
-
-            mesh->set_material(m_material);
+            mesh->set_material(material);
             mesh->set_light(m_light);
             mesh->set_transform(transform);
 
             return cube;
         }
-    
-    private:
-        Object3D *p_cube;
 
-        Material m_material;
+        /* create_square
+         */
+        Object3D *create_square(Transform transform, Texture texture) {
+            // Create object
+            Object3D *square = new Object3D(transform.position, transform.rotation, transform.size);
+            square->add_component(COMP_MESH, new SquareMesh());
+
+            SquareMesh *mesh = (SquareMesh *)square->get_component(COMP_MESH);
+
+            mesh->set_texture(texture);
+            mesh->set_light(m_light);
+            mesh->set_transform(transform);
+
+            return square;
+        }
+
+    private:
+        Texture2D m_texture_2d;
+
         Light m_light;
 };
 

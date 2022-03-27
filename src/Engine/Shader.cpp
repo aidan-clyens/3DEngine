@@ -80,6 +80,13 @@ void Shader::set_float(const std::string &variable, float value) {
     glUniform1f(location, value);
 }
 
+/* set_bool
+ */
+void Shader::set_bool(const std::string &variable, bool value) {
+    unsigned int location = glGetUniformLocation(m_program_id, variable.c_str());
+    glUniform1i(location, value);
+}
+
 /* set_mat4
  */
 void Shader::set_mat4(const std::string &variable, mat4 matrix) {

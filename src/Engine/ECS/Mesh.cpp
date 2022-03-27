@@ -6,7 +6,8 @@
 Mesh::Mesh():
 m_use_shader(false),
 m_use_texture(false),
-m_num_vertices(0)
+m_num_vertices(0),
+m_material_type(MATERIAL_COLOR)
 {
     // Create VBO and VAO
     glGenVertexArrays(1, &m_vertex_array_object);
@@ -134,6 +135,15 @@ void Mesh::set_shader(Shader shader) {
 void Mesh::set_texture(Texture texture) {
     m_texture = texture;
     m_use_texture = true;
+
+    switch (m_texture.get_texture_type()) {
+        case GL_TEXTURE_2D:
+            m_material_type = MATERIAL_TEXTURE_2D;
+            break;
+        default:
+            m_material_type = MATERIAL_COLOR;
+            break;
+    }
 }
 
 /* set_material
@@ -152,4 +162,10 @@ void Mesh::set_light(Light light) {
  */
 bool Mesh::has_shader() const {
     return m_use_shader;
+}
+
+/* get_material_type
+ */
+eMaterialType Mesh::get_material_type() const {
+    return m_material_type;
 }

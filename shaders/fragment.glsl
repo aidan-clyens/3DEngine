@@ -3,6 +3,7 @@
 in VS_OUT {
     vec3 FragPos;
     vec3 Normal;
+    vec2 TexCoord;
 } fs_in;
 
 out vec4 FragColor;
@@ -26,16 +27,30 @@ uniform vec3 viewPos;
 uniform Material material;
 uniform Light light;
 
+uniform bool useTexture2D;
+
+uniform sampler2D objectTexture;
+
 
 void main()
 {
     // ambient
     vec3 ambient = light.ambient * material.ambient;
 
+    if (useTexture2D)
+    {
+        ambient *= vec3(texture(objectTexture, fs_in.TexCoord));
+    }
+
     // diffuse
     vec3 norm = normalize(fs_in.Normal);
     float diff = max(dot(norm, lightPos), 0.0);
     vec3 diffuse =  light.diffuse * diff * material.diffuse;
+
+    if (useTexture2D)
+    {
+        diffuse *= vec3(texture(objectTexture, fs_in.TexCoord));
+    }
 
     // specular
     vec3 viewDir = normalize(viewPos - fs_in.FragPos);

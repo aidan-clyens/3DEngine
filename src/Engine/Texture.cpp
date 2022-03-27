@@ -57,6 +57,14 @@ void Texture::disable() {
     glBindTexture(m_texture_type, 0);
 }
 
+/* free_data
+ */
 void Texture::free_data() {
     free_image_data((unsigned char*)p_data);
+}
+
+/* get_texture_type
+ */
+unsigned int Texture::get_texture_type() const {
+    return m_texture_type;
 }

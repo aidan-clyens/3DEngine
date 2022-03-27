@@ -12,6 +12,12 @@
 #include "Engine/Shader.h"
 #include "Engine/Texture.h"
 
+// Enums
+typedef enum {
+    MATERIAL_COLOR,
+    MATERIAL_TEXTURE_2D
+} eMaterialType;
+
 // Structs
 typedef struct {
     vec3 ambient;
@@ -56,6 +62,8 @@ class Mesh : public Component {
         void set_light(Light light);
 
         bool has_shader() const;
+        
+        eMaterialType get_material_type() const;
 
     protected:
         Transform m_transform;
@@ -80,4 +88,6 @@ class Mesh : public Component {
 
         Shader m_shader;
         Texture m_texture;
+
+        eMaterialType m_material_type;
 };
