@@ -24,8 +24,14 @@ m_instance(instance)
     memcpy(m_normal_buffer.data, instance->m_normal_buffer.data, m_normal_buffer.size);
     memcpy(m_uv_buffer.data, instance->m_uv_buffer.data, m_uv_buffer.size);
 
-    this->set_shader(instance->m_shader);
-    this->set_texture(instance->m_texture);
+    if (instance->m_use_shader) {
+        this->set_shader(instance->m_shader);
+    }
+
+    if (instance->m_use_texture) {
+        this->set_texture(instance->m_texture);
+    }
+
     this->set_material(instance->m_material);
     this->set_light(instance->m_light);
 }
@@ -66,8 +72,14 @@ m_instance(instance)
     memcpy(m_normal_buffer.data, instance->m_normal_buffer.data, m_normal_buffer.size);
     memcpy(m_uv_buffer.data, instance->m_uv_buffer.data, m_uv_buffer.size);
 
-    this->set_shader(instance->m_shader);
-    this->set_texture(instance->m_texture);
+    if (instance->m_use_shader) {
+        this->set_shader(instance->m_shader);
+    }
+
+    if (instance->m_use_texture) {
+        this->set_texture(instance->m_texture);
+    }
+
     this->set_material(instance->m_material);
     this->set_light(instance->m_light);
 }
