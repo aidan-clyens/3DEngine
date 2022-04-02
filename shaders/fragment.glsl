@@ -17,12 +17,13 @@ struct Material {
 };
 
 struct Light {
+    int type;       // 0 - directional, 1 - point
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
 };
 
-uniform vec3 lightPos;
+uniform vec3 lightVector;
 uniform vec3 viewPos;
 
 uniform Material material;
@@ -37,6 +38,12 @@ uniform samplerCube objectTextureCube;
 
 void main()
 {
+    vec3 lightDir = lightVector;
+    if (light.type == 0) // Directional
+    {
+        lightDir = normalize(-lightVector);
+    }
+
     // ambient
     vec3 ambient = light.ambient * material.ambient;
 
@@ -51,7 +58,7 @@ void main()
 
     // diffuse
     vec3 norm = normalize(fs_in.Normal);
-    float diff = max(dot(norm, lightPos), 0.0);
+    float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse =  light.diffuse * diff * material.diffuse;
 
     if (useTexture2D)
@@ -65,7 +72,7 @@ void main()
 
     // specular
     vec3 viewDir = normalize(viewPos - fs_in.FragPos);
-    vec3 reflectDir = reflect(-lightPos, norm);
+    vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     if (diff == 0)
     {

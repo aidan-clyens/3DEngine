@@ -120,14 +120,14 @@ void Renderer::close() {
 
 /* render
  */
-void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera, vec3 light_position)
+void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera, vec3 light_vector)
 {
     // Pass 1: Render to depth map
     float near_plane = 1.0f;
     float far_plane = 7.5f;
 
     mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-    mat4 light_view = glm::lookAt(light_position, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    mat4 light_view = glm::lookAt(light_vector, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     mat4 light_space = light_projection * light_view;
 
     // Pass light space matrix to shader
@@ -180,11 +180,12 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera, vec3 light_po
                 m_object_shader.set_vec3("material.specular", mesh->m_material.specular);
                 m_object_shader.set_float("material.shininess", mesh->m_material.shininess);
 
+                m_object_shader.set_int("light.type", (int)mesh->m_light.type);
                 m_object_shader.set_vec3("light.ambient", mesh->m_light.ambient);
                 m_object_shader.set_vec3("light.diffuse", mesh->m_light.diffuse);
                 m_object_shader.set_vec3("light.specular", mesh->m_light.specular);
 
-                m_object_shader.set_vec3("lightPos", light_position);
+                m_object_shader.set_vec3("lightVector", light_vector);
                 m_object_shader.set_vec3("viewPos", camera.m_position);
 
                 switch (mesh->get_material_type()) {

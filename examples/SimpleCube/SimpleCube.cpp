@@ -65,7 +65,7 @@ class Game : public Engine {
             this->set_mouse_visible(false);
 #endif
             p_camera->set_position(vec3(0, 0, 3));
-            this->set_light_position(vec3(-2.0f, 4.0f, -1.0f));
+            this->set_light_vector(vec3(-0.2f, -1.0f, -0.3f));
 
             // Load textures
             m_texture_2d.load("examples/SimpleCube/res/brick.png");
@@ -77,9 +77,10 @@ class Game : public Engine {
             m_texture_cube.load(faces);
 
             // Lighting
+            m_light.type = LIGHT_DIRECTIONAL;
             m_light.ambient = vec3(0.5, 0.5, 0.5);
-            m_light.diffuse = vec3(0.2, 0.2, 0.2);
-            m_light.specular = vec3(0.001, 0.001, 0.001);
+            m_light.diffuse = vec3(0.5, 0.5, 0.5);
+            m_light.specular = vec3(0.2, 0.2, 0.2);
 
             Transform transform;
             transform.position = vec3(0, -2, 0);

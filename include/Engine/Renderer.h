@@ -26,7 +26,7 @@ class Renderer {
         bool init();
         void close();
 
-        void render(std::vector<Mesh*> &meshes, Camera &camera, vec3 light_position);
+        void render(std::vector<Mesh*> &meshes, Camera &camera, vec3 light_vector);
 
         bool is_window_closed() const;
 

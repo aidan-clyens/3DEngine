@@ -19,6 +19,11 @@ typedef enum {
     MATERIAL_TEXTURE_CUBE
 } eMaterialType;
 
+typedef enum {
+    LIGHT_DIRECTIONAL,
+    LIGHT_POINT
+} eLightType;
+
 // Structs
 typedef struct {
     vec3 ambient;
@@ -28,6 +33,7 @@ typedef struct {
 } Material;
 
 typedef struct {
+    eLightType type;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;

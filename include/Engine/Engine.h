@@ -31,7 +31,7 @@ class Engine {
 
         void add_object(Object3D *object);
 
-        void set_light_position(vec3 position);
+        void set_light_vector(vec3 position);
 
         void set_camera(Camera *camera);
 
@@ -57,7 +57,7 @@ class Engine {
 
         Renderer m_renderer;
 
-        vec3 m_light_position;
+        vec3 m_light_vector;
 
         std::vector<Object3D*> m_objects;
         std::vector<Mesh*> m_meshes;

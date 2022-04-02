@@ -64,7 +64,7 @@ class Game : public Engine {
             vec3 player_pos = vec3(0, 5, 0);
 
             p_camera->set_position(player_pos);
-            this->set_light_position(vec3(-1, 1, 0));
+            this->set_light_vector(vec3(-1, 1, 0));
             this->set_mouse_visible(false);
 
             // Load shaders
