@@ -37,6 +37,11 @@ typedef struct {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
+    // Used to calculate attenuation for point lights
+    float constant;
+    float linear;
+    float quadratic;
 } Light;
 
 typedef struct {

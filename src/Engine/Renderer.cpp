@@ -184,6 +184,9 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera, vec3 light_ve
                 m_object_shader.set_vec3("light.ambient", mesh->m_light.ambient);
                 m_object_shader.set_vec3("light.diffuse", mesh->m_light.diffuse);
                 m_object_shader.set_vec3("light.specular", mesh->m_light.specular);
+                m_object_shader.set_float("light.constant", mesh->m_light.constant);
+                m_object_shader.set_float("light.linear", mesh->m_light.linear);
+                m_object_shader.set_float("light.quadratic", mesh->m_light.quadratic);
 
                 m_object_shader.set_vec3("lightVector", light_vector);
                 m_object_shader.set_vec3("viewPos", camera.m_position);

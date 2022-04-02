@@ -21,6 +21,11 @@ struct Light {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
+    // Used to calculate attenuation for point lights
+    float constant;
+    float linear;
+    float quadratic;
 };
 
 uniform vec3 lightVector;
@@ -38,10 +43,19 @@ uniform samplerCube objectTextureCube;
 
 void main()
 {
+    // Lighting
     vec3 lightDir = lightVector;
+    float attenuation = 1.0;
+
     if (light.type == 0) // Directional
     {
         lightDir = normalize(-lightVector);
+    }
+    else if (light.type == 1) // Point
+    {
+        lightDir = normalize(lightVector - fs_in.FragPos);
+        float distance = length(lightVector - fs_in.FragPos);
+        attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
     }
 
     // ambient
@@ -55,6 +69,8 @@ void main()
     {
         ambient *= vec3(texture(objectTextureCube, fs_in.TexCoord3));
     }
+
+    ambient *= attenuation;
 
     // diffuse
     vec3 norm = normalize(fs_in.Normal);
@@ -70,6 +86,8 @@ void main()
         diffuse *= vec3(texture(objectTextureCube, fs_in.TexCoord3));
     }
 
+    diffuse *= attenuation;
+
     // specular
     vec3 viewDir = normalize(viewPos - fs_in.FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
@@ -79,6 +97,8 @@ void main()
         spec = 0;
     }
     vec3 specular = light.specular * material.specular * spec;
+
+    specular *= attenuation;
 
     vec3 color = ambient + diffuse + specular;
 
