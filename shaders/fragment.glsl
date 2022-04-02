@@ -82,8 +82,8 @@ vec3 CalculateLighting(Light light, vec3 lightDir, float attenuation)
 
     // specular
     vec3 viewDir = normalize(viewPos - fs_in.FragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 halwayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(viewDir, halwayDir), 0.0), material.shininess);
     if (diff == 0)
     {
         spec = 0;
