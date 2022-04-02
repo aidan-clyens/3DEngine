@@ -25,21 +25,13 @@ class Game : public Engine {
          */
         void setup() {
             p_camera->set_position(vec3(0, 0, 3));
-            this->set_light_vector(vec3(-1, 1, 0));
             // this->set_mouse_visible(false);
-
-            // Load shaders
-            m_shader.load("shaders/vertex.glsl", "shaders/color_fragment.glsl");
 
             // Configure lighting
             m_material.ambient = GREY;
             m_material.diffuse = GREY;
             m_material.specular = WHITE;
             m_material.shininess = 4;
-
-            m_light.ambient = vec3(0.5, 0.5, 0.5);
-            m_light.diffuse = vec3(0.6, 0.6, 0.6);
-            m_light.specular = vec3(0.1, 0.1, 0.1);
 
             // Create ground
             p_ground = new Object3D(vec3(0, -2, 0), vec3(0, 0, 0), vec3(50, 1, 50));
@@ -49,9 +41,7 @@ class Game : public Engine {
             Transform transform = p_ground->get_transform();
             CubeMesh *mesh = (CubeMesh*)p_ground->get_component(COMP_MESH);
 
-            mesh->set_shader(m_shader);
             mesh->set_material(m_material);
-            mesh->set_light(m_light);
             mesh->set_transform(transform);
 
             this->add_object(p_ground);
@@ -68,9 +58,7 @@ class Game : public Engine {
                 m_material.ambient = ORANGE;
                 m_material.diffuse = ORANGE;
 
-                cube_mesh->set_shader(m_shader);
                 cube_mesh->set_material(m_material);
-                cube_mesh->set_light(m_light);
                 cube_mesh->set_transform(transform);
 
                 this->add_object(m_cubes[i]);
@@ -88,9 +76,7 @@ class Game : public Engine {
 
         std::vector<Object3D*> m_cubes;
 
-        Shader m_shader;
         Material m_material;
-        Light m_light;
 };
 
 /* main

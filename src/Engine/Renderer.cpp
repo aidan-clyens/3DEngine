@@ -89,6 +89,13 @@ bool Renderer::init() {
     glReadBuffer(GL_NONE);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+    // Lighting
+    m_light.type = LIGHT_DIRECTIONAL;
+    m_light.vector = vec3(-0.2f, -1.0f, -0.3f);
+    m_light.ambient = vec3(0.5, 0.5, 0.5);
+    m_light.diffuse = vec3(0.5, 0.5, 0.5);
+    m_light.specular = vec3(0.2, 0.2, 0.2);
+
     // Debug
     float quad_vertices[] = {
         // positions        // texture Coords
@@ -120,14 +127,14 @@ void Renderer::close() {
 
 /* render
  */
-void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera, vec3 light_vector)
+void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
 {
     // Pass 1: Render to depth map
     float near_plane = 1.0f;
     float far_plane = 7.5f;
 
     mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-    mat4 light_view = glm::lookAt(light_vector, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    mat4 light_view = glm::lookAt(m_light.vector, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     mat4 light_space = light_projection * light_view;
 
     // Pass light space matrix to shader
@@ -180,15 +187,15 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera, vec3 light_ve
                 m_object_shader.set_vec3("material.specular", mesh->m_material.specular);
                 m_object_shader.set_float("material.shininess", mesh->m_material.shininess);
 
-                m_object_shader.set_int("light.type", (int)mesh->m_light.type);
-                m_object_shader.set_vec3("light.ambient", mesh->m_light.ambient);
-                m_object_shader.set_vec3("light.diffuse", mesh->m_light.diffuse);
-                m_object_shader.set_vec3("light.specular", mesh->m_light.specular);
-                m_object_shader.set_float("light.constant", mesh->m_light.constant);
-                m_object_shader.set_float("light.linear", mesh->m_light.linear);
-                m_object_shader.set_float("light.quadratic", mesh->m_light.quadratic);
+                m_object_shader.set_int("light.type", (int)m_light.type);
+                m_object_shader.set_vec3("light.vector", m_light.vector);
+                m_object_shader.set_vec3("light.ambient", m_light.ambient);
+                m_object_shader.set_vec3("light.diffuse", m_light.diffuse);
+                m_object_shader.set_vec3("light.specular", m_light.specular);
+                m_object_shader.set_float("light.constant", m_light.constant);
+                m_object_shader.set_float("light.linear", m_light.linear);
+                m_object_shader.set_float("light.quadratic", m_light.quadratic);
 
-                m_object_shader.set_vec3("lightVector", light_vector);
                 m_object_shader.set_vec3("viewPos", camera.m_position);
 
                 switch (mesh->get_material_type()) {
@@ -254,6 +261,12 @@ void Renderer::set_mouse_visible(bool value) {
     else {
         glfwSetInputMode(p_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
+}
+
+/* add_light
+ */
+void Renderer::add_light(Light light) {
+    m_light = light;
 }
 
 /* is_window_closed

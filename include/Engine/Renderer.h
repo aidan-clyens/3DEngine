@@ -26,7 +26,7 @@ class Renderer {
         bool init();
         void close();
 
-        void render(std::vector<Mesh*> &meshes, Camera &camera, vec3 light_vector);
+        void render(std::vector<Mesh*> &meshes, Camera &camera);
 
         bool is_window_closed() const;
 
@@ -34,6 +34,8 @@ class Renderer {
         void set_mouse_callback(GLFWcursorposfun callback);
 
         void set_mouse_visible(bool value);
+
+        void add_light(Light light);
 
         GLFWwindow *get_window();
 
@@ -63,6 +65,9 @@ class Renderer {
         Shader m_depth_shader;
         Shader m_debug_depth_shader;
         DepthTexture m_depth_texture;
+
+        // Lighting
+        Light m_light;
 
         // Debug
         unsigned int m_debug_quad_array_object;

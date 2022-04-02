@@ -30,8 +30,7 @@ class Engine {
         void cleanup();
 
         void add_object(Object3D *object);
-
-        void set_light_vector(vec3 position);
+        void add_light(Light light);
 
         void set_camera(Camera *camera);
 
@@ -56,8 +55,6 @@ class Engine {
         void static _process_mouse_input(GLFWwindow *window, double x, double y);
 
         Renderer m_renderer;
-
-        vec3 m_light_vector;
 
         std::vector<Object3D*> m_objects;
         std::vector<Mesh*> m_meshes;

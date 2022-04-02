@@ -61,11 +61,13 @@ class Game : public Engine {
         /* setup
          */
         void setup() {
+            // vec3 light_vector = vec3(-0.2f, -1.0f, -0.3f);  // Directional
+            vec3 light_vector = vec3(-1.0, 0.0, 2.0);  // Point
+
 #ifdef USE_PLAYER_INPUT
             this->set_mouse_visible(false);
 #endif
             p_camera->set_position(vec3(0, 0, 3));
-            this->set_light_vector(vec3(-0.2f, -1.0f, -0.3f));
 
             // Load textures
             m_texture_2d.load("examples/SimpleCube/res/brick.png");
@@ -77,10 +79,17 @@ class Game : public Engine {
             m_texture_cube.load(faces);
 
             // Lighting
-            m_light.type = LIGHT_DIRECTIONAL;
-            m_light.ambient = vec3(0.5, 0.5, 0.5);
-            m_light.diffuse = vec3(0.5, 0.5, 0.5);
-            m_light.specular = vec3(0.2, 0.2, 0.2);
+            Light light;
+            light.type = LIGHT_POINT;
+            light.vector = light_vector;
+            light.ambient = vec3(0.5, 0.5, 0.5);
+            light.diffuse = vec3(0.5, 0.5, 0.5);
+            light.specular = vec3(0.2, 0.2, 0.2);
+            light.constant = 1.0;
+            light.linear = 0.22;
+            light.quadratic = 0.20;
+
+            this->add_light(light);
 
             Transform transform;
             transform.position = vec3(0, -2, 0);
@@ -143,7 +152,6 @@ class Game : public Engine {
             CubeMesh *mesh = (CubeMesh *)cube->get_component(COMP_MESH);
 
             mesh->set_material(material);
-            mesh->set_light(m_light);
             mesh->set_transform(transform);
 
             return cube;
@@ -159,7 +167,6 @@ class Game : public Engine {
             CubeMesh *mesh = (CubeMesh *)cube->get_component(COMP_MESH);
 
             mesh->set_texture(texture);
-            mesh->set_light(m_light);
             mesh->set_transform(transform);
 
             return cube;
@@ -175,7 +182,6 @@ class Game : public Engine {
             SquareMesh *mesh = (SquareMesh *)square->get_component(COMP_MESH);
 
             mesh->set_texture(texture);
-            mesh->set_light(m_light);
             mesh->set_transform(transform);
 
             return square;
@@ -184,8 +190,6 @@ class Game : public Engine {
     private:
         Texture2D m_texture_2d;
         TextureCubeMap m_texture_cube;
-
-        Light m_light;
 };
 
 /* main

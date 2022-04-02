@@ -20,10 +20,6 @@ m_material_type(MATERIAL_COLOR)
     m_material.specular = vec3(1, 1, 1);
     m_material.shininess = 32;
 
-    m_light.ambient = vec3(1, 1, 1);
-    m_light.diffuse = vec3(1, 1, 1);
-    m_light.specular = vec3(1, 1, 1);
-
     // Initialize transform
     m_transform.position = vec3(0, 0, 0);
     m_transform.rotation = vec3(0, 0, 0);
@@ -153,12 +149,6 @@ void Mesh::set_texture(Texture texture) {
  */
 void Mesh::set_material(Material material) {
     m_material = material;
-}
-
-/* set_light
- */
-void Mesh::set_light(Light light) {
-    m_light = light;
 }
 
 /* has_shader

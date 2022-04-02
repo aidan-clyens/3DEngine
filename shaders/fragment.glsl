@@ -18,6 +18,9 @@ struct Material {
 
 struct Light {
     int type;       // 0 - directional, 1 - point
+
+    vec3 vector;
+
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -28,7 +31,6 @@ struct Light {
     float quadratic;
 };
 
-uniform vec3 lightVector;
 uniform vec3 viewPos;
 
 uniform Material material;
@@ -44,17 +46,17 @@ uniform samplerCube objectTextureCube;
 void main()
 {
     // Lighting
-    vec3 lightDir = lightVector;
+    vec3 lightDir = light.vector;
     float attenuation = 1.0;
 
     if (light.type == 0) // Directional
     {
-        lightDir = normalize(-lightVector);
+        lightDir = normalize(-light.vector);
     }
     else if (light.type == 1) // Point
     {
-        lightDir = normalize(lightVector - fs_in.FragPos);
-        float distance = length(lightVector - fs_in.FragPos);
+        lightDir = normalize(light.vector - fs_in.FragPos);
+        float distance = length(light.vector - fs_in.FragPos);
         attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
     }
 

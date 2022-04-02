@@ -8,41 +8,11 @@
 #include <algorithm>
 #include <iterator>
 
+#include "Engine/utils/types.h"
 #include "Engine/ECS/ECS.h"
 #include "Engine/Shader.h"
 #include "Engine/Texture.h"
 
-// Enums
-typedef enum {
-    MATERIAL_COLOR,
-    MATERIAL_TEXTURE_2D,
-    MATERIAL_TEXTURE_CUBE
-} eMaterialType;
-
-typedef enum {
-    LIGHT_DIRECTIONAL,
-    LIGHT_POINT
-} eLightType;
-
-// Structs
-typedef struct {
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-    float shininess;
-} Material;
-
-typedef struct {
-    eLightType type;
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-
-    // Used to calculate attenuation for point lights
-    float constant;
-    float linear;
-    float quadratic;
-} Light;
 
 typedef struct {
     float *data;
@@ -71,7 +41,6 @@ class Mesh : public Component {
         void set_shader(Shader shader);
         void set_texture(Texture texture);
         void set_material(Material material);
-        void set_light(Light light);
 
         bool has_shader() const;
         
@@ -83,7 +52,6 @@ class Mesh : public Component {
         mat4 m_model;
 
         Material m_material;
-        Light m_light;
 
         Buffer m_vertex_buffer;
         Buffer m_normal_buffer;

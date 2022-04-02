@@ -33,7 +33,6 @@ m_instance(instance)
     }
 
     this->set_material(instance->m_material);
-    this->set_light(instance->m_light);
 }
 
 /* MeshInstances
@@ -81,7 +80,6 @@ m_instance(instance)
     }
 
     this->set_material(instance->m_material);
-    this->set_light(instance->m_light);
 }
 
 /* ~MeshInstances
