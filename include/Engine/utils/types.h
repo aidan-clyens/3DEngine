@@ -1,8 +1,12 @@
 #pragma once
 
+// Includes
 #include <glm/glm.hpp>
 
+// Defines
+#define MAX_POINT_LIGHTS    16
 
+// Typedefs
 typedef glm::vec2 vec2;
 typedef glm::vec3 vec3;
 typedef glm::mat4 mat4;
@@ -28,6 +32,8 @@ typedef struct {
 } Material;
 
 typedef struct {
+    int id;
+
     eLightType type;
 
     vec3 vector;

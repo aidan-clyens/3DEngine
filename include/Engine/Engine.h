@@ -30,7 +30,11 @@ class Engine {
         void cleanup();
 
         void add_object(Object3D *object);
+        
+        void set_directional_light(Light light);
         void add_light(Light light);
+
+        bool remove_light(int id);
 
         void set_camera(Camera *camera);
 

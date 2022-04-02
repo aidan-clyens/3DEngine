@@ -35,7 +35,10 @@ class Renderer {
 
         void set_mouse_visible(bool value);
 
+        void set_directional_light(Light light);
         void add_light(Light light);
+
+        bool remove_light(int id);
 
         GLFWwindow *get_window();
 
@@ -67,7 +70,8 @@ class Renderer {
         DepthTexture m_depth_texture;
 
         // Lighting
-        Light m_light;
+        Light m_directional_light;
+        std::vector<Light> m_lights;
 
         // Debug
         unsigned int m_debug_quad_array_object;

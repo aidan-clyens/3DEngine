@@ -61,9 +61,6 @@ class Game : public Engine {
         /* setup
          */
         void setup() {
-            // vec3 light_vector = vec3(-0.2f, -1.0f, -0.3f);  // Directional
-            vec3 light_vector = vec3(-1.0, 0.0, 2.0);  // Point
-
 #ifdef USE_PLAYER_INPUT
             this->set_mouse_visible(false);
 #endif
@@ -80,14 +77,20 @@ class Game : public Engine {
 
             // Lighting
             Light light;
+            light.id = 1;
             light.type = LIGHT_POINT;
-            light.vector = light_vector;
+            light.vector = vec3(-1.0, 0.0, 2.0);
             light.ambient = vec3(0.5, 0.5, 0.5);
             light.diffuse = vec3(0.5, 0.5, 0.5);
             light.specular = vec3(0.2, 0.2, 0.2);
             light.constant = 1.0;
             light.linear = 0.22;
             light.quadratic = 0.20;
+
+            this->add_light(light);
+
+            light.id = 2;
+            light.vector = vec3(5.0, 0.0, -5.0);
 
             this->add_light(light);
 

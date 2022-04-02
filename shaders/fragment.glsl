@@ -1,5 +1,8 @@
 #version 330 core
 
+#define MAX_LIGHTS  16
+
+
 in VS_OUT {
     vec3 FragPos;
     vec3 Normal;
@@ -34,7 +37,9 @@ struct Light {
 uniform vec3 viewPos;
 
 uniform Material material;
-uniform Light light;
+uniform Light directionalLight;
+uniform Light pointLights[MAX_LIGHTS];
+uniform int numberPointLights;
 
 uniform bool useTexture2D;
 uniform bool useTextureCube;
@@ -43,23 +48,8 @@ uniform sampler2D objectTexture;
 uniform samplerCube objectTextureCube;
 
 
-void main()
+vec3 CalculateLighting(Light light, vec3 lightDir, float attenuation)
 {
-    // Lighting
-    vec3 lightDir = light.vector;
-    float attenuation = 1.0;
-
-    if (light.type == 0) // Directional
-    {
-        lightDir = normalize(-light.vector);
-    }
-    else if (light.type == 1) // Point
-    {
-        lightDir = normalize(light.vector - fs_in.FragPos);
-        float distance = length(light.vector - fs_in.FragPos);
-        attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
-    }
-
     // ambient
     vec3 ambient = light.ambient * material.ambient;
 
@@ -102,7 +92,31 @@ void main()
 
     specular *= attenuation;
 
-    vec3 color = ambient + diffuse + specular;
+    return ambient + diffuse + specular;
+}
+
+vec3 CalculateDirectionalLight(Light light)
+{
+    return CalculateLighting(light, normalize(-light.vector), 1.0);
+}
+
+vec3 CalculatePointLight(Light light)
+{
+    vec3 lightDir = normalize(light.vector - fs_in.FragPos);
+    float distance = length(light.vector - fs_in.FragPos);
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+
+    return CalculateLighting(light, lightDir, attenuation);
+}
+
+void main()
+{
+    vec3 color = CalculateDirectionalLight(directionalLight);
+
+    for (int i = 0; i < numberPointLights; i++)
+    {
+        color += CalculatePointLight(pointLights[i]);
+    }
 
     FragColor = vec4(color, 1.0);
 }

@@ -90,10 +90,20 @@ void Engine::add_object(Object3D *object) {
     }
 }
 
+/* set_directional_light
+ */
+void Engine::set_directional_light(Light light) {
+    m_renderer.set_directional_light(light);
+}
+
 /* add_light
  */
 void Engine::add_light(Light light) {
     m_renderer.add_light(light);
+}
+
+bool Engine::remove_light(int id) {
+    return m_renderer.remove_light(id);
 }
 
 /* set_camera
