@@ -59,14 +59,25 @@ float CalculateShadow(vec3 normal, vec3 lightDir)
     // Transform to [0, 1] range
     projectedCoords = projectedCoords * 0.5 + 0.5;
     // Get closest depth value from light's perspective
-    float closestDepth = texture(depthTexture, projectedCoords.xy).r;
+    // float closestDepth = texture(depthTexture, projectedCoords.xy).r;
     // Get current depth value of fragment from light's perspective
     float currentDepth = projectedCoords.z;
 
     float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005); 
 
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / textureSize(depthTexture, 0);
+    for (int x = -1; x <= 1; x++)
+    {
+        for (int y =-1; y <= 1; y++)
+        {
+            float pcfDepth = texture(depthTexture, projectedCoords.xy + vec2(x, y) * texelSize).r;
+            shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+        }
+    }
+
     // Check whether fragment is in shadow
-    return currentDepth - bias > closestDepth ? 1.0 : 0.0;
+    return shadow / 9.0;
 }
 
 vec3 CalculateLighting(Light light, vec3 lightDir, float attenuation)
