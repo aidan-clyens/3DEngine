@@ -58,6 +58,14 @@ class Light {
 class DirectionalLight : public Light {
     public:
         DirectionalLight();
+
+        void set_origin(const vec3 origin);
+
+        vec3 get_origin() const;
+        vec3 get_direction() const;
+
+    private:
+        vec3 m_origin;
 };
 
 /* PointLight

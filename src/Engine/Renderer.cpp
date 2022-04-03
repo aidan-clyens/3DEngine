@@ -94,6 +94,7 @@ bool Renderer::init() {
 
     // Lighting
     m_directional_light.set_position(vec3(-2.0f, 4.0f, -1.0f));
+    m_directional_light.set_origin(vec3(0.0, 0.0, 0.0));
     m_directional_light.set_lighting(vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2));
 
     // Debug
@@ -134,7 +135,7 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
     float far_plane = 12.5f;
 
     mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-    mat4 light_view = glm::lookAt(m_directional_light.get_position(), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    mat4 light_view = glm::lookAt(m_directional_light.get_position(), m_directional_light.get_origin(), vec3(0.0f, 1.0f, 0.0f));
     mat4 light_space = light_projection * light_view;
 
     // Pass light space matrix to shader
@@ -198,7 +199,7 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
                 m_object_shader.set_float("material.shininess", mesh->m_material.shininess);
 
                 // Pass directional lighting data to shader
-                m_object_shader.set_vec3("directionalLight.vector", m_directional_light.get_position());
+                m_object_shader.set_vec3("directionalLight.vector", m_directional_light.get_direction());
                 m_object_shader.set_vec3("directionalLight.ambient", m_directional_light.get_ambient());
                 m_object_shader.set_vec3("directionalLight.diffuse", m_directional_light.get_diffuse());
                 m_object_shader.set_vec3("directionalLight.specular", m_directional_light.get_specular());

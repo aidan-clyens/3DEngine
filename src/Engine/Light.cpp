@@ -91,6 +91,24 @@ DirectionalLight::DirectionalLight() {
 
 }
 
+/* set_origin
+ */
+void DirectionalLight::set_origin(const vec3 origin) {
+    m_origin = origin;
+}
+
+/* get_origin
+ */
+vec3 DirectionalLight::get_origin() const {
+    return m_origin;
+}
+
+/* get_direction
+ */
+vec3 DirectionalLight::get_direction() const {
+    return m_origin - m_vector;
+}
+
 /* PointLight
  */
 PointLight::PointLight() {

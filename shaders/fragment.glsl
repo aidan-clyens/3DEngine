@@ -121,7 +121,7 @@ vec3 CalculateLighting(Light light, vec3 lightDir, float attenuation)
 
 vec3 CalculateDirectionalLight(Light light)
 {
-    return CalculateLighting(light, normalize(light.vector), 1.0);
+    return CalculateLighting(light, normalize(-light.vector), 1.0);
 }
 
 vec3 CalculatePointLight(Light light)
