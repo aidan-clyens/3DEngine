@@ -92,13 +92,13 @@ void Engine::add_object(Object3D *object) {
 
 /* set_directional_light
  */
-void Engine::set_directional_light(Light light) {
+void Engine::set_directional_light(DirectionalLight light) {
     m_renderer.set_directional_light(light);
 }
 
 /* add_light
  */
-void Engine::add_light(Light light) {
+void Engine::add_light(PointLight light) {
     m_renderer.add_light(light);
 }
 

@@ -11,6 +11,7 @@
 #include "Engine/utils/types.h"
 #include "Engine/Shader.h"
 #include "Engine/DepthTexture.h"
+#include "Engine/Light.h"
 
 // Forward declarations
 class Mesh;
@@ -35,8 +36,8 @@ class Renderer {
 
         void set_mouse_visible(bool value);
 
-        void set_directional_light(Light light);
-        void add_light(Light light);
+        void set_directional_light(DirectionalLight light);
+        void add_light(PointLight light);
 
         bool remove_light(int id);
 
@@ -70,8 +71,8 @@ class Renderer {
         DepthTexture m_depth_texture;
 
         // Lighting
-        Light m_directional_light;
-        std::vector<Light> m_lights;
+        DirectionalLight m_directional_light;
+        std::vector<PointLight> m_lights;
 
         // Debug
         unsigned int m_debug_quad_array_object;

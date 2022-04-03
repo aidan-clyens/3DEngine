@@ -8,6 +8,7 @@
 #include "Engine/Camera.h"
 #include "Engine/InputManager.h"
 #include "Engine/Physics.h"
+#include "Engine/Light.h"
 
 #include <string>
 #include <vector>
@@ -31,8 +32,8 @@ class Engine {
 
         void add_object(Object3D *object);
         
-        void set_directional_light(Light light);
-        void add_light(Light light);
+        void set_directional_light(DirectionalLight light);
+        void add_light(PointLight light);
 
         bool remove_light(int id);
 

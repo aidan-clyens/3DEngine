@@ -4,7 +4,6 @@
 #include "Engine/Camera.h"
 #include "Engine/Shader.h"
 
-
 /* Renderer
  */
 Renderer::Renderer(int width, int height, const std::string &path):
@@ -90,11 +89,8 @@ bool Renderer::init() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // Lighting
-    m_directional_light.type = LIGHT_DIRECTIONAL;
-    m_directional_light.vector = vec3(-0.2f, -1.0f, -0.3f);
-    m_directional_light.ambient = vec3(0.5, 0.5, 0.5);
-    m_directional_light.diffuse = vec3(0.5, 0.5, 0.5);
-    m_directional_light.specular = vec3(0.2, 0.2, 0.2);
+    m_directional_light.set_direction(vec3(-0.2f, -1.0f, -0.3f));
+    m_directional_light.set_lighting(vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2));
 
     // Debug
     float quad_vertices[] = {
@@ -134,7 +130,7 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
     float far_plane = 7.5f;
 
     mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-    mat4 light_view = glm::lookAt(m_directional_light.vector, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    mat4 light_view = glm::lookAt(m_directional_light.get_direction(), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     mat4 light_space = light_projection * light_view;
 
     // Pass light space matrix to shader
@@ -181,28 +177,29 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
                 m_object_shader.set_mat4("view", m_view);
                 m_object_shader.set_mat4("projection", m_projection);
 
-                // Pass lighting data to shader
                 m_object_shader.set_vec3("material.ambient", mesh->m_material.ambient);
                 m_object_shader.set_vec3("material.diffuse", mesh->m_material.diffuse);
                 m_object_shader.set_vec3("material.specular", mesh->m_material.specular);
                 m_object_shader.set_float("material.shininess", mesh->m_material.shininess);
 
-                m_object_shader.set_vec3("directionalLight.vector", m_directional_light.vector);
-                m_object_shader.set_vec3("directionalLight.ambient", m_directional_light.ambient);
-                m_object_shader.set_vec3("directionalLight.diffuse", m_directional_light.diffuse);
-                m_object_shader.set_vec3("directionalLight.specular", m_directional_light.specular);
+                // Pass directional lighting data to shader
+                m_object_shader.set_vec3("directionalLight.vector", m_directional_light.get_direction());
+                m_object_shader.set_vec3("directionalLight.ambient", m_directional_light.get_ambient());
+                m_object_shader.set_vec3("directionalLight.diffuse", m_directional_light.get_diffuse());
+                m_object_shader.set_vec3("directionalLight.specular", m_directional_light.get_specular());
 
+                // Pass point lighting data to shader
                 m_object_shader.set_int("numberPointLights", m_lights.size());
 
                 for (int i = 0; i < m_lights.size(); i++) {
                     std::string var_name = "pointLights[" + std::to_string(i) + "]";
-                    m_object_shader.set_vec3(var_name + ".vector", m_lights[i].vector);
-                    m_object_shader.set_vec3(var_name + ".ambient", m_lights[i].ambient);
-                    m_object_shader.set_vec3(var_name + ".diffuse", m_lights[i].diffuse);
-                    m_object_shader.set_vec3(var_name + ".specular", m_lights[i].specular);
-                    m_object_shader.set_float(var_name + ".constant", m_lights[i].constant);
-                    m_object_shader.set_float(var_name + ".linear", m_lights[i].linear);
-                    m_object_shader.set_float(var_name + ".quadratic", m_lights[i].quadratic);
+                    m_object_shader.set_vec3(var_name + ".vector", m_lights[i].get_position());
+                    m_object_shader.set_vec3(var_name + ".ambient", m_lights[i].get_ambient());
+                    m_object_shader.set_vec3(var_name + ".diffuse", m_lights[i].get_diffuse());
+                    m_object_shader.set_vec3(var_name + ".specular", m_lights[i].get_specular());
+                    m_object_shader.set_float(var_name + ".constant", m_lights[i].get_constant());
+                    m_object_shader.set_float(var_name + ".linear", m_lights[i].get_linear());
+                    m_object_shader.set_float(var_name + ".quadratic", m_lights[i].get_quadratic());
                 }
 
                 m_object_shader.set_vec3("viewPos", camera.m_position);
@@ -274,13 +271,13 @@ void Renderer::set_mouse_visible(bool value) {
 
 /* set_directional_light
  */
-void Renderer::set_directional_light(Light light) {
+void Renderer::set_directional_light(DirectionalLight light) {
     m_directional_light = light;
 }
 
 /* add_light
  */
-void Renderer::add_light(Light light) {
+void Renderer::add_light(PointLight light) {
     if (m_lights.size() < MAX_POINT_LIGHTS) {
         m_lights.push_back(light);
     }
@@ -294,7 +291,7 @@ void Renderer::add_light(Light light) {
 bool Renderer::remove_light(int id) {
     int found_index = -1;
     for (int i = 0; i < m_lights.size(); i++) {
-        if (m_lights[i].id == id) {
+        if (m_lights[i].get_id() == id) {
             found_index = i;
             break;
         }

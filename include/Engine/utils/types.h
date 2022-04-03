@@ -18,11 +18,6 @@ typedef enum {
     MATERIAL_TEXTURE_CUBE
 } eMaterialType;
 
-typedef enum {
-    LIGHT_DIRECTIONAL,
-    LIGHT_POINT
-} eLightType;
-
 // Structs
 typedef struct {
     vec3 ambient;
@@ -30,23 +25,6 @@ typedef struct {
     vec3 specular;
     float shininess;
 } Material;
-
-typedef struct {
-    int id;
-
-    eLightType type;
-
-    vec3 vector;
-
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-
-    // Used to calculate attenuation for point lights
-    float constant;
-    float linear;
-    float quadratic;
-} Light;
 
 /* vec2_key_hash
  */
