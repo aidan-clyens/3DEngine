@@ -1,5 +1,21 @@
 #include "Engine/Light.h"
 
+// Data
+// constant, linear, quadratic
+float point_light_constants[] = {
+    1.0, 	0.7, 	    1.8,
+    1.0, 	0.35, 	    0.44,
+    1.0, 	0.22, 	    0.20,
+    1.0, 	0.14, 	    0.07,
+    1.0, 	0.09, 	    0.032,
+    1.0, 	0.07, 	    0.017,
+    1.0, 	0.045, 	    0.0075,
+    1.0, 	0.027, 	    0.0028,
+    1.0, 	0.022, 	    0.0019,
+    1.0, 	0.014, 	    0.0007,
+    1.0, 	0.007, 	    0.0002,
+    1.0, 	0.0014, 	0.000007
+};
 
 /* Light
  */
@@ -91,6 +107,17 @@ void PointLight::set_position(const vec3 position) {
  */
 vec3 PointLight::get_position() const {
     return m_vector;
+}
+
+/* set_light_strength
+ */
+void PointLight::set_light_strength(ePointLightDistance distance) {
+    int index = (int)distance * 3;
+    float constant = point_light_constants[index];
+    float linear = point_light_constants[index + 1];
+    float quadratic = point_light_constants[index + 2];
+
+    this->set_light_strength(constant, linear, quadratic);
 }
 
 /* set_light_strength

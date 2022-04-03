@@ -4,6 +4,24 @@
 #include "Engine/utils/types.h"
 
 
+// Enums
+/* ePointLightDistance
+ */
+typedef enum {
+    LIGHT_DISTANCE_7,
+    LIGHT_DISTANCE_13,
+    LIGHT_DISTANCE_20,
+    LIGHT_DISTANCE_32,
+    LIGHT_DISTANCE_50,
+    LIGHT_DISTANCE_65,
+    LIGHT_DISTANCE_100,
+    LIGHT_DISTANCE_160,
+    LIGHT_DISTANCE_200,
+    LIGHT_DISTANCE_325,
+    LIGHT_DISTANCE_600,
+    LIGHT_DISTANCE_3250,
+} ePointLightDistance;
+
 /* Light
  */
 class Light {
@@ -52,6 +70,7 @@ class PointLight : public Light {
         void set_position(const vec3 position);
         vec3 get_position() const;
 
+        void set_light_strength(ePointLightDistance distance);
         void set_light_strength(float constant, float linear, float quadratic);
 
         float get_constant() const;

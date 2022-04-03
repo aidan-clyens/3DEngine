@@ -77,16 +77,19 @@ class Game : public Engine {
             m_texture_cube.load(faces);
 
             // Lighting
-            PointLight light;
-            light.set_position(vec3(-1.0, 0.0, 2.0));
-            light.set_lighting(vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2));
-            light.set_light_strength(1.0, 0.22, 0.20);
+            PointLight light1;
+            light1.set_position(vec3(-1.0, 0.0, 2.0));
+            light1.set_lighting(vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2));
+            light1.set_light_strength(LIGHT_DISTANCE_32);
 
-            this->add_light(light);
+            this->add_light(light1);
 
-            light.set_position(vec3(5.0, 0.0, -5.0));
+            PointLight light2;
+            light2.set_position(vec3(5.0, 0.0, -5.0));
+            light2.set_lighting(vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2));
+            light2.set_light_strength(LIGHT_DISTANCE_7);
 
-            this->add_light(light);
+            this->add_light(light2);
 
             Transform transform;
             transform.position = vec3(0, -2, 0);
