@@ -9,10 +9,12 @@ out VS_OUT {
     vec3 Normal;
     vec2 TexCoord;
     vec3 TexCoord3;
+    vec4 FragPosLightSpace;
 } vs_out;
 
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 lightSpaceMatrix;
 
 void main()
 {
@@ -21,4 +23,5 @@ void main()
     vs_out.Normal = aNormal;
     vs_out.TexCoord = aTexCoord;
     vs_out.TexCoord3 = aPos;
+    vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
 }

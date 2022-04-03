@@ -41,6 +41,8 @@ class Renderer {
 
         bool remove_light(int id);
 
+        void set_shadows_enabled(bool enable);
+
         GLFWwindow *get_window();
 
     private:
@@ -73,6 +75,8 @@ class Renderer {
         // Lighting
         DirectionalLight m_directional_light;
         std::vector<PointLight> m_lights;
+
+        bool m_enable_shadows;
 
         // Debug
         unsigned int m_debug_quad_array_object;

@@ -41,6 +41,8 @@ class Engine {
 
         void set_mouse_visible(bool value);
 
+        void set_shadows_enabled(bool enable);
+
         // To be implemented by user
         virtual void setup();
         virtual void update();

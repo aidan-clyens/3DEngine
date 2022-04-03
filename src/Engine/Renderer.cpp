@@ -4,6 +4,9 @@
 #include "Engine/Camera.h"
 #include "Engine/Shader.h"
 
+// #define DEBUG_SHADOW_MAP
+
+
 /* Renderer
  */
 Renderer::Renderer(int width, int height, const std::string &path):
@@ -12,7 +15,8 @@ m_height(height),
 m_path(path),
 m_model(mat4(1.0)),
 m_view(mat4(1.0)),
-m_projection(glm::perspective(glm::radians((float)45.0), (float)width / (float)height, (float)0.1, (float)100.0))
+m_projection(glm::perspective(glm::radians((float)45.0), (float)width / (float)height, (float)0.1, (float)100.0)),
+m_enable_shadows(false)
 {
 
 }
@@ -89,7 +93,7 @@ bool Renderer::init() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     // Lighting
-    m_directional_light.set_direction(vec3(-0.2f, -1.0f, -0.3f));
+    m_directional_light.set_position(vec3(-2.0f, 4.0f, -1.0f));
     m_directional_light.set_lighting(vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2));
 
     // Debug
@@ -127,37 +131,40 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
 {
     // Pass 1: Render to depth map
     float near_plane = 1.0f;
-    float far_plane = 7.5f;
+    float far_plane = 12.5f;
 
     mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-    mat4 light_view = glm::lookAt(m_directional_light.get_direction(), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+    mat4 light_view = glm::lookAt(m_directional_light.get_position(), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
     mat4 light_space = light_projection * light_view;
 
     // Pass light space matrix to shader
-    if (m_depth_shader.is_valid()) {
-        m_depth_shader.enable();
-        m_depth_shader.set_mat4("lightSpaceMatrix", light_space);
-    }
+    if (m_enable_shadows) {
+        if (m_depth_shader.is_valid()) {
+            m_depth_shader.enable();
+            m_depth_shader.set_mat4("lightSpaceMatrix", light_space);
+        }
 
-    glViewport(0, 0, DEPTH_TEXTURE_WIDTH, DEPTH_TEXTURE_HEIGHT);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_depth_map_buffer_object);
-    glClear(GL_DEPTH_BUFFER_BIT);
+        glViewport(0, 0, DEPTH_TEXTURE_WIDTH, DEPTH_TEXTURE_HEIGHT);
+        glBindFramebuffer(GL_FRAMEBUFFER, m_depth_map_buffer_object);
+        glClear(GL_DEPTH_BUFFER_BIT);
 
-    // Render each object
-    for (Mesh *mesh : meshes) {
-        // Render object
-        mesh->render();
-    }
+        // Render each object
+        for (Mesh *mesh : meshes) {
+            // Render object
+            mesh->render();
+        }
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    if (m_depth_shader.is_valid()) {
-        m_depth_shader.disable();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        if (m_depth_shader.is_valid()) {
+            m_depth_shader.disable();
+        }
     }
 
     // Pass 2: Render scene as normal
     glViewport(0, 0, m_width, m_height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+#ifndef DEBUG_SHADOW_MAP
     // Adjust view
     m_view = glm::lookAt(camera.m_position, camera.m_position + camera.m_front, camera.m_up);
 
@@ -173,9 +180,17 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
             if (m_object_shader.is_valid()) {
                 m_object_shader.enable();
 
+                if (m_enable_shadows) {
+                    m_depth_texture.enable(1);
+                }
+
                 // Pass matrices to shader
                 m_object_shader.set_mat4("view", m_view);
                 m_object_shader.set_mat4("projection", m_projection);
+
+                if (m_enable_shadows) {
+                    m_object_shader.set_mat4("lightSpaceMatrix", light_space);
+                }
 
                 m_object_shader.set_vec3("material.ambient", mesh->m_material.ambient);
                 m_object_shader.set_vec3("material.diffuse", mesh->m_material.diffuse);
@@ -183,7 +198,7 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
                 m_object_shader.set_float("material.shininess", mesh->m_material.shininess);
 
                 // Pass directional lighting data to shader
-                m_object_shader.set_vec3("directionalLight.vector", m_directional_light.get_direction());
+                m_object_shader.set_vec3("directionalLight.vector", m_directional_light.get_position());
                 m_object_shader.set_vec3("directionalLight.ambient", m_directional_light.get_ambient());
                 m_object_shader.set_vec3("directionalLight.diffuse", m_directional_light.get_diffuse());
                 m_object_shader.set_vec3("directionalLight.specular", m_directional_light.get_specular());
@@ -220,6 +235,12 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
                         m_object_shader.set_int("objectTextureCube", 0);
                         break;
                 }
+
+                m_object_shader.set_bool("enableShadows", m_enable_shadows);
+
+                if (m_enable_shadows) {
+                    m_object_shader.set_int("depthTexture", 1);
+                }
             }
         }
 
@@ -236,8 +257,28 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
             if (m_object_shader.is_valid()) {
                 m_object_shader.disable();
             }
+
+            if (m_enable_shadows) {
+                m_depth_texture.disable();
+            }
         }
     }
+#else
+    if (m_enable_shadows) {
+        m_debug_depth_shader.enable();
+        m_debug_depth_shader.set_float("near_plane", near_plane);
+        m_debug_depth_shader.set_float("far_plane", far_plane);
+
+        m_depth_texture.enable();
+
+        glBindVertexArray(m_debug_quad_array_object);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindVertexArray(0);
+
+        m_depth_texture.disable();
+        m_debug_depth_shader.disable();
+    }
+#endif
 
     // Swap buffer
     glfwSwapBuffers(p_window);
@@ -303,6 +344,12 @@ bool Renderer::remove_light(int id) {
     }
 
     return false;
+}
+
+/* set_shadows_enabled
+ */
+void Renderer::set_shadows_enabled(bool enable) {
+    m_enable_shadows = enable;
 }
 
 /* is_window_closed

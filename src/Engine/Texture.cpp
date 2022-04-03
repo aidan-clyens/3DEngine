@@ -46,8 +46,8 @@ Texture::~Texture() {
 
 /* enable
  */
-void Texture::enable() {
-    glActiveTexture(GL_TEXTURE0);
+void Texture::enable(int index) {
+    glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(m_texture_type, m_texture_id);
 }
 

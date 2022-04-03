@@ -23,7 +23,7 @@ class Texture {
         void load(const std::string &texture_path, unsigned int texture_type);
         void load(void *data, unsigned int texture_type);
 
-        void enable();
+        void enable(int index = 0);
         void disable();
 
         unsigned int get_texture_type() const;

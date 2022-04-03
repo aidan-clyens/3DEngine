@@ -28,6 +28,9 @@ class Light {
     public:
         Light();
 
+        void set_position(const vec3 position);
+        vec3 get_position() const;
+
         void set_lighting(const vec3 ambient, const vec3 diffuse, const vec3 specular);
 
         void set_ambient(const vec3 ambient);
@@ -55,10 +58,6 @@ class Light {
 class DirectionalLight : public Light {
     public:
         DirectionalLight();
-
-        void set_direction(const vec3 direction);
-
-        vec3 get_direction() const;
 };
 
 /* PointLight
@@ -66,9 +65,6 @@ class DirectionalLight : public Light {
 class PointLight : public Light {
     public:
         PointLight();
-
-        void set_position(const vec3 position);
-        vec3 get_position() const;
 
         void set_light_strength(ePointLightDistance distance);
         void set_light_strength(float constant, float linear, float quadratic);

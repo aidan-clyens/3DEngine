@@ -23,6 +23,18 @@ Light::Light() {
 
 }
 
+/* set_position
+ */
+void Light::set_position(const vec3 position) {
+    m_vector = position;
+}
+
+/* get_position
+ */
+vec3 Light::get_position() const {
+    return m_vector;
+}
+
 /* set_lighting
  */
 void Light::set_lighting(const vec3 ambient, const vec3 diffuse, const vec3 specular) {
@@ -79,34 +91,10 @@ DirectionalLight::DirectionalLight() {
 
 }
 
-/* set_direction
- */
-void DirectionalLight::set_direction(const vec3 direction) {
-    m_vector = direction;
-}
-
-/* get_direction
- */
-vec3 DirectionalLight::get_direction() const {
-    return m_vector;
-}
-
 /* PointLight
  */
 PointLight::PointLight() {
 
-}
-
-/* set_position
- */
-void PointLight::set_position(const vec3 position) {
-    m_vector = position;
-}
-
-/* get_position
- */
-vec3 PointLight::get_position() const {
-    return m_vector;
 }
 
 /* set_light_strength

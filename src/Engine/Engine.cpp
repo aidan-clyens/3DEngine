@@ -102,6 +102,8 @@ void Engine::add_light(PointLight light) {
     m_renderer.add_light(light);
 }
 
+/* remove_light
+ */
 bool Engine::remove_light(int id) {
     return m_renderer.remove_light(id);
 }
@@ -113,8 +115,16 @@ void Engine::set_camera(Camera *camera) {
     p_camera = camera;
 }
 
+/* set_mouse_visible
+ */
 void Engine::set_mouse_visible(bool value) {
     m_renderer.set_mouse_visible(value);
+}
+
+/* set_shadows_enabled
+ */
+void Engine::set_shadows_enabled(bool enable) {
+    m_renderer.set_shadows_enabled(enable);
 }
 
 /* setup

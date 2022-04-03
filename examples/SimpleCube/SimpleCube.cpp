@@ -65,6 +65,8 @@ class Game : public Engine {
 #ifdef USE_PLAYER_INPUT
             this->set_mouse_visible(false);
 #endif
+            this->set_shadows_enabled(true);
+
             p_camera->set_position(vec3(0, 0, 3));
 
             // Load textures
