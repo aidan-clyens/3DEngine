@@ -9,6 +9,7 @@
 #include "Engine/InputManager.h"
 #include "Engine/Physics.h"
 #include "Engine/Light.h"
+#include "Engine/DebugWindow.h"
 
 #include <string>
 #include <vector>
@@ -47,6 +48,7 @@ class Engine {
         virtual void setup();
         virtual void update();
 
+        void process_mouse_button(int button, int action, int mods);
         void process_mouse_input(double x, double y);
 
     protected:
@@ -59,6 +61,7 @@ class Engine {
         bool m_running;
 
     private:
+        void static _process_mouse_button(GLFWwindow *window, int button, int action, int mods);
         void static _process_mouse_input(GLFWwindow *window, double x, double y);
 
         Renderer m_renderer;

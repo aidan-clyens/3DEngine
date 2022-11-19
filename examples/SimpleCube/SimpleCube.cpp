@@ -7,6 +7,7 @@
 #include "Engine/TextureCubeMap.h"
 #include "Engine/Light.h"
 #include "Engine/ECS/Mesh.h"
+#include "Engine/utils/Timer.h"
 
 #include <iostream>
 
@@ -20,7 +21,7 @@
 #define BLUE vec3(0, 0.28, 1)
 
 
-// #define USE_PLAYER_INPUT
+static bool key_ready = true;
 
 
 // Class definitions
@@ -31,40 +32,45 @@ class Game : public Engine {
         /* process_mouse_input
          */
         void process_keyboard_input() {
-#ifdef USE_PLAYER_INPUT
             const float speed = 2.5 * m_delta_time;
 
-            if (p_input_manager->get_key(KEY_W) == KEY_PRESS) {
-                p_camera->translate_x(speed);
+            if (!m_mouse_enabled) {
+                if (p_input_manager->get_key(KEY_W) == KEY_PRESS) {
+                    p_camera->translate_x(speed);
+                }
+                if (p_input_manager->get_key(KEY_S) == KEY_PRESS) {
+                    p_camera->translate_x(-speed);
+                }
+                if (p_input_manager->get_key(KEY_A) == KEY_PRESS) {
+                    p_camera->translate_z(-speed);
+                }
+                if (p_input_manager->get_key(KEY_D) == KEY_PRESS) {
+                    p_camera->translate_z(speed);
+                }
+                if (p_input_manager->get_key(KEY_SPACE) == KEY_PRESS) {
+                    p_camera->translate_y(speed);
+                }
+                if (p_input_manager->get_key(KEY_LEFT_SHIFT) == KEY_PRESS) {
+                    p_camera->translate_y(-speed);
+                }
             }
-            if (p_input_manager->get_key(KEY_S) == KEY_PRESS) {
-                p_camera->translate_x(-speed);
-            }
-            if (p_input_manager->get_key(KEY_A) == KEY_PRESS) {
-                p_camera->translate_z(-speed);
-            }
-            if (p_input_manager->get_key(KEY_D) == KEY_PRESS) {
-                p_camera->translate_z(speed);
-            }
-            if (p_input_manager->get_key(KEY_SPACE) == KEY_PRESS) {
-                p_camera->translate_y(speed);
-            }
-            if (p_input_manager->get_key(KEY_LEFT_SHIFT) == KEY_PRESS) {
-                p_camera->translate_y(-speed);
-            }
-#endif
 
             if (p_input_manager->get_key(KEY_ESCAPE) == KEY_PRESS) {
-                m_running = false;
+                if (key_ready) {
+                    m_mouse_enabled = !m_mouse_enabled;
+                    this->set_mouse_visible(m_mouse_enabled);
+                    Timer([]() { key_ready = true; }, 100);
+                }
             }
         }
 
         /* setup
          */
         void setup() {
-#ifdef USE_PLAYER_INPUT
-            this->set_mouse_visible(false);
-#endif
+            m_mouse_enabled = false;
+            m_key_debounce = 0;
+
+            this->set_mouse_visible(m_mouse_enabled);
             this->set_shadows_enabled(true);
 
             p_camera->set_position(vec3(0, 0, 3));
@@ -127,14 +133,14 @@ class Game : public Engine {
         void update() {
             this->process_keyboard_input();
 
-#ifdef USE_PLAYER_INPUT
-            if (p_input_manager->is_mouse_updated()) {
-                vec2 mouse_pos = p_input_manager->get_mouse_position();
+            if (!m_mouse_enabled) {
+                if (p_input_manager->is_mouse_updated()) {
+                    vec2 mouse_pos = p_input_manager->get_mouse_position();
 
-                p_camera->set_mouse_offset(mouse_pos.x, mouse_pos.y);
-                p_input_manager->set_mouse_handled(true);
+                    p_camera->set_mouse_offset(mouse_pos.x, mouse_pos.y);
+                    p_input_manager->set_mouse_handled(true);
+                }
             }
-#endif
         }
 
         /* create_cube
@@ -192,6 +198,8 @@ class Game : public Engine {
     private:
         Texture2D m_texture_2d;
         TextureCubeMap m_texture_cube;
+
+        bool m_mouse_enabled;
 };
 
 /* main

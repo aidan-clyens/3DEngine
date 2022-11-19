@@ -39,6 +39,7 @@ bool Engine::init() {
     p_input_manager->set_render_window(m_renderer.get_window());
     p_input_manager->set_screen_dimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+    m_renderer.set_mouse_button_callback(this->_process_mouse_button);
     m_renderer.set_mouse_callback(this->_process_mouse_input);
 
     return true;
@@ -139,10 +140,23 @@ void Engine::update() {
 
 }
 
+/* process_mouse_button
+ */
+void Engine::process_mouse_button(int button, int action, int mods) {
+    DebugWindow::add_mouse_button_event(button, action);
+}
+
 /* process_mouse_input
  */
 void Engine::process_mouse_input(double x, double y) {
     p_input_manager->process_mouse_input(x, y);
+}
+
+/* _process_mouse_button
+ */
+void Engine::_process_mouse_button(GLFWwindow *window, int button, int action, int mods) {
+    Engine *engine = static_cast<Engine*>(glfwGetWindowUserPointer(window));
+    engine->process_mouse_button(button, action, mods);
 }
 
 /* _process_mouse_input

@@ -3,6 +3,7 @@
 #include "Engine/ECS/Mesh.h"
 #include "Engine/Camera.h"
 #include "Engine/Shader.h"
+#include "Engine/DebugWindow.h"
 
 // #define DEBUG_SHADOW_MAP
 
@@ -116,12 +117,17 @@ bool Renderer::init() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
 
+    // ImGui
+    DebugWindow::init(p_window);
+
     return true;
 }
 
 /* close
  */
 void Renderer::close() {
+    DebugWindow::close();
+
     glfwDestroyWindow(p_window);
     glfwTerminate();
 }
@@ -137,6 +143,8 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
     mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
     mat4 light_view = glm::lookAt(m_directional_light.get_position(), m_directional_light.get_origin(), vec3(0.0f, 1.0f, 0.0f));
     mat4 light_space = light_projection * light_view;
+
+    DebugWindow::create_window();
 
     // Pass light space matrix to shader
     if (m_enable_shadows) {
@@ -160,6 +168,8 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
             m_depth_shader.disable();
         }
     }
+
+    DebugWindow::render();
 
     // Pass 2: Render scene as normal
     glViewport(0, 0, m_width, m_height);
@@ -281,6 +291,8 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
     }
 #endif
 
+    DebugWindow::render_draw_data();
+
     // Swap buffer
     glfwSwapBuffers(p_window);
     glfwPollEvents();
@@ -292,6 +304,12 @@ void Renderer::set_key_callback(GLFWkeyfun callback) {
     // Configure input
     glfwSetKeyCallback(p_window, callback);
     glfwSetInputMode(p_window, GLFW_STICKY_KEYS, 1);
+}
+
+/* set_mouse_button_callback
+ */
+void Renderer::set_mouse_button_callback(GLFWmousebuttonfun callback) {
+    glfwSetMouseButtonCallback(p_window, callback);
 }
 
 /* set_mouse_callback
