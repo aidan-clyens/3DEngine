@@ -68,7 +68,6 @@ class Game : public Engine {
          */
         void setup() {
             m_mouse_enabled = false;
-            m_key_debounce = 0;
 
             this->set_mouse_visible(m_mouse_enabled);
             this->set_shadows_enabled(true);
