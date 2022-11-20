@@ -115,6 +115,12 @@ void Engine::set_background_color(vec3 color) {
     m_renderer.set_background_color(color);
 }
 
+/* set_skybox
+ */
+void Engine::set_skybox(Object3D *skybox) {
+    m_renderer.set_skybox(skybox);
+}
+
 /* set_camera
  */
 void Engine::set_camera(Camera *camera) {

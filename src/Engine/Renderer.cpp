@@ -85,6 +85,11 @@ bool Renderer::init() {
         std::cerr << "Debug depth shader failed to load" << std::endl;
     }
 
+    m_skybox_shader.load(m_path + "shaders/skybox_vertex.glsl", m_path + "shaders/skybox_fragment.glsl");
+    if (!m_skybox_shader.is_valid()) {
+        std::cerr << "Skybox shader failed to load" << std::endl;
+    }
+
     m_depth_texture.load();
 
     glBindFramebuffer(GL_FRAMEBUFFER, m_depth_map_buffer_object);
@@ -127,6 +132,9 @@ bool Renderer::init() {
  */
 void Renderer::close() {
     DebugWindow::close();
+
+    if (p_skybox != nullptr)
+        delete p_skybox;
 
     glfwDestroyWindow(p_window);
     glfwTerminate();
@@ -181,6 +189,33 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
 #ifndef DEBUG_SHADOW_MAP
     // Adjust view
     m_view = glm::lookAt(camera.m_position, camera.m_position + camera.m_front, camera.m_up);
+
+    // Render skybox
+    if (p_skybox != nullptr) {
+        if (p_skybox->has_component(COMP_MESH)) {
+            Mesh *skybox_mesh = (Mesh *)p_skybox->get_component(COMP_MESH);
+
+            if (m_skybox_shader.is_valid()) {
+                m_skybox_shader.enable();
+
+                mat4 view = mat4(mat3(m_view));
+
+                m_skybox_shader.set_mat4("view", view);
+                m_skybox_shader.set_mat4("projection", m_projection);
+                m_skybox_shader.set_int("skyboxTexture", 0);
+
+                glDepthMask(GL_FALSE);
+                glCullFace(GL_FRONT);
+
+                skybox_mesh->render();
+
+                glCullFace(GL_BACK);
+                glDepthMask(GL_TRUE);
+
+                m_skybox_shader.disable();
+            }
+        }
+    }
 
     // Render each object
     for (Mesh *mesh : meshes) {
@@ -373,6 +408,12 @@ bool Renderer::remove_light(int id) {
  */
 void Renderer::set_background_color(vec3 color) {
     m_background_color = color;
+}
+
+/* set_skybox
+ */
+void Renderer::set_skybox(Object3D *skybox) {
+    p_skybox = skybox;
 }
 
 /* set_shadows_enabled

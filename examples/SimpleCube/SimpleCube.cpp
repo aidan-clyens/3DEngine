@@ -88,6 +88,16 @@ class Game : public Engine {
             }
             m_texture_cube.load(faces);
 
+            // Load skybox texture
+            std::vector<std::string> skybox_faces;
+            skybox_faces.push_back("examples/SimpleCube/res/skybox/right.jpg");
+            skybox_faces.push_back("examples/SimpleCube/res/skybox/left.jpg");
+            skybox_faces.push_back("examples/SimpleCube/res/skybox/top.jpg");
+            skybox_faces.push_back("examples/SimpleCube/res/skybox/bottom.jpg");
+            skybox_faces.push_back("examples/SimpleCube/res/skybox/front.jpg");
+            skybox_faces.push_back("examples/SimpleCube/res/skybox/back.jpg");
+            m_skybox_texture.load(skybox_faces);
+
             // Lighting
             PointLight light1;
             light1.set_position(vec3(-1.0, 0.0, 2.0));
@@ -109,6 +119,9 @@ class Game : public Engine {
             transform.size = vec3(20, 1, 20);
 
             this->add_object(this->create_cube(transform, GREY, 4));
+
+            // Skybox
+            this->set_skybox(this->create_cube(Transform(), m_skybox_texture));
 
             // Cube 1
             transform.position = vec3(0, -1, -3);
@@ -202,6 +215,7 @@ class Game : public Engine {
     private:
         Texture2D m_texture_2d;
         TextureCubeMap m_texture_cube;
+        TextureCubeMap m_skybox_texture;
 
         bool m_mouse_enabled;
         bool m_debug_window_enabled;

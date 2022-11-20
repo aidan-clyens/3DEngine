@@ -39,6 +39,7 @@ class Engine {
         bool remove_light(int id);
 
         void set_background_color(vec3 color);
+        void set_skybox(Object3D *skybox);
 
         void set_camera(Camera *camera);
 

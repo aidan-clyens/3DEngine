@@ -12,6 +12,7 @@
 #include "Engine/Shader.h"
 #include "Engine/DepthTexture.h"
 #include "Engine/Light.h"
+#include "Engine/Object3D.h"
 
 // Forward declarations
 class Mesh;
@@ -43,6 +44,7 @@ class Renderer {
         bool remove_light(int id);
 
         void set_background_color(vec3 color);
+        void set_skybox(Object3D *skybox);
 
         void set_shadows_enabled(bool enable);
 
@@ -71,6 +73,7 @@ class Renderer {
 
         // Shader
         Shader m_object_shader;
+        Shader m_skybox_shader;
 
         // Depth map
         Shader m_depth_shader;
@@ -80,6 +83,9 @@ class Renderer {
         // Lighting
         DirectionalLight m_directional_light;
         std::vector<PointLight> m_lights;
+
+        // Skybox
+        Object3D *p_skybox;
 
         vec3 m_background_color;
 
