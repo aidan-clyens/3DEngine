@@ -109,6 +109,12 @@ bool Engine::remove_light(int id) {
     return m_renderer.remove_light(id);
 }
 
+/* set_background_color
+ */
+void Engine::set_background_color(vec3 color) {
+    m_renderer.set_background_color(color);
+}
+
 /* set_camera
  */
 void Engine::set_camera(Camera *camera) {

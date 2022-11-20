@@ -175,6 +175,7 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
 
     // Pass 2: Render scene as normal
     glViewport(0, 0, m_width, m_height);
+    glClearColor(m_background_color.x, m_background_color.y, m_background_color.z, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 #ifndef DEBUG_SHADOW_MAP
@@ -366,6 +367,12 @@ bool Renderer::remove_light(int id) {
     }
 
     return false;
+}
+
+/* set_background_color
+ */
+void Renderer::set_background_color(vec3 color) {
+    m_background_color = color;
 }
 
 /* set_shadows_enabled

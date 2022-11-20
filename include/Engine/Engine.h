@@ -38,6 +38,8 @@ class Engine {
 
         bool remove_light(int id);
 
+        void set_background_color(vec3 color);
+
         void set_camera(Camera *camera);
 
         void set_mouse_visible(bool value);

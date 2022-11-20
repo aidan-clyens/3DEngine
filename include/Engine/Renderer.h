@@ -42,6 +42,8 @@ class Renderer {
 
         bool remove_light(int id);
 
+        void set_background_color(vec3 color);
+
         void set_shadows_enabled(bool enable);
 
         void set_debug_window_enabled(bool enable);
@@ -78,6 +80,8 @@ class Renderer {
         // Lighting
         DirectionalLight m_directional_light;
         std::vector<PointLight> m_lights;
+
+        vec3 m_background_color;
 
         bool m_enable_shadows;
         bool m_enable_debug_window;

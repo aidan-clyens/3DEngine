@@ -19,7 +19,7 @@
 #define GREY vec3(0.4, 0.4, 0.4)
 #define ORANGE vec3(1, 0.5, 0.31)
 #define BLUE vec3(0, 0.28, 1)
-
+#define SKY_BLUE vec3(0.529, 0.808, 0.922)
 
 static bool key_ready = true;
 
@@ -75,6 +75,7 @@ class Game : public Engine {
             this->set_mouse_visible(m_mouse_enabled);
             this->set_debug_window_enabled(m_debug_window_enabled);
             this->set_shadows_enabled(true);
+            this->set_background_color(SKY_BLUE);
 
             p_camera->set_position(vec3(0, 0, 3));
 
