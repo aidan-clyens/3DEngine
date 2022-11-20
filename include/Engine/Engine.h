@@ -44,6 +44,8 @@ class Engine {
 
         void set_shadows_enabled(bool enable);
 
+        void set_debug_window_enabled(bool enable);
+
         // To be implemented by user
         virtual void setup();
         virtual void update();

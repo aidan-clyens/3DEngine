@@ -44,6 +44,8 @@ class Renderer {
 
         void set_shadows_enabled(bool enable);
 
+        void set_debug_window_enabled(bool enable);
+
         GLFWwindow *get_window();
 
     private:
@@ -78,6 +80,7 @@ class Renderer {
         std::vector<PointLight> m_lights;
 
         bool m_enable_shadows;
+        bool m_enable_debug_window;
 
         // Debug
         unsigned int m_debug_quad_array_object;

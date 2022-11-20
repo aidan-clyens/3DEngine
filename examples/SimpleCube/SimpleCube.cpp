@@ -58,7 +58,9 @@ class Game : public Engine {
             if (p_input_manager->get_key(KEY_ESCAPE) == KEY_PRESS) {
                 if (key_ready) {
                     m_mouse_enabled = !m_mouse_enabled;
+                    m_debug_window_enabled = !m_debug_window_enabled;
                     this->set_mouse_visible(m_mouse_enabled);
+                    this->set_debug_window_enabled(m_debug_window_enabled);
                     Timer([]() { key_ready = true; }, 100);
                 }
             }
@@ -68,8 +70,10 @@ class Game : public Engine {
          */
         void setup() {
             m_mouse_enabled = false;
+            m_debug_window_enabled = false;
 
             this->set_mouse_visible(m_mouse_enabled);
+            this->set_debug_window_enabled(m_debug_window_enabled);
             this->set_shadows_enabled(true);
 
             p_camera->set_position(vec3(0, 0, 3));
@@ -199,6 +203,7 @@ class Game : public Engine {
         TextureCubeMap m_texture_cube;
 
         bool m_mouse_enabled;
+        bool m_debug_window_enabled;
 };
 
 /* main

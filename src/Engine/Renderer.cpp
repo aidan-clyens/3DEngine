@@ -144,7 +144,8 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
     mat4 light_view = glm::lookAt(m_directional_light.get_position(), m_directional_light.get_origin(), vec3(0.0f, 1.0f, 0.0f));
     mat4 light_space = light_projection * light_view;
 
-    DebugWindow::create_window();
+    if (m_enable_debug_window)
+        DebugWindow::create_window();
 
     // Pass light space matrix to shader
     if (m_enable_shadows) {
@@ -169,7 +170,8 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
         }
     }
 
-    DebugWindow::render();
+    if (m_enable_debug_window)
+        DebugWindow::render();
 
     // Pass 2: Render scene as normal
     glViewport(0, 0, m_width, m_height);
@@ -291,7 +293,8 @@ void Renderer::render(std::vector<Mesh *> &meshes, Camera &camera)
     }
 #endif
 
-    DebugWindow::render_draw_data();
+    if (m_enable_debug_window)
+        DebugWindow::render_draw_data();
 
     // Swap buffer
     glfwSwapBuffers(p_window);
@@ -369,6 +372,12 @@ bool Renderer::remove_light(int id) {
  */
 void Renderer::set_shadows_enabled(bool enable) {
     m_enable_shadows = enable;
+}
+
+/* set_debug_window_enabled
+ */
+void Renderer::set_debug_window_enabled(bool enable) {
+    m_enable_debug_window = enable;
 }
 
 /* is_window_closed

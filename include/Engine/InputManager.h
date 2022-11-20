@@ -22,6 +22,7 @@ typedef enum {
     KEY_SPACE       = GLFW_KEY_SPACE,
     KEY_LEFT_SHIFT  = GLFW_KEY_LEFT_SHIFT,
     KEY_ESCAPE      = GLFW_KEY_ESCAPE,
+    KEY_TAB         = GLFW_KEY_TAB,
     KEY_NOT_IMPLEMENTED
 } eKey;
 

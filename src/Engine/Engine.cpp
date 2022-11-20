@@ -128,6 +128,12 @@ void Engine::set_shadows_enabled(bool enable) {
     m_renderer.set_shadows_enabled(enable);
 }
 
+/* set_debug_window_enabled
+ */
+void Engine::set_debug_window_enabled(bool enable) {
+    m_renderer.set_debug_window_enabled(enable);
+}
+
 /* setup
  */
 void Engine::setup() {
