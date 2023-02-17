@@ -25,7 +25,7 @@ m_enable_shadows(false)
 
 /* init
  */
-bool Renderer::init() {
+bool Renderer::init(Engine *engine) {
     if (!glfwInit()) {
         std::cerr << "Failed to init GLFW" << std::endl;
         return false;
@@ -124,7 +124,7 @@ bool Renderer::init() {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
 
     // ImGui
-    DebugWindow::init(p_window);
+    DebugWindow::init(engine);
 
     return true;
 }

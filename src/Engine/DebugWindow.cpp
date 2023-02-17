@@ -1,9 +1,9 @@
 #include "Engine/DebugWindow.h"
-
+#include "Engine/Engine.h"
 
 /* init
  */
-void DebugWindow::init(GLFWwindow *window) {
+void DebugWindow::init(Engine *engine) {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -12,7 +12,7 @@ void DebugWindow::init(GLFWwindow *window) {
     ImGui::StyleColorsDark();
 
     const char *glsl_version = "#version 330";
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(engine->get_renderer()->get_window(), true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 }
 

@@ -15,9 +15,9 @@
 #include "Engine/Object3D.h"
 
 // Forward declarations
+class Engine;
 class Mesh;
 class Camera;
-
 
 /* Renderer
  */
@@ -25,7 +25,7 @@ class Renderer {
     public:
         Renderer(int width, int height, const std::string &path);
 
-        bool init();
+        bool init(Engine *engine);
         void close();
 
         void render(std::vector<Mesh*> &meshes, Camera &camera);

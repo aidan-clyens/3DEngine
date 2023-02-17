@@ -56,6 +56,8 @@ class Engine {
         void process_mouse_button(int button, int action, int mods);
         void process_mouse_input(double x, double y);
 
+        Renderer *get_renderer();
+
     protected:
         InputManager *p_input_manager;
         Physics m_physics;

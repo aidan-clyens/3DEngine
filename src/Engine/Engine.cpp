@@ -28,7 +28,7 @@ Engine::~Engine() {
 /* init
  */
 bool Engine::init() {
-    if (!m_renderer.init()) {
+    if (!m_renderer.init(this)) {
         std::cerr << "Failed to init Renderer" << std::endl;
         m_renderer.close();
         return false;
@@ -168,6 +168,12 @@ void Engine::process_mouse_button(int button, int action, int mods) {
  */
 void Engine::process_mouse_input(double x, double y) {
     p_input_manager->process_mouse_input(x, y);
+}
+
+/* get_renderer
+ */
+Renderer *Engine::get_renderer() {
+    return &m_renderer;
 }
 
 /* _process_mouse_button

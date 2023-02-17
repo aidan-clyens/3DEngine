@@ -5,12 +5,12 @@
 #include "imgui_impl_opengl3.h"
 
 
-class GLFWwindow;
+class Engine;
 
 
 class DebugWindow {
     public:
-        static void init(GLFWwindow *window);
+        static void init(Engine *engine);
         static void close();
 
         static void create_window();
