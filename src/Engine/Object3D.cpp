@@ -54,6 +54,13 @@ void Object3D::set_rotation(vec3 rotation) {
     this->set_transform(m_transform);
 }
 
+/* set_size
+ */
+void Object3D::set_size(vec3 size) {
+    m_transform.size = size;
+    this->set_transform(m_transform);
+}
+
 /* set_transform
  */
 void Object3D::set_transform(Transform transform) {

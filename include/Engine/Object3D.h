@@ -20,6 +20,7 @@ class Object3D : public Entity {
 
         void set_position(vec3 position);
         void set_rotation(vec3 rotation);
+        void set_size(vec3 size);
         void set_transform(Transform transform);
 
     protected:
