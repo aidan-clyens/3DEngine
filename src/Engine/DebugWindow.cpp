@@ -120,19 +120,19 @@ void DebugWindow::show_transform(Object3D *object) {
         ImGui::TableNextColumn();
 
         ImGui::PushID("position x");
-        ImGui::InputScalar("", ImGuiDataType_Float, &position.x, NULL);
+        ImGui::DragScalar("", ImGuiDataType_Float, &position.x, 0.01f, NULL, NULL, "%.2f");
         ImGui::PopID();
 
         ImGui::TableNextColumn();
 
         ImGui::PushID("position y");
-        ImGui::InputScalar("", ImGuiDataType_Float, &position.y, NULL);
+        ImGui::DragScalar("", ImGuiDataType_Float, &position.y, 0.01f, NULL, NULL, "%.2f");
         ImGui::PopID();
 
         ImGui::TableNextColumn();
 
         ImGui::PushID("position z");
-        ImGui::InputScalar("", ImGuiDataType_Float, &position.z, NULL);
+        ImGui::DragScalar("", ImGuiDataType_Float, &position.z, 0.01f, NULL, NULL, "%.2f");
         ImGui::PopID();
 
         // Rotation
@@ -142,19 +142,19 @@ void DebugWindow::show_transform(Object3D *object) {
         ImGui::TableNextColumn();
 
         ImGui::PushID("rotation x");
-        ImGui::InputScalar("", ImGuiDataType_Float, &rotation.x, NULL);
+        ImGui::DragScalar("", ImGuiDataType_Float, &rotation.x, 1.0f, NULL, NULL, "%.2f");
         ImGui::PopID();
 
         ImGui::TableNextColumn();
 
         ImGui::PushID("rotation y");
-        ImGui::InputScalar("", ImGuiDataType_Float, &rotation.y, NULL);
+        ImGui::DragScalar("", ImGuiDataType_Float, &rotation.y, 1.0f, NULL, NULL, "%.2f");
         ImGui::PopID();
 
         ImGui::TableNextColumn();
 
         ImGui::PushID("rotation z");
-        ImGui::InputScalar("", ImGuiDataType_Float, &rotation.z, NULL);
+        ImGui::DragScalar("", ImGuiDataType_Float, &rotation.z, 1.0f, NULL, NULL, "%.2f");
         ImGui::PopID();
 
         // Size
@@ -164,19 +164,19 @@ void DebugWindow::show_transform(Object3D *object) {
         ImGui::TableNextColumn();
 
         ImGui::PushID("size x");
-        ImGui::InputScalar("", ImGuiDataType_Float, &size.x, NULL);
+        ImGui::DragScalar("", ImGuiDataType_Float, &size.x, 0.01f, NULL, NULL, "%.2f");
         ImGui::PopID();
 
         ImGui::TableNextColumn();
 
         ImGui::PushID("size y");
-        ImGui::InputScalar("", ImGuiDataType_Float, &size.y, NULL);
+        ImGui::DragScalar("", ImGuiDataType_Float, &size.y, 0.01f, NULL, NULL, "%.2f");
         ImGui::PopID();
 
         ImGui::TableNextColumn();
 
         ImGui::PushID("size z");
-        ImGui::InputScalar("", ImGuiDataType_Float, &size.z, NULL);
+        ImGui::DragScalar("", ImGuiDataType_Float, &size.z, 0.01f, NULL, NULL, "%.2f");
         ImGui::PopID();
 
         ImGui::EndTable();
