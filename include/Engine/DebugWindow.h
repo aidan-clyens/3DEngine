@@ -7,6 +7,7 @@
 
 class Engine;
 class Object3D;
+class Mesh;
 
 
 class DebugWindow {
@@ -26,6 +27,8 @@ class DebugWindow {
         static void show_window(bool *open);
         static void show_objects();
         static void show_transform(Object3D *object);
+        static void show_components(Object3D *object);
+        static void show_material(Mesh *mesh);
 
         static Engine *p_engine;
 };

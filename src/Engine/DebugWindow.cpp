@@ -1,5 +1,7 @@
 #include "Engine/DebugWindow.h"
 #include "Engine/Engine.h"
+#include "Engine/ECS/Mesh.h"
+
 
 Engine *DebugWindow::p_engine = nullptr;
 
@@ -89,7 +91,6 @@ void DebugWindow::show_objects() {
     std::vector<Object3D*> objects;
     p_engine->get_objects(objects);
 
-
     ImGui::PushID("show objects");
     for (int i = 0; i < objects.size(); i++) {
         ImGui::PushID(i);
@@ -97,6 +98,9 @@ void DebugWindow::show_objects() {
 
         // Transform
         DebugWindow::show_transform(objects[i]);
+
+        // Components
+        DebugWindow::show_components(objects[i]);
 
         ImGui::Separator();
         ImGui::PopID();
@@ -185,4 +189,90 @@ void DebugWindow::show_transform(Object3D *object) {
     object->set_position(position);
     object->set_rotation(rotation);
     object->set_size(size);
+}
+
+/* show_components
+ */
+void DebugWindow::show_components(Object3D *object) {
+    // Mesh
+    if (object->has_component(COMP_MESH)) {
+        Mesh *mesh = (Mesh*)object->get_component(COMP_MESH);
+
+        ImGui::Text("Mesh");
+
+        // Material
+        DebugWindow::show_material(mesh);
+    }
+
+    // Rigidbody
+    if (object->has_component(COMP_RIGIDBODY)) {
+        ImGui::Text("Rigidbody");
+    }
+
+    // Camera
+    if (object->has_component(COMP_CAMERA)) {
+        ImGui::Text("Camera");
+    }
+}
+
+/* show_material
+ */
+void DebugWindow::show_material(Mesh *mesh) {
+    ImGui::Text("Mesh Type: ");
+    ImGui::SameLine();
+
+    switch (mesh->get_material_type()) {
+        case MATERIAL_COLOR:
+            ImGui::Text("Colour");
+            break;
+        case MATERIAL_TEXTURE_2D:
+            ImGui::Text("Texture 2D");
+            break;
+        case MATERIAL_TEXTURE_CUBE:
+            ImGui::Text("Texture Cube");
+            break;
+        default:
+            break;
+    }
+
+    Material material = mesh->get_material();
+
+    ImGuiColorEditFlags misc_flags = 0;
+    ImVec4 ambient = ImVec4(material.ambient.x, material.ambient.y, material.ambient.z, 1);
+    ImVec4 diffuse = ImVec4(material.diffuse.x, material.diffuse.y, material.diffuse.z, 1);
+    ImVec4 specular = ImVec4(material.specular.x, material.specular.y, material.specular.z, 1);
+
+    ImGui::Text("Ambient");
+    ImGui::SameLine();
+
+    ImGui::PushID("ambient");
+    ImGui::ColorEdit3("", (float *)&ambient, misc_flags);
+    ImGui::PopID();
+
+    ImGui::Text("Diffuse");
+    ImGui::SameLine();
+
+    ImGui::PushID("diffuse");
+    ImGui::ColorEdit3("", (float *)&diffuse, misc_flags);
+    ImGui::PopID();
+
+    ImGui::Text("Specular");
+    ImGui::SameLine();
+
+    ImGui::PushID("specular");
+    ImGui::ColorEdit3("", (float *)&specular, misc_flags);
+    ImGui::PopID();
+
+    ImGui::Text("Shininess");
+    ImGui::SameLine();
+
+    ImGui::PushID("shininess");
+    ImGui::DragScalar("", ImGuiDataType_Float, &material.shininess, 0.01f, NULL, NULL, "%.2f");
+    ImGui::PopID();
+
+    material.ambient = vec3(ambient.x, ambient.y, ambient.z);
+    material.diffuse = vec3(diffuse.x, diffuse.y, diffuse.z);
+    material.specular = vec3(specular.x, specular.y, specular.z);
+
+    mesh->set_material(material);
 }
