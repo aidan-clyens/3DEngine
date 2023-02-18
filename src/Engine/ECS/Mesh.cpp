@@ -151,6 +151,12 @@ void Mesh::set_material(Material material) {
     m_material = material;
 }
 
+/* get_material
+ */
+Material Mesh::get_material() const {
+    return m_material;
+}
+
 /* has_shader
  */
 bool Mesh::has_shader() const {
