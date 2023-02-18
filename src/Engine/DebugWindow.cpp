@@ -77,13 +77,112 @@ void DebugWindow::show_window(bool *open) {
 
     // Objects
     if (ImGui::CollapsingHeader("Objects")) {
-        std::vector<Object3D*> objects;
-        p_engine->get_objects(objects);
-
-        for (int i = 0; i < objects.size(); i++) {
-            ImGui::Text(std::to_string(i).c_str());
-        }
+        DebugWindow::show_objects();
     }
 
     ImGui::End();
+}
+
+/* show_objects
+ */
+void DebugWindow::show_objects() {
+    std::vector<Object3D*> objects;
+    p_engine->get_objects(objects);
+
+
+    ImGui::PushID("show objects");
+    for (int i = 0; i < objects.size(); i++) {
+        ImGui::PushID(i);
+        ImGui::Text("Object %d", i);
+
+        // Transform
+        DebugWindow::show_transform(objects[i]);
+
+        ImGui::Separator();
+        ImGui::PopID();
+    }
+    ImGui::PopID();
+}
+
+/* show_transform
+ */
+void DebugWindow::show_transform(Object3D *object) {
+    // Transform
+    vec3 position = object->get_position();
+    vec3 rotation = object->get_rotation();
+    vec3 size = object->get_size();
+
+    if (ImGui::BeginTable("Transform", 4)) {
+        // Position
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::Text("Position");
+        ImGui::TableNextColumn();
+
+        ImGui::PushID("position x");
+        ImGui::InputScalar("", ImGuiDataType_Float, &position.x, NULL);
+        ImGui::PopID();
+
+        ImGui::TableNextColumn();
+
+        ImGui::PushID("position y");
+        ImGui::InputScalar("", ImGuiDataType_Float, &position.y, NULL);
+        ImGui::PopID();
+
+        ImGui::TableNextColumn();
+
+        ImGui::PushID("position z");
+        ImGui::InputScalar("", ImGuiDataType_Float, &position.z, NULL);
+        ImGui::PopID();
+
+        // Rotation
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::Text("Rotation");
+        ImGui::TableNextColumn();
+
+        ImGui::PushID("rotation x");
+        ImGui::InputScalar("", ImGuiDataType_Float, &rotation.x, NULL);
+        ImGui::PopID();
+
+        ImGui::TableNextColumn();
+
+        ImGui::PushID("rotation y");
+        ImGui::InputScalar("", ImGuiDataType_Float, &rotation.y, NULL);
+        ImGui::PopID();
+
+        ImGui::TableNextColumn();
+
+        ImGui::PushID("rotation z");
+        ImGui::InputScalar("", ImGuiDataType_Float, &rotation.z, NULL);
+        ImGui::PopID();
+
+        // Size
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::Text("Size");
+        ImGui::TableNextColumn();
+
+        ImGui::PushID("size x");
+        ImGui::InputScalar("", ImGuiDataType_Float, &size.x, NULL);
+        ImGui::PopID();
+
+        ImGui::TableNextColumn();
+
+        ImGui::PushID("size y");
+        ImGui::InputScalar("", ImGuiDataType_Float, &size.y, NULL);
+        ImGui::PopID();
+
+        ImGui::TableNextColumn();
+
+        ImGui::PushID("size z");
+        ImGui::InputScalar("", ImGuiDataType_Float, &size.z, NULL);
+        ImGui::PopID();
+
+        ImGui::EndTable();
+    }
+
+    object->set_position(position);
+    object->set_rotation(rotation);
+    object->set_size(size);
 }

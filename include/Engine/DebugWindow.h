@@ -6,6 +6,7 @@
 
 
 class Engine;
+class Object3D;
 
 
 class DebugWindow {
@@ -23,6 +24,8 @@ class DebugWindow {
 
     private:
         static void show_window(bool *open);
+        static void show_objects();
+        static void show_transform(Object3D *object);
 
         static Engine *p_engine;
 };
