@@ -1,9 +1,13 @@
 #include "Engine/DebugWindow.h"
 #include "Engine/Engine.h"
 
+Engine *DebugWindow::p_engine = nullptr;
+
 /* init
  */
 void DebugWindow::init(Engine *engine) {
+    p_engine = engine;
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -31,8 +35,9 @@ void DebugWindow::create_window() {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    bool show_demo_window = true;
-    ImGui::ShowDemoWindow(&show_demo_window);
+    bool show_window = true;
+    // ImGui::ShowDemoWindow(&show_window);
+    DebugWindow::show_window(&show_window);
 }
 
 /* render
@@ -59,4 +64,26 @@ void DebugWindow::add_mouse_button_event(int button, int action) {
 bool DebugWindow::want_capture_mouse() {
     ImGuiIO &io = ImGui::GetIO();
     return io.WantCaptureMouse;
+}
+
+/* show_window
+ */
+void DebugWindow::show_window(bool *open) {
+    ImGuiWindowFlags window_flags = 0;
+    if (!ImGui::Begin("3D Engine", open, window_flags)) {
+        ImGui::End();
+        return;
+    }
+
+    // Objects
+    if (ImGui::CollapsingHeader("Objects")) {
+        std::vector<Object3D*> objects;
+        p_engine->get_objects(objects);
+
+        for (int i = 0; i < objects.size(); i++) {
+            ImGui::Text(std::to_string(i).c_str());
+        }
+    }
+
+    ImGui::End();
 }

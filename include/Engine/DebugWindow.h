@@ -20,4 +20,9 @@ class DebugWindow {
         static void add_mouse_button_event(int button, int action);
 
         static bool want_capture_mouse();
+
+    private:
+        static void show_window(bool *open);
+
+        static Engine *p_engine;
 };

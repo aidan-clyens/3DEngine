@@ -91,6 +91,12 @@ void Engine::add_object(Object3D *object) {
     }
 }
 
+/* get_objects
+ */
+void Engine::get_objects(std::vector<Object3D *> &objects) {
+    objects = m_objects;
+}
+
 /* set_directional_light
  */
 void Engine::set_directional_light(DirectionalLight light) {

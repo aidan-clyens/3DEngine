@@ -32,7 +32,8 @@ class Engine {
         void cleanup();
 
         void add_object(Object3D *object);
-        
+        void get_objects(std::vector<Object3D*> &objects);
+
         void set_directional_light(DirectionalLight light);
         void add_light(PointLight light);
 
