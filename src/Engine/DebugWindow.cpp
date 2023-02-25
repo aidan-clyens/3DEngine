@@ -1,6 +1,10 @@
 #include "Engine/DebugWindow.h"
 #include "Engine/Engine.h"
 #include "Engine/ECS/Mesh.h"
+#include "Engine/CubeMesh.h"
+
+
+#define BUTTON_SIZE ImVec2(80, 30)
 
 
 Engine *DebugWindow::p_engine = nullptr;
@@ -80,6 +84,10 @@ void DebugWindow::show_window(bool *open) {
     // Objects
     if (ImGui::CollapsingHeader("Objects")) {
         DebugWindow::show_objects();
+
+        if (ImGui::Button("New Object", BUTTON_SIZE)) {
+            p_engine->add_object(new Object3D());
+        }
     }
 
     ImGui::End();
@@ -202,6 +210,13 @@ void DebugWindow::show_components(Object3D *object) {
 
         // Material
         DebugWindow::show_material(mesh);
+    }
+    else {
+        if (ImGui::Button("New Mesh", BUTTON_SIZE)) {
+            object->add_component(COMP_MESH, new CubeMesh());
+            CubeMesh *mesh = (CubeMesh *)object->get_component(COMP_MESH);
+            mesh->set_transform(object->get_transform());
+        }
     }
 
     // Rigidbody
