@@ -10,6 +10,7 @@
  */
 class Object3D : public Entity {
     public:
+        Object3D();
         Object3D(vec3 pos, vec3 rotation, vec3 size);
         virtual ~Object3D();
 

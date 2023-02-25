@@ -3,6 +3,15 @@
 
 /* Object3D
  */
+Object3D::Object3D() {
+    // Initialize transform
+    m_transform.position = vec3(0.0f, 0.0f, 0.0f);
+    m_transform.rotation = vec3(0.0f, 0.0f, 0.0f);
+    m_transform.size = vec3(1.0f, 1.0f, 1.0f);
+}
+
+/* Object3D
+ */
 Object3D::Object3D(vec3 pos, vec3 rotation, vec3 size) {
     // Initialize transform
     m_transform.position = pos;
