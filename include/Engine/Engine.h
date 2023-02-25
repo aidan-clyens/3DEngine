@@ -2,6 +2,7 @@
 
 // Includes
 #include "Engine/utils/types.h"
+#include "Engine/ECS/ECS.h"
 #include "Engine/ECS/Mesh.h"
 #include "Engine/Renderer.h"
 #include "Engine/Object3D.h"
@@ -14,6 +15,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 // Defines
 #define SCREEN_WIDTH 1600
@@ -21,7 +23,7 @@
 
 /* Engine
  */
-class Engine {
+class Engine : public EntityManager {
     public:
         Engine();
         Engine(const std::string &path);
@@ -58,6 +60,8 @@ class Engine {
         void process_mouse_input(double x, double y);
 
         Renderer *get_renderer();
+
+        void handle_add_component(Entity *entity, Component *component, eComponentType type);
 
     protected:
         InputManager *p_input_manager;

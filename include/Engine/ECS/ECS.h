@@ -19,10 +19,20 @@ typedef struct {
     vec3 size;
 } Transform;
 
+// Forward Declarations
+class Entity;
+
 /* Component
  */
 class Component {
 
+};
+
+/* EntityManager
+ */
+class EntityManager {
+    public:
+        virtual void handle_add_component(Entity *entity, Component *component, eComponentType type) = 0;
 };
 
 // Typedefs
@@ -41,6 +51,9 @@ class Entity {
 
         bool has_component(int id);
 
+        void assign_entity_manager(EntityManager *manager);
+
     private:
+        EntityManager *p_entity_manager;
         ComponentMap m_components;
 };

@@ -80,6 +80,7 @@ void Engine::cleanup() {
 /* add_object
  */
 void Engine::add_object(Object3D *object) {
+    object->assign_entity_manager(this);
     m_objects.push_back(object);
 
     if (object->has_component(COMP_MESH)) {
@@ -180,6 +181,29 @@ void Engine::process_mouse_input(double x, double y) {
  */
 Renderer *Engine::get_renderer() {
     return &m_renderer;
+}
+
+/* handle_add_component
+ */
+void Engine::handle_add_component(Entity *entity, Component *component, eComponentType type) {
+    if (entity->has_component(type)) {
+        switch (type) {
+            case COMP_MESH: {
+                Mesh *mesh = (Mesh*)entity->get_component(type);
+                if (std::find(m_meshes.begin(), m_meshes.end(), mesh) == m_meshes.end()) {
+                    m_meshes.push_back(mesh);
+                }
+                break;
+            }
+            case COMP_RIGIDBODY: {
+                Rigidbody *rigidbody = (Rigidbody *)entity->get_component(type);
+                m_physics.add_rigid_body(rigidbody);
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }
 
 /* _process_mouse_button
