@@ -5,7 +5,7 @@
 #include "Engine/Light.h"
 
 
-#define BUTTON_SIZE ImVec2(80, 30)
+#define BUTTON_SIZE ImVec2(100, 25)
 
 
 Engine *DebugWindow::p_engine = nullptr;
@@ -258,6 +258,10 @@ void DebugWindow::show_components(Object3D *object) {
 
         // Material
         DebugWindow::show_material(mesh);
+
+        if (ImGui::Button("Delete Mesh", BUTTON_SIZE)) {
+            object->remove_component(COMP_MESH);
+        }
     }
     else {
         if (ImGui::Button("New Mesh", BUTTON_SIZE)) {

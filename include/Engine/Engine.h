@@ -64,6 +64,7 @@ class Engine : public EntityManager {
         Renderer *get_renderer();
 
         void handle_add_component(Entity *entity, Component *component, eComponentType type);
+        void handle_remove_component(Entity *entity, Component *component, eComponentType type);
 
     protected:
         InputManager *p_input_manager;

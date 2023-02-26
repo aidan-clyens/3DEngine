@@ -33,6 +33,7 @@ class Component {
 class EntityManager {
     public:
         virtual void handle_add_component(Entity *entity, Component *component, eComponentType type) = 0;
+        virtual void handle_remove_component(Entity *entity, Component *component, eComponentType type) = 0;
 };
 
 // Typedefs
@@ -47,6 +48,7 @@ class Entity {
         virtual ~Entity();
 
         void add_component(int id, Component *component);
+        void remove_component(int id);
         Component *get_component(int id);
 
         bool has_component(int id);

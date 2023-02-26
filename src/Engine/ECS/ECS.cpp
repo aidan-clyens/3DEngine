@@ -24,6 +24,17 @@ void Entity::add_component(int id, Component *component) {
     }
 }
 
+/* remove_component
+ */
+void Entity::remove_component(int id) {
+    if (this->has_component(id)) {
+        if (p_entity_manager != nullptr) {
+            p_entity_manager->handle_remove_component(this, m_components[id], (eComponentType)id);
+        }
+        m_components.erase(id);
+    }
+}
+
 /* get_component
  */
 Component *Entity::get_component(int id) {

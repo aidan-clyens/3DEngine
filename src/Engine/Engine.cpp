@@ -218,6 +218,30 @@ void Engine::handle_add_component(Entity *entity, Component *component, eCompone
     }
 }
 
+/* handle_add_component
+ */
+void Engine::handle_remove_component(Entity *entity, Component *component, eComponentType type) {
+    if (entity->has_component(type)) {
+        switch (type) {
+            case COMP_MESH: {
+                Mesh *mesh = (Mesh*)entity->get_component(type);
+                auto it = std::find(m_meshes.begin(), m_meshes.end(), mesh);
+                if (it != m_meshes.end()) {
+                    m_meshes.erase(it);
+                }
+                break;
+            }
+            case COMP_RIGIDBODY: {
+                Rigidbody *rigidbody = (Rigidbody *)entity->get_component(type);
+                // TODO
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
 /* _process_mouse_button
  */
 void Engine::_process_mouse_button(GLFWwindow *window, int button, int action, int mods) {
