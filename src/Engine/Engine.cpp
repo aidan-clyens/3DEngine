@@ -104,10 +104,22 @@ void Engine::set_directional_light(DirectionalLight light) {
     m_renderer.set_directional_light(light);
 }
 
+/* get_directional_light
+ */
+DirectionalLight Engine::get_directional_light() const {
+    return m_renderer.get_directional_light();
+}
+
 /* add_light
  */
 void Engine::add_light(PointLight light) {
     m_renderer.add_light(light);
+}
+
+/* get_lights
+ */
+void Engine::get_lights(std::vector<PointLight> &lights) {
+    m_renderer.get_lights(lights);
 }
 
 /* remove_light

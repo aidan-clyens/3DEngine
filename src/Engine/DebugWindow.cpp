@@ -2,6 +2,7 @@
 #include "Engine/Engine.h"
 #include "Engine/ECS/Mesh.h"
 #include "Engine/CubeMesh.h"
+#include "Engine/Light.h"
 
 
 #define BUTTON_SIZE ImVec2(80, 30)
@@ -81,6 +82,11 @@ void DebugWindow::show_window(bool *open) {
         return;
     }
 
+    // Lighting
+    if (ImGui::CollapsingHeader("Lighting")) {
+        DebugWindow::show_lighting();
+    }
+
     // Objects
     if (ImGui::CollapsingHeader("Objects")) {
         DebugWindow::show_objects();
@@ -91,6 +97,94 @@ void DebugWindow::show_window(bool *open) {
     }
 
     ImGui::End();
+}
+
+/* show_lighting
+ */
+void DebugWindow::show_lighting() {
+    // Directional Light
+    ImGui::PushID("show directional light");
+    ImGui::Text("Directional Light");
+
+    DirectionalLight directional_light = p_engine->get_directional_light();
+    vec3 position = directional_light.get_position();
+    vec3 origin = directional_light.get_origin();
+
+    // Origin
+    ImGui::Text("Origin");
+    ImGui::SameLine();
+
+    ImGui::PushID("origin");
+    origin = DebugWindow::show_vec3(origin);
+    ImGui::PopID();
+
+    DebugWindow::show_light(&directional_light);
+
+    directional_light.set_origin(origin);
+    p_engine->set_directional_light(directional_light);
+
+    ImGui::Separator();
+    ImGui::PopID();
+
+    // Point Lights
+    std::vector<PointLight> point_lights;
+    p_engine->get_lights(point_lights);
+    
+    ImGui::PushID("show point lights");
+    for (int i = 0; i < point_lights.size(); i++) {
+        ImGui::PushID(i);
+        ImGui::Text("Point Light %d", i);
+
+        DebugWindow::show_light(&point_lights[i]);
+
+        ImGui::Separator();
+        ImGui::PopID();
+    }
+
+    ImGui::PopID();
+}
+
+/* show_light
+ */
+void DebugWindow::show_light(Light *light) {
+    vec3 position = light->get_position();
+    vec3 ambient = light->get_ambient();
+    vec3 diffuse = light->get_diffuse();
+    vec3 specular = light->get_specular();
+
+    // Position
+    ImGui::Text("Position");
+    ImGui::SameLine();
+
+    ImGui::PushID("position");
+    position = DebugWindow::show_vec3(position);
+    ImGui::PopID();
+
+    ImGui::Text("Ambient");
+    ImGui::SameLine();
+
+    ImGui::PushID("ambient");
+    ambient = DebugWindow::show_color3(ambient);
+    ImGui::PopID();
+
+    ImGui::Text("Diffuse");
+    ImGui::SameLine();
+
+    ImGui::PushID("diffuse");
+    diffuse = DebugWindow::show_color3(diffuse);
+    ImGui::PopID();
+
+    ImGui::Text("Specular");
+    ImGui::SameLine();
+
+    ImGui::PushID("specular");
+    specular = DebugWindow::show_color3(specular);
+    ImGui::PopID();
+
+    light->set_position(position);
+    light->set_ambient(ambient);
+    light->set_diffuse(diffuse);
+    light->set_specular(specular);
 }
 
 /* show_objects
@@ -124,75 +218,29 @@ void DebugWindow::show_transform(Object3D *object) {
     vec3 rotation = object->get_rotation();
     vec3 size = object->get_size();
 
-    if (ImGui::BeginTable("Transform", 4)) {
-        // Position
-        ImGui::TableNextRow();
-        ImGui::TableNextColumn();
-        ImGui::Text("Position");
-        ImGui::TableNextColumn();
+    // Position
+    ImGui::Text("Position");
+    ImGui::SameLine();
 
-        ImGui::PushID("position x");
-        ImGui::DragScalar("", ImGuiDataType_Float, &position.x, 0.01f, NULL, NULL, "%.2f");
-        ImGui::PopID();
+    ImGui::PushID("position");
+    position = DebugWindow::show_vec3(position);
+    ImGui::PopID();
 
-        ImGui::TableNextColumn();
+    // Rotation
+    ImGui::Text("Rotation");
+    ImGui::SameLine();
 
-        ImGui::PushID("position y");
-        ImGui::DragScalar("", ImGuiDataType_Float, &position.y, 0.01f, NULL, NULL, "%.2f");
-        ImGui::PopID();
+    ImGui::PushID("rotation");
+    rotation = DebugWindow::show_vec3(rotation, 1.0f);
+    ImGui::PopID();
 
-        ImGui::TableNextColumn();
+    // Size
+    ImGui::Text("Size");
+    ImGui::SameLine();
 
-        ImGui::PushID("position z");
-        ImGui::DragScalar("", ImGuiDataType_Float, &position.z, 0.01f, NULL, NULL, "%.2f");
-        ImGui::PopID();
-
-        // Rotation
-        ImGui::TableNextRow();
-        ImGui::TableNextColumn();
-        ImGui::Text("Rotation");
-        ImGui::TableNextColumn();
-
-        ImGui::PushID("rotation x");
-        ImGui::DragScalar("", ImGuiDataType_Float, &rotation.x, 1.0f, NULL, NULL, "%.2f");
-        ImGui::PopID();
-
-        ImGui::TableNextColumn();
-
-        ImGui::PushID("rotation y");
-        ImGui::DragScalar("", ImGuiDataType_Float, &rotation.y, 1.0f, NULL, NULL, "%.2f");
-        ImGui::PopID();
-
-        ImGui::TableNextColumn();
-
-        ImGui::PushID("rotation z");
-        ImGui::DragScalar("", ImGuiDataType_Float, &rotation.z, 1.0f, NULL, NULL, "%.2f");
-        ImGui::PopID();
-
-        // Size
-        ImGui::TableNextRow();
-        ImGui::TableNextColumn();
-        ImGui::Text("Size");
-        ImGui::TableNextColumn();
-
-        ImGui::PushID("size x");
-        ImGui::DragScalar("", ImGuiDataType_Float, &size.x, 0.01f, NULL, NULL, "%.2f");
-        ImGui::PopID();
-
-        ImGui::TableNextColumn();
-
-        ImGui::PushID("size y");
-        ImGui::DragScalar("", ImGuiDataType_Float, &size.y, 0.01f, NULL, NULL, "%.2f");
-        ImGui::PopID();
-
-        ImGui::TableNextColumn();
-
-        ImGui::PushID("size z");
-        ImGui::DragScalar("", ImGuiDataType_Float, &size.z, 0.01f, NULL, NULL, "%.2f");
-        ImGui::PopID();
-
-        ImGui::EndTable();
-    }
+    ImGui::PushID("size");
+    size = DebugWindow::show_vec3(size);
+    ImGui::PopID();
 
     object->set_position(position);
     object->set_rotation(rotation);
@@ -252,42 +300,57 @@ void DebugWindow::show_material(Mesh *mesh) {
 
     Material material = mesh->get_material();
 
-    ImGuiColorEditFlags misc_flags = 0;
-    ImVec4 ambient = ImVec4(material.ambient.x, material.ambient.y, material.ambient.z, 1);
-    ImVec4 diffuse = ImVec4(material.diffuse.x, material.diffuse.y, material.diffuse.z, 1);
-    ImVec4 specular = ImVec4(material.specular.x, material.specular.y, material.specular.z, 1);
-
     ImGui::Text("Ambient");
     ImGui::SameLine();
 
     ImGui::PushID("ambient");
-    ImGui::ColorEdit3("", (float *)&ambient, misc_flags);
+    material.ambient = DebugWindow::show_color3(material.ambient);
     ImGui::PopID();
 
     ImGui::Text("Diffuse");
     ImGui::SameLine();
 
     ImGui::PushID("diffuse");
-    ImGui::ColorEdit3("", (float *)&diffuse, misc_flags);
+    material.diffuse = DebugWindow::show_color3(material.diffuse);
     ImGui::PopID();
 
     ImGui::Text("Specular");
     ImGui::SameLine();
 
     ImGui::PushID("specular");
-    ImGui::ColorEdit3("", (float *)&specular, misc_flags);
+    material.specular = DebugWindow::show_color3(material.specular);
     ImGui::PopID();
 
     ImGui::Text("Shininess");
     ImGui::SameLine();
 
     ImGui::PushID("shininess");
-    ImGui::DragScalar("", ImGuiDataType_Float, &material.shininess, 0.01f, NULL, NULL, "%.2f");
+    material.shininess = DebugWindow::show_float(material.shininess, 1.0f);
     ImGui::PopID();
 
-    material.ambient = vec3(ambient.x, ambient.y, ambient.z);
-    material.diffuse = vec3(diffuse.x, diffuse.y, diffuse.z);
-    material.specular = vec3(specular.x, specular.y, specular.z);
-
     mesh->set_material(material);
+}
+
+/* show_float
+ */
+float DebugWindow::show_float(const float value, float step, float min, float max) {
+    float new_value = value;
+    ImGui::DragScalar("", ImGuiDataType_Float, &new_value, step, &min, &max, "%.2f");
+    return new_value;
+}
+
+/* show_vec3
+ */
+vec3 DebugWindow::show_vec3(const vec3 vector, float step, float min, float max) {
+    float vector_v4[4] = {vector.x, vector.y, vector.z, 1};
+    ImGui::DragFloat3("", vector_v4, step, min, max, "%.2f");
+    return vec3(vector_v4[0], vector_v4[1], vector_v4[2]);
+}
+
+/* show_color3
+ */
+vec3 DebugWindow::show_color3(const vec3 color, ImGuiColorEditFlags flags) {
+    ImVec4 color_v4 = ImVec4(color.x, color.y, color.z, 1);
+    ImGui::ColorEdit3("", (float *)&color_v4, flags);
+    return vec3(color_v4.x, color_v4.y, color_v4.z);
 }

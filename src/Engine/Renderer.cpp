@@ -375,6 +375,12 @@ void Renderer::set_directional_light(DirectionalLight light) {
     m_directional_light = light;
 }
 
+/* get_directional_light
+ */
+DirectionalLight Renderer::get_directional_light() const {
+    return m_directional_light;
+}
+
 /* add_light
  */
 void Renderer::add_light(PointLight light) {
@@ -384,6 +390,12 @@ void Renderer::add_light(PointLight light) {
     else {
         std::cerr << "Error: Too many point lights. Maximum is " << MAX_POINT_LIGHTS << std::endl;
     }
+}
+
+/* get_lights
+ */
+void Renderer::get_lights(std::vector<PointLight> &lights) {
+    lights = m_lights;
 }
 
 /* remove_light

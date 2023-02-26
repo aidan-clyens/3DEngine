@@ -39,8 +39,10 @@ class Renderer {
         void set_mouse_visible(bool value);
 
         void set_directional_light(DirectionalLight light);
-        void add_light(PointLight light);
+        DirectionalLight get_directional_light() const;
 
+        void add_light(PointLight light);
+        void get_lights(std::vector<PointLight> &lights);
         bool remove_light(int id);
 
         void set_background_color(vec3 color);
