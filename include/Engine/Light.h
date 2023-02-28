@@ -1,8 +1,8 @@
 #pragma once
 
 // Includes
+#include "Engine/ECS/ECS.h"
 #include "Engine/utils/types.h"
-
 
 // Enums
 /* ePointLightDistance
@@ -24,7 +24,7 @@ typedef enum {
 
 /* Light
  */
-class Light {
+class Light : public Component {
     public:
         Light();
 

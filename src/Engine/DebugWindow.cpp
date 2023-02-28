@@ -126,20 +126,20 @@ void DebugWindow::show_lighting() {
     ImGui::Separator();
     ImGui::PopID();
 
-    // Point Lights
-    std::vector<PointLight> point_lights;
-    p_engine->get_lights(point_lights);
+    // // Point Lights
+    // std::vector<PointLight> point_lights;
+    // p_engine->get_lights(point_lights);
     
-    ImGui::PushID("show point lights");
-    for (int i = 0; i < point_lights.size(); i++) {
-        ImGui::PushID(i);
-        ImGui::Text("Point Light %d", i);
+    // ImGui::PushID("show point lights");
+    // for (int i = 0; i < point_lights.size(); i++) {
+    //     ImGui::PushID(i);
+    //     ImGui::Text("Point Light %d", i);
 
-        DebugWindow::show_light(&point_lights[i]);
+    //     DebugWindow::show_light(&point_lights[i]);
 
-        ImGui::Separator();
-        ImGui::PopID();
-    }
+    //     ImGui::Separator();
+    //     ImGui::PopID();
+    // }
 
     ImGui::PopID();
 }

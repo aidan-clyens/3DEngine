@@ -62,7 +62,7 @@ void Engine::start() {
         this->update();
 
         m_physics.update(m_delta_time);
-        m_renderer.render(m_meshes, *p_camera);
+        m_renderer.render(m_meshes, m_lights, *p_camera);
     }
 }
 
@@ -90,6 +90,10 @@ void Engine::add_object(Object3D *object) {
     if (object->has_component(COMP_RIGIDBODY)) {
         m_physics.add_rigid_body((Rigidbody*)object->get_component(COMP_RIGIDBODY));
     }
+
+    if (object->has_component(COMP_LIGHT)) {
+        m_lights.push_back((Light*)object->get_component(COMP_LIGHT));
+    }
 }
 
 /* get_objects
@@ -108,24 +112,6 @@ void Engine::set_directional_light(DirectionalLight light) {
  */
 DirectionalLight Engine::get_directional_light() const {
     return m_renderer.get_directional_light();
-}
-
-/* add_light
- */
-void Engine::add_light(PointLight light) {
-    m_renderer.add_light(light);
-}
-
-/* get_lights
- */
-void Engine::get_lights(std::vector<PointLight> &lights) {
-    m_renderer.get_lights(lights);
-}
-
-/* remove_light
- */
-bool Engine::remove_light(int id) {
-    return m_renderer.remove_light(id);
 }
 
 /* set_background_color
@@ -212,6 +198,13 @@ void Engine::handle_add_component(Entity *entity, Component *component, eCompone
                 m_physics.add_rigid_body(rigidbody);
                 break;
             }
+            case COMP_LIGHT: {
+                Light *light = (Light*)entity->get_component(type);
+                if (std::find(m_lights.begin(), m_lights.end(), light) == m_lights.end()) {
+                    m_lights.push_back(light);
+                }
+                break;
+            }
             default:
                 break;
         }
@@ -234,6 +227,14 @@ void Engine::handle_remove_component(Entity *entity, Component *component, eComp
             case COMP_RIGIDBODY: {
                 Rigidbody *rigidbody = (Rigidbody *)entity->get_component(type);
                 // TODO
+                break;
+            }
+            case COMP_LIGHT: {
+                Light *light = (Light*)entity->get_component(type);
+                auto it = std::find(m_lights.begin(), m_lights.end(), light);
+                if (it != m_lights.end()) {
+                    m_lights.erase(it);
+                }
                 break;
             }
             default:

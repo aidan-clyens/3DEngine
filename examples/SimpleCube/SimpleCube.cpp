@@ -98,21 +98,6 @@ class Game : public Engine {
             skybox_faces.push_back("examples/SimpleCube/res/skybox/back.jpg");
             m_skybox_texture.load(skybox_faces);
 
-            // Lighting
-            PointLight light1;
-            light1.set_position(vec3(-1.0, 0.0, 2.0));
-            light1.set_lighting(vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2));
-            light1.set_light_strength(LIGHT_DISTANCE_32);
-
-            this->add_light(light1);
-
-            PointLight light2;
-            light2.set_position(vec3(5.0, 0.0, -5.0));
-            light2.set_lighting(vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2));
-            light2.set_light_strength(LIGHT_DISTANCE_7);
-
-            this->add_light(light2);
-
             Transform transform;
             transform.position = vec3(0, -2, 0);
             transform.rotation = vec3(0, 0, 0);
@@ -143,6 +128,10 @@ class Game : public Engine {
             transform.size = vec3(1, 1, 1);
 
             this->add_object(this->create_square(transform, m_texture_2d));
+
+            // Lights
+            this->add_object(this->create_point_light(vec3(-1.0, 0.0, 2.0), vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2), LIGHT_DISTANCE_32));
+            this->add_object(this->create_point_light(vec3(5.0, 0.0, -5.0), vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2), LIGHT_DISTANCE_7));
         }
 
         /* update
@@ -158,6 +147,22 @@ class Game : public Engine {
                     p_input_manager->set_mouse_handled(true);
                 }
             }
+        }
+
+        /* create_point_light
+         */
+        Object3D *create_point_light(vec3 position, vec3 ambient, vec3 diffuse, vec3 specular, ePointLightDistance strength) {
+            // Create object
+            Object3D *light_object = new Object3D(position, vec3(0.0f, 0.0f, 0.0f), vec3(1.0f, 1.0f, 1.0f));
+            light_object->add_component(COMP_LIGHT, new PointLight());
+
+            PointLight *light = (PointLight *)light_object->get_component(COMP_LIGHT);
+
+            light->set_position(position);
+            light->set_lighting(ambient, diffuse, specular);
+            light->set_light_strength(strength);
+
+            return light_object;
         }
 
         /* create_cube

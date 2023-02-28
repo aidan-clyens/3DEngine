@@ -28,7 +28,7 @@ class Renderer {
         bool init(Engine *engine);
         void close();
 
-        void render(std::vector<Mesh*> &meshes, Camera &camera);
+        void render(std::vector<Mesh*> &meshes, std::vector<Light*> &lights, Camera &camera);
 
         bool is_window_closed() const;
 
@@ -40,10 +40,6 @@ class Renderer {
 
         void set_directional_light(DirectionalLight light);
         DirectionalLight get_directional_light() const;
-
-        void add_light(PointLight light);
-        void get_lights(std::vector<PointLight> &lights);
-        bool remove_light(int id);
 
         void set_background_color(vec3 color);
         void set_skybox(Object3D *skybox);
