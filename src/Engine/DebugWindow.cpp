@@ -106,85 +106,27 @@ void DebugWindow::show_lighting() {
     ImGui::PushID("show directional light");
     ImGui::Text("Directional Light");
 
-    DirectionalLight directional_light = p_engine->get_directional_light();
-    vec3 position = directional_light.get_position();
-    vec3 origin = directional_light.get_origin();
+    // DirectionalLight directional_light = p_engine->get_directional_light();
+    // vec3 position = directional_light.get_position();
+    // vec3 origin = directional_light.get_origin();
 
-    // Origin
-    ImGui::Text("Origin");
-    ImGui::SameLine();
+    // // Origin
+    // ImGui::Text("Origin");
+    // ImGui::SameLine();
 
-    ImGui::PushID("origin");
-    origin = DebugWindow::show_vec3(origin);
-    ImGui::PopID();
+    // ImGui::PushID("origin");
+    // origin = DebugWindow::show_vec3(origin);
+    // ImGui::PopID();
 
-    DebugWindow::show_light(&directional_light);
+    // DebugWindow::show_light(&directional_light);
 
-    directional_light.set_origin(origin);
-    p_engine->set_directional_light(directional_light);
+    // directional_light.set_origin(origin);
+    // p_engine->set_directional_light(directional_light);
 
-    ImGui::Separator();
-    ImGui::PopID();
-
-    // // Point Lights
-    // std::vector<PointLight> point_lights;
-    // p_engine->get_lights(point_lights);
-    
-    // ImGui::PushID("show point lights");
-    // for (int i = 0; i < point_lights.size(); i++) {
-    //     ImGui::PushID(i);
-    //     ImGui::Text("Point Light %d", i);
-
-    //     DebugWindow::show_light(&point_lights[i]);
-
-    //     ImGui::Separator();
-    //     ImGui::PopID();
-    // }
+    // ImGui::Separator();
+    // ImGui::PopID();
 
     ImGui::PopID();
-}
-
-/* show_light
- */
-void DebugWindow::show_light(Light *light) {
-    vec3 position = light->get_position();
-    vec3 ambient = light->get_ambient();
-    vec3 diffuse = light->get_diffuse();
-    vec3 specular = light->get_specular();
-
-    // Position
-    ImGui::Text("Position");
-    ImGui::SameLine();
-
-    ImGui::PushID("position");
-    position = DebugWindow::show_vec3(position);
-    ImGui::PopID();
-
-    ImGui::Text("Ambient");
-    ImGui::SameLine();
-
-    ImGui::PushID("ambient");
-    ambient = DebugWindow::show_color3(ambient);
-    ImGui::PopID();
-
-    ImGui::Text("Diffuse");
-    ImGui::SameLine();
-
-    ImGui::PushID("diffuse");
-    diffuse = DebugWindow::show_color3(diffuse);
-    ImGui::PopID();
-
-    ImGui::Text("Specular");
-    ImGui::SameLine();
-
-    ImGui::PushID("specular");
-    specular = DebugWindow::show_color3(specular);
-    ImGui::PopID();
-
-    light->set_position(position);
-    light->set_ambient(ambient);
-    light->set_diffuse(diffuse);
-    light->set_specular(specular);
 }
 
 /* show_objects
@@ -280,6 +222,27 @@ void DebugWindow::show_components(Object3D *object) {
     if (object->has_component(COMP_CAMERA)) {
         ImGui::Text("Camera");
     }
+
+    // Light
+    if (object->has_component(COMP_LIGHT)) {
+        Light *light = (Light *)object->get_component(COMP_LIGHT);
+
+        ImGui::Text("Light");
+
+        // Light
+        DebugWindow::show_light(light);
+
+        if (ImGui::Button("Delete Light", BUTTON_SIZE)) {
+            object->remove_component(COMP_LIGHT);
+        }
+    }
+    else {
+        if (ImGui::Button("New Light", BUTTON_SIZE)) {
+            object->add_component(COMP_LIGHT, new PointLight());
+            PointLight *light = (PointLight *)object->get_component(COMP_LIGHT);
+            light->set_position(object->get_transform().position);
+        }
+    }
 }
 
 /* show_material
@@ -333,6 +296,39 @@ void DebugWindow::show_material(Mesh *mesh) {
     ImGui::PopID();
 
     mesh->set_material(material);
+}
+
+/* show_light
+ */
+void DebugWindow::show_light(Light *light) {
+    vec3 ambient = light->get_ambient();
+    vec3 diffuse = light->get_diffuse();
+    vec3 specular = light->get_specular();
+
+    ImGui::Text("Ambient");
+    ImGui::SameLine();
+
+    ImGui::PushID("ambient");
+    ambient = DebugWindow::show_color3(ambient);
+    ImGui::PopID();
+
+    ImGui::Text("Diffuse");
+    ImGui::SameLine();
+
+    ImGui::PushID("diffuse");
+    diffuse = DebugWindow::show_color3(diffuse);
+    ImGui::PopID();
+
+    ImGui::Text("Specular");
+    ImGui::SameLine();
+
+    ImGui::PushID("specular");
+    specular = DebugWindow::show_color3(specular);
+    ImGui::PopID();
+
+    light->set_ambient(ambient);
+    light->set_diffuse(diffuse);
+    light->set_specular(specular);
 }
 
 /* show_float
