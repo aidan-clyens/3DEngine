@@ -82,9 +82,9 @@ void DebugWindow::show_window(bool *open) {
         return;
     }
 
-    // Lighting
-    if (ImGui::CollapsingHeader("Lighting")) {
-        DebugWindow::show_lighting();
+    // Scene
+    if (ImGui::CollapsingHeader("Scene")) {
+        DebugWindow::show_scene();
     }
 
     // Objects
@@ -99,32 +99,40 @@ void DebugWindow::show_window(bool *open) {
     ImGui::End();
 }
 
-/* show_lighting
+/* show_scene
  */
-void DebugWindow::show_lighting() {
+void DebugWindow::show_scene() {
     // Directional Light
     ImGui::PushID("show directional light");
     ImGui::Text("Directional Light");
 
-    // DirectionalLight directional_light = p_engine->get_directional_light();
-    // vec3 position = directional_light.get_position();
-    // vec3 origin = directional_light.get_origin();
+    DirectionalLight directional_light = p_engine->get_directional_light();
+    vec3 position = directional_light.get_position();
+    vec3 origin = directional_light.get_origin();
 
-    // // Origin
-    // ImGui::Text("Origin");
-    // ImGui::SameLine();
+    // Position
+    ImGui::Text("Position");
+    ImGui::SameLine();
 
-    // ImGui::PushID("origin");
-    // origin = DebugWindow::show_vec3(origin);
-    // ImGui::PopID();
+    ImGui::PushID("position");
+    position = DebugWindow::show_vec3(position);
+    ImGui::PopID();
 
-    // DebugWindow::show_light(&directional_light);
+    // Origin
+    ImGui::Text("Origin");
+    ImGui::SameLine();
 
-    // directional_light.set_origin(origin);
-    // p_engine->set_directional_light(directional_light);
+    ImGui::PushID("origin");
+    origin = DebugWindow::show_vec3(origin);
+    ImGui::PopID();
 
-    // ImGui::Separator();
-    // ImGui::PopID();
+    DebugWindow::show_light(&directional_light);
+
+    directional_light.set_position(position);
+    directional_light.set_origin(origin);
+    p_engine->set_directional_light(directional_light);
+
+    ImGui::Separator();
 
     ImGui::PopID();
 }

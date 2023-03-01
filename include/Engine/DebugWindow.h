@@ -30,7 +30,7 @@ class DebugWindow {
     private:
         static void show_window(bool *open);
 
-        static void show_lighting();
+        static void show_scene();
 
         static void show_objects();
         static void show_transform(Object3D *object);
