@@ -4,7 +4,7 @@
 #include "Engine/utils/types.h"
 #include "Engine/ECS/ECS.h"
 #include "Engine/ECS/Mesh.h"
-
+#include "Engine/Light.h"
 
 /* Object3D
  */
