@@ -145,16 +145,23 @@ void DebugWindow::show_objects() {
 
     ImGui::PushID("show objects");
     for (int i = 0; i < objects.size(); i++) {
+        char name[50];
+        sprintf(name, "Object %d", i);
+
         ImGui::PushID(i);
-        ImGui::Text("Object %d", i);
+        if (ImGui::TreeNode(name)) {
+            // Transform
+            DebugWindow::show_transform(objects[i]);
 
-        // Transform
-        DebugWindow::show_transform(objects[i]);
+            ImGui::Separator();
 
-        // Components
-        DebugWindow::show_components(objects[i]);
+            // Components
+            DebugWindow::show_components(objects[i]);
 
-        ImGui::Separator();
+            ImGui::Separator();
+
+            ImGui::TreePop();
+        }
         ImGui::PopID();
     }
     ImGui::PopID();
@@ -221,6 +228,8 @@ void DebugWindow::show_components(Object3D *object) {
         }
     }
 
+    ImGui::Separator();
+
     // Rigidbody
     if (object->has_component(COMP_RIGIDBODY)) {
         ImGui::Text("Rigidbody");
@@ -251,11 +260,15 @@ void DebugWindow::show_components(Object3D *object) {
             light->set_position(object->get_transform().position);
         }
     }
+
+    ImGui::Separator();
 }
 
 /* show_material
  */
 void DebugWindow::show_material(Mesh *mesh) {
+    ImGui::PushID("material");
+
     ImGui::Text("Mesh Type: ");
     ImGui::SameLine();
 
@@ -304,11 +317,15 @@ void DebugWindow::show_material(Mesh *mesh) {
     ImGui::PopID();
 
     mesh->set_material(material);
+
+    ImGui::PopID();
 }
 
 /* show_light
  */
 void DebugWindow::show_light(Light *light) {
+    ImGui::PushID("light");
+
     vec3 ambient = light->get_ambient();
     vec3 diffuse = light->get_diffuse();
     vec3 specular = light->get_specular();
@@ -337,6 +354,8 @@ void DebugWindow::show_light(Light *light) {
     light->set_ambient(ambient);
     light->set_diffuse(diffuse);
     light->set_specular(specular);
+
+    ImGui::PopID();
 }
 
 /* show_float
