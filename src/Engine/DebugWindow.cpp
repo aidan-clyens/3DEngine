@@ -158,8 +158,12 @@ void DebugWindow::show_objects() {
             // Components
             DebugWindow::show_components(objects[i]);
 
-            ImGui::Separator();
+            // Delete Object Button
+            if (ImGui::Button("Delete Object", BUTTON_SIZE)) {
+                p_engine->remove_object(objects[i]);
+            }
 
+            ImGui::Separator();
             ImGui::TreePop();
         }
         ImGui::PopID();

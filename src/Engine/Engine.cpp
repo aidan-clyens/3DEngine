@@ -96,6 +96,31 @@ void Engine::add_object(Object3D *object) {
     }
 }
 
+/* remove_object
+ */
+void Engine::remove_object(Object3D *object) {
+    // Remove components
+    if (object->has_component(COMP_MESH)) {
+        this->handle_remove_component(object, object->get_component(COMP_MESH), COMP_MESH);
+    }
+
+    if (object->has_component(COMP_RIGIDBODY)) {
+        this->handle_remove_component(object, object->get_component(COMP_RIGIDBODY), COMP_RIGIDBODY);
+    }
+
+    if (object->has_component(COMP_LIGHT)) {
+        this->handle_remove_component(object, object->get_component(COMP_LIGHT), COMP_LIGHT);
+    }
+
+    // Remove object
+    auto it = std::find(m_objects.begin(), m_objects.end(), object);
+    if (it != m_objects.end()) {
+        m_objects.erase(it);
+    }
+
+    delete object;
+}
+
 /* get_objects
  */
 void Engine::get_objects(std::vector<Object3D *> &objects) {
