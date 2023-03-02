@@ -68,3 +68,21 @@ void Texture::free_data() {
 unsigned int Texture::get_texture_type() const {
     return m_texture_type;
 }
+
+/* get_width
+ */
+int Texture::get_width() const {
+    return m_texture_width;
+}
+
+/* get_height
+ */
+int Texture::get_height() const {
+    return m_texture_height;
+}
+
+/* get_texture_id
+ */
+unsigned int Texture::get_texture_id() const {
+    return m_texture_id;
+}

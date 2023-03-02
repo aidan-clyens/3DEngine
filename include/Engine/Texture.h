@@ -27,6 +27,10 @@ class Texture {
         void disable();
 
         unsigned int get_texture_type() const;
+        int get_width() const;
+        int get_height() const;
+
+        unsigned int get_texture_id() const;
 
     protected:
         void free_data();

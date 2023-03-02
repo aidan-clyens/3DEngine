@@ -312,6 +312,14 @@ void DebugWindow::show_material(Mesh *mesh) {
             break;
     }
 
+    // Texture 2D
+    if (mesh->get_material_type() == MATERIAL_TEXTURE_2D) {
+        if (mesh->has_texture()) {
+            Texture texture = mesh->get_texture();
+            DebugWindow::show_image(texture);
+        }
+    }
+
     Material material = mesh->get_material();
 
     ImGui::Text("Ambient");
@@ -406,4 +414,34 @@ vec3 DebugWindow::show_color3(const vec3 color, ImGuiColorEditFlags flags) {
     ImVec4 color_v4 = ImVec4(color.x, color.y, color.z, 1);
     ImGui::ColorEdit3("", (float *)&color_v4, flags);
     return vec3(color_v4.x, color_v4.y, color_v4.z);
+}
+
+/* show_image
+ */
+void DebugWindow::show_image(const Texture texture) {
+    ImGuiIO &io = ImGui::GetIO();
+    ImVec2 pos = ImGui::GetCursorScreenPos();
+
+    unsigned int texture_id = texture.get_texture_id();
+    float width = (float)texture.get_width();
+    float height = (float)texture.get_height();
+
+    ImGui::Image((void *)(intptr_t)texture_id, ImVec2(width, height));
+    if (ImGui::IsItemHovered()) {
+        ImGui::BeginTooltip();
+        float region_sz = 32.0f;
+        float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
+        float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
+        float zoom = 4.0f;
+        if (region_x < 0.0f) { region_x = 0.0f; }
+        else if (region_x > width - region_sz) { region_x = width - region_sz; }
+        if (region_y < 0.0f) { region_y = 0.0f; }
+        else if (region_y > height - region_sz) { region_y = height - region_sz; }
+        ImGui::Text("Min: (%.2f, %.2f)", region_x, region_y);
+        ImGui::Text("Max: (%.2f, %.2f)", region_x + region_sz, region_y + region_sz);
+        ImVec2 uv0 = ImVec2((region_x) / width, (region_y) / height);
+        ImVec2 uv1 = ImVec2((region_x + region_sz) / width, (region_y + region_sz) / height);
+        ImGui::Image((void *)(intptr_t)texture_id, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1);
+        ImGui::EndTooltip();
+    }
 }

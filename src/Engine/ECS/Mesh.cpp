@@ -157,10 +157,22 @@ Material Mesh::get_material() const {
     return m_material;
 }
 
+/* get_texture
+ */
+Texture Mesh::get_texture() const {
+    return m_texture;
+}
+
 /* has_shader
  */
 bool Mesh::has_shader() const {
     return m_use_shader;
+}
+
+/* has_texture
+ */
+bool Mesh::has_texture() const {
+    return m_use_texture;
 }
 
 /* get_material_type

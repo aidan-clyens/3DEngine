@@ -12,6 +12,7 @@ class Engine;
 class Object3D;
 class Mesh;
 class Light;
+class Texture;
 
 
 class DebugWindow {
@@ -41,6 +42,7 @@ class DebugWindow {
         static float show_float(const float value, float step = 0.01f, float min = NULL, float max = NULL);
         static vec3 show_vec3(const vec3 vector, float step = 0.01f, float min = NULL, float max = NULL);
         static vec3 show_color3(const vec3 color, ImGuiColorEditFlags flags = 0);
+        static void show_image(const Texture texture);
 
         static Engine *p_engine;
 };

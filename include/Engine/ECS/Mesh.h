@@ -43,9 +43,11 @@ class Mesh : public Component {
         void set_material(Material material);
 
         Material get_material() const;
+        Texture get_texture() const;
 
         bool has_shader() const;
-        
+        bool has_texture() const;
+
         eMaterialType get_material_type() const;
 
     protected:
