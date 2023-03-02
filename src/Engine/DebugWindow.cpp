@@ -145,11 +145,13 @@ void DebugWindow::show_objects() {
 
     ImGui::PushID("show objects");
     for (int i = 0; i < objects.size(); i++) {
-        char name[50];
-        sprintf(name, "Object %d", i);
+        // char name[50];
+        // sprintf(name, "Object %d", i);
+
+        std::string name = objects[i]->get_name();
 
         ImGui::PushID(i);
-        if (ImGui::TreeNode(name)) {
+        if (ImGui::TreeNode(name.c_str())) {
             // Transform
             DebugWindow::show_transform(objects[i]);
 

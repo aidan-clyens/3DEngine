@@ -6,6 +6,8 @@
 #include "Engine/ECS/Mesh.h"
 #include "Engine/Light.h"
 
+#include <string>
+
 /* Object3D
  */
 class Object3D : public Entity {
@@ -24,6 +26,10 @@ class Object3D : public Entity {
         void set_size(vec3 size);
         void set_transform(Transform transform);
 
+        std::string get_name() const;
+        void set_name(const std::string &name);
+
     protected:
         Transform m_transform;
+        std::string m_name; 
 };

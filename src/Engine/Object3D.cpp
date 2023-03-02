@@ -3,7 +3,9 @@
 
 /* Object3D
  */
-Object3D::Object3D() {
+Object3D::Object3D():
+m_name("Object")
+{
     // Initialize transform
     m_transform.position = vec3(0.0f, 0.0f, 0.0f);
     m_transform.rotation = vec3(0.0f, 0.0f, 0.0f);
@@ -12,7 +14,9 @@ Object3D::Object3D() {
 
 /* Object3D
  */
-Object3D::Object3D(vec3 pos, vec3 rotation, vec3 size) {
+Object3D::Object3D(vec3 pos, vec3 rotation, vec3 size):
+m_name("Object")
+{
     // Initialize transform
     m_transform.position = pos;
     m_transform.rotation = rotation;
@@ -84,4 +88,16 @@ void Object3D::set_transform(Transform transform) {
         Light *light = (Light*)this->get_component(COMP_LIGHT);
         light->set_position(m_transform.position);
     }
+}
+
+/* get_name
+ */
+std::string Object3D::get_name() const {
+    return m_name;
+}
+
+/* set_name
+ */
+void Object3D::set_name(const std::string &name) {
+    m_name = name;
 }

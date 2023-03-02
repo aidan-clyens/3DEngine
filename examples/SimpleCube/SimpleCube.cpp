@@ -98,12 +98,15 @@ class Game : public Engine {
             skybox_faces.push_back("examples/SimpleCube/res/skybox/back.jpg");
             m_skybox_texture.load(skybox_faces);
 
+            // Ground
             Transform transform;
             transform.position = vec3(0, -2, 0);
             transform.rotation = vec3(0, 0, 0);
             transform.size = vec3(20, 1, 20);
 
-            this->add_object(this->create_cube(transform, GREY, 4));
+            Object3D *object = this->create_cube(transform, GREY, 4);
+            object->set_name("Ground");
+            this->add_object(object);
 
             // Skybox
             this->set_skybox(this->create_cube(Transform(), m_skybox_texture));
@@ -113,25 +116,36 @@ class Game : public Engine {
             transform.rotation = vec3(0, 30, 0);
             transform.size = vec3(1, 1, 1);
 
-            this->add_object(this->create_cube(transform, m_texture_cube));
+            object = this->create_cube(transform, m_texture_cube);
+            object->set_name("Cube 1");
+            this->add_object(object);
 
             // Cube 2
             transform.position = vec3(2, -1, -4);
             transform.rotation = vec3(0, -10, 0);
             transform.size = vec3(1, 4, 1);
 
-            this->add_object(this->create_cube(transform, BLUE, 4));
+            object = this->create_cube(transform, BLUE, 4);
+            object->set_name("Cube 2");
+            this->add_object(object);
 
             // Square
             transform.position = vec3(0, 0, -4);
             transform.rotation = vec3(0, 0, 0);
             transform.size = vec3(1, 1, 1);
 
-            this->add_object(this->create_square(transform, m_texture_2d));
+            object = this->create_square(transform, m_texture_2d);
+            object->set_name("Square");
+            this->add_object(object);
 
             // Lights
-            this->add_object(this->create_point_light(vec3(-1.0, 0.0, 2.0), vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2), LIGHT_DISTANCE_32));
-            this->add_object(this->create_point_light(vec3(5.0, 0.0, -5.0), vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2), LIGHT_DISTANCE_7));
+            object = this->create_point_light(vec3(-1.0, 0.0, 2.0), vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2), LIGHT_DISTANCE_32);
+            object->set_name("Point Light 1");
+            this->add_object(object);
+
+            object = this->create_point_light(vec3(5.0, 0.0, -5.0), vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(0.2, 0.2, 0.2), LIGHT_DISTANCE_7);
+            object->set_name("Point Light 2");
+            this->add_object(object);
         }
 
         /* update
