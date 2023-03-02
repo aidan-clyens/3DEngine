@@ -158,6 +158,12 @@ void Engine::set_camera(Camera *camera) {
     p_camera = camera;
 }
 
+/* get_camera
+ */
+Camera *Engine::get_camera() {
+    return p_camera;
+}
+
 /* set_mouse_visible
  */
 void Engine::set_mouse_visible(bool value) {

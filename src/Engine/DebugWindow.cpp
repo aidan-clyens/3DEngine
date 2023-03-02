@@ -102,6 +102,27 @@ void DebugWindow::show_window(bool *open) {
 /* show_scene
  */
 void DebugWindow::show_scene() {
+    // Camera
+    ImGui::PushID("show camera");
+    ImGui::Text("Main Camera");
+
+    Camera *camera = p_engine->get_camera();
+
+    vec3 camera_position = camera->get_position();
+
+    // Position
+    ImGui::Text("Position");
+    ImGui::SameLine();
+
+    ImGui::PushID("position");
+    camera_position = DebugWindow::show_vec3(camera_position);
+    ImGui::PopID();
+
+    camera->set_position(camera_position);
+
+    ImGui::Separator();
+    ImGui::PopID();
+
     // Directional Light
     ImGui::PushID("show directional light");
     ImGui::Text("Directional Light");
@@ -133,7 +154,6 @@ void DebugWindow::show_scene() {
     p_engine->set_directional_light(directional_light);
 
     ImGui::Separator();
-
     ImGui::PopID();
 }
 

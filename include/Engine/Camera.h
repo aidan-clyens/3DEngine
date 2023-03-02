@@ -19,6 +19,7 @@ class Camera : public Component {
         Camera(vec3 position);
 
         void set_position(vec3 position);
+        vec3 get_position() const;
 
         void set_mouse_offset(double offset_x, double offset_y);
 

@@ -19,6 +19,12 @@ void Camera::set_position(vec3 position) {
     m_position = position;
 }
 
+/* get_position
+ */
+vec3 Camera::get_position() const {
+    return m_position;
+}
+
 /* set_position
  */
 void Camera::set_mouse_offset(double offset_x, double offset_y) {
