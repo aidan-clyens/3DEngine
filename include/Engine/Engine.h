@@ -79,6 +79,7 @@ class Engine : public EntityManager {
 
         Renderer m_renderer;
 
+        std::vector<Camera*> m_cameras;
         std::vector<Object3D*> m_objects;
         std::vector<Mesh*> m_meshes;
         std::vector<Light*> m_lights;

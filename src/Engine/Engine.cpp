@@ -91,6 +91,10 @@ void Engine::add_object(Object3D *object) {
         m_physics.add_rigid_body((Rigidbody*)object->get_component(COMP_RIGIDBODY));
     }
 
+    if (object->has_component(COMP_CAMERA)) {
+        m_cameras.push_back((Camera*)object->get_component(COMP_CAMERA));
+    }
+
     if (object->has_component(COMP_LIGHT)) {
         m_lights.push_back((Light*)object->get_component(COMP_LIGHT));
     }
@@ -106,6 +110,10 @@ void Engine::remove_object(Object3D *object) {
 
     if (object->has_component(COMP_RIGIDBODY)) {
         this->handle_remove_component(object, object->get_component(COMP_RIGIDBODY), COMP_RIGIDBODY);
+    }
+
+    if (object->has_component(COMP_CAMERA)) {
+        this->handle_remove_component(object, object->get_component(COMP_CAMERA), COMP_CAMERA);
     }
 
     if (object->has_component(COMP_LIGHT)) {
@@ -156,6 +164,12 @@ void Engine::set_skybox(Object3D *skybox) {
 void Engine::set_camera(Camera *camera) {
     delete p_camera;
     p_camera = camera;
+}
+
+/* get_cameras
+ */
+void Engine::get_cameras(std::vector<Camera*> &cameras) {
+    cameras = m_cameras;
 }
 
 /* get_camera
@@ -229,6 +243,13 @@ void Engine::handle_add_component(Entity *entity, Component *component, eCompone
                 m_physics.add_rigid_body(rigidbody);
                 break;
             }
+            case COMP_CAMERA: {
+                Camera *camera = (Camera*)entity->get_component(type);
+                if (std::find(m_cameras.begin(), m_cameras.end(), camera) == m_cameras.end()) {
+                    m_cameras.push_back(camera);
+                }
+                break;
+            }
             case COMP_LIGHT: {
                 Light *light = (Light*)entity->get_component(type);
                 if (std::find(m_lights.begin(), m_lights.end(), light) == m_lights.end()) {
@@ -258,6 +279,14 @@ void Engine::handle_remove_component(Entity *entity, Component *component, eComp
             case COMP_RIGIDBODY: {
                 Rigidbody *rigidbody = (Rigidbody *)entity->get_component(type);
                 // TODO
+                break;
+            }
+            case COMP_CAMERA: {
+                Camera *camera = (Camera*)entity->get_component(type);
+                auto it = std::find(m_cameras.begin(), m_cameras.end(), camera);
+                if (it != m_cameras.end()) {
+                    m_cameras.erase(it);
+                }
                 break;
             }
             case COMP_LIGHT: {

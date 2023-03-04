@@ -1,4 +1,5 @@
 #include "Engine/Object3D.h"
+#include "Engine/Camera.h"
 
 
 /* Object3D
@@ -82,6 +83,11 @@ void Object3D::set_transform(Transform transform) {
     if (this->has_component(COMP_MESH)) {
         Mesh *mesh = (Mesh*)this->get_component(COMP_MESH);
         mesh->set_transform(m_transform);
+    }
+
+    if (this->has_component(COMP_CAMERA)) {
+        Camera *camera = (Camera*)this->get_component(COMP_CAMERA);
+        camera->set_position(m_transform.position);
     }
 
     if (this->has_component(COMP_LIGHT)) {

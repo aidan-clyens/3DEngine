@@ -3,6 +3,18 @@
 
 /* Camera
  */
+Camera::Camera():
+m_position(vec3(0.0, 0.0, 0.0)),
+m_front(vec3(0.0, 0.0, -1.0)),
+m_up(vec3(0.0, 1.0, 0.0)),
+m_yaw(0),
+m_pitch(0)
+{
+
+}
+
+/* Camera
+ */
 Camera::Camera(vec3 position):
 m_position(position),
 m_front(vec3(0.0, 0.0, -1.0)),

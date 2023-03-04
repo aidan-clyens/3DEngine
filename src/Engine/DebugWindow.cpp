@@ -3,6 +3,7 @@
 #include "Engine/ECS/Mesh.h"
 #include "Engine/CubeMesh.h"
 #include "Engine/Light.h"
+#include "Engine/Camera.h"
 
 
 #define BUTTON_SIZE ImVec2(100, 25)
@@ -102,9 +103,20 @@ void DebugWindow::show_window(bool *open) {
 /* show_scene
  */
 void DebugWindow::show_scene() {
-    // Camera
+    // Cameras
     ImGui::PushID("show camera");
     ImGui::Text("Main Camera");
+
+    std::vector<Camera*> cameras;
+    p_engine->get_cameras(cameras);
+    
+    ImGui::PushID("show cameras");
+    for (int i = 0; i < cameras.size(); i++) {
+        char name[50];
+        sprintf(name, "Camera %d", i);
+        ImGui::Text(name);
+    }
+    ImGui::PopID();
 
     Camera *camera = p_engine->get_camera();
 
@@ -264,7 +276,20 @@ void DebugWindow::show_components(Object3D *object) {
     // Camera
     if (object->has_component(COMP_CAMERA)) {
         ImGui::Text("Camera");
+
+        if (ImGui::Button("Delete Camera", BUTTON_SIZE)) {
+            object->remove_component(COMP_CAMERA);
+        }
     }
+    else {
+        if (ImGui::Button("New Camera", BUTTON_SIZE)) {
+            object->add_component(COMP_CAMERA, new Camera());
+            Camera *camera = (Camera *)object->get_component(COMP_CAMERA);
+            camera->set_position(object->get_transform().position);
+        }
+    }
+
+    ImGui::Separator();
 
     // Light
     if (object->has_component(COMP_LIGHT)) {

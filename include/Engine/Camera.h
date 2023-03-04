@@ -16,6 +16,7 @@ class Camera : public Component {
     friend class Renderer;
 
     public:
+        Camera();
         Camera(vec3 position);
 
         void set_position(vec3 position);
