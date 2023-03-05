@@ -44,6 +44,7 @@ class Engine : public EntityManager {
         void set_skybox(Object3D *skybox);
 
         void set_camera(Camera *camera);
+        void get_cameras(std::vector<Camera*> &cameras);
         Camera *get_camera();
 
         void set_mouse_visible(bool value);

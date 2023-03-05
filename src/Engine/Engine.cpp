@@ -162,7 +162,6 @@ void Engine::set_skybox(Object3D *skybox) {
 /* set_camera
  */
 void Engine::set_camera(Camera *camera) {
-    delete p_camera;
     p_camera = camera;
 }
 

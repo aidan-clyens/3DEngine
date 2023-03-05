@@ -7,6 +7,7 @@
 
 
 #define BUTTON_SIZE ImVec2(100, 25)
+#define LISTBOX_SIZE ImVec2(200, 50)
 
 
 Engine *DebugWindow::p_engine = nullptr;
@@ -107,19 +108,7 @@ void DebugWindow::show_scene() {
     ImGui::PushID("show camera");
     ImGui::Text("Main Camera");
 
-    std::vector<Camera*> cameras;
-    p_engine->get_cameras(cameras);
-    
-    ImGui::PushID("show cameras");
-    for (int i = 0; i < cameras.size(); i++) {
-        char name[50];
-        sprintf(name, "Camera %d", i);
-        ImGui::Text(name);
-    }
-    ImGui::PopID();
-
     Camera *camera = p_engine->get_camera();
-
     vec3 camera_position = camera->get_position();
 
     // Position
@@ -166,6 +155,42 @@ void DebugWindow::show_scene() {
     p_engine->set_directional_light(directional_light);
 
     ImGui::Separator();
+    ImGui::PopID();
+}
+
+/* show_cameras
+ */
+void DebugWindow::show_cameras() {
+    ImGui::PushID("show cameras");
+    ImGui::Text("Main Camera");
+
+    std::vector<Camera*> cameras;
+    p_engine->get_cameras(cameras);
+
+    static char* items[100];
+    for (int i = 0; i < cameras.size(); i++) {
+        char name[50];
+        sprintf(name, "Camera %d", i);
+        items[i] = name;
+    }
+
+    for (int n = 0; n < cameras.size(); n++) {
+        std::cout << items[n] << std::endl; 
+    }
+
+    static int item_current_idx = 0; // Here we store our selection data as an index.
+    if (ImGui::BeginListBox("", LISTBOX_SIZE)) {
+        for (int n = 0; n < cameras.size(); n++) {
+            const bool is_selected = (item_current_idx == n);
+            if (ImGui::Selectable(items[n], is_selected))
+                item_current_idx = n;   
+
+            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndListBox();
+    }
     ImGui::PopID();
 }
 

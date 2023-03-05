@@ -13,6 +13,7 @@ class Object3D;
 class Mesh;
 class Light;
 class Texture;
+class Camera;
 
 
 class DebugWindow {
@@ -32,6 +33,7 @@ class DebugWindow {
         static void show_window(bool *open);
 
         static void show_scene();
+        static void show_cameras();
 
         static void show_objects();
         static void show_transform(Object3D *object);

@@ -77,8 +77,6 @@ class Game : public Engine {
             this->set_shadows_enabled(true);
             this->set_background_color(SKY_BLUE);
 
-            p_camera->set_position(vec3(0, 0, 3));
-
             // Load textures
             m_texture_2d.load("examples/SimpleCube/res/brick.png");
 
@@ -97,6 +95,12 @@ class Game : public Engine {
             skybox_faces.push_back("examples/SimpleCube/res/skybox/front.jpg");
             skybox_faces.push_back("examples/SimpleCube/res/skybox/back.jpg");
             m_skybox_texture.load(skybox_faces);
+
+            // Camera
+            Object3D *camera = this->create_camera(vec3(0, 0, 3));
+            camera->set_name("Camera");
+            this->add_object(camera);
+            this->set_camera((Camera*)camera->get_component(COMP_CAMERA));
 
             // Ground
             Transform transform;
@@ -229,6 +233,16 @@ class Game : public Engine {
             mesh->set_transform(transform);
 
             return square;
+        }
+
+        /* create_camera
+         */
+        Object3D *create_camera(vec3 position) {
+            Object3D *camera = new Object3D();
+            camera->set_position(position);
+            camera->add_component(COMP_CAMERA, new Camera(position));
+
+            return camera;
         }
 
     private:
