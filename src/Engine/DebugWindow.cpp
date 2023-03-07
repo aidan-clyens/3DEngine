@@ -302,6 +302,18 @@ void DebugWindow::show_components(Object3D *object) {
     if (object->has_component(COMP_CAMERA)) {
         ImGui::Text("Camera");
 
+        Camera *camera = (Camera*)object->get_component(COMP_CAMERA);
+        Camera *main_camera = p_engine->get_camera();
+
+        bool active = (camera == main_camera);
+        ImGui::Text("Active: %s", active ? "True" : "False");
+
+        if (!active) {
+            if (ImGui::Button("Set Active", BUTTON_SIZE)) {
+                p_engine->set_camera(camera);
+            }
+        }
+
         if (ImGui::Button("Delete Camera", BUTTON_SIZE)) {
             object->remove_component(COMP_CAMERA);
         }
