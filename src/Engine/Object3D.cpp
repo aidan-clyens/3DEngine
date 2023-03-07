@@ -80,19 +80,9 @@ void Object3D::set_size(vec3 size) {
 void Object3D::set_transform(Transform transform) {
     m_transform = transform;
 
-    if (this->has_component(COMP_MESH)) {
-        Mesh *mesh = (Mesh*)this->get_component(COMP_MESH);
-        mesh->set_transform(m_transform);
-    }
-
-    if (this->has_component(COMP_CAMERA)) {
-        Camera *camera = (Camera*)this->get_component(COMP_CAMERA);
-        camera->set_position(m_transform.position);
-    }
-
-    if (this->has_component(COMP_LIGHT)) {
-        Light *light = (Light*)this->get_component(COMP_LIGHT);
-        light->set_position(m_transform.position);
+    ComponentMapIterator it;
+    for (it = m_components.begin(); it != m_components.end(); it++) {
+        it->second->set_transform(transform);
     }
 }
 

@@ -51,8 +51,6 @@ class Mesh : public Component {
         eMaterialType get_material_type() const;
 
     protected:
-        Transform m_transform;
-
         mat4 m_model;
 
         Material m_material;

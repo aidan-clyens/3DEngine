@@ -1,5 +1,34 @@
 #include "Engine/ECS/ECS.h"
 
+/* Component
+ */
+Component::Component() {
+
+}
+
+/* set_transform
+ */
+void Component::set_transform(Transform transform) {
+    m_transform = transform;
+}
+
+/* get_transform
+ */
+Transform Component::get_transform() const {
+    return m_transform;
+}
+
+/* get_transform
+ */
+void Component::set_position(const vec3 position) {
+    m_transform.position = position;
+}
+
+/* get_transform
+ */
+vec3 Component::get_position() const {
+    return m_transform.position;
+}
 
 /* Entity
  */

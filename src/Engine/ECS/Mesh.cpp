@@ -106,7 +106,7 @@ void Mesh::render() {
 /* set_transform
  */
 void Mesh::set_transform(Transform transform) {
-    m_transform = transform;
+    Component::set_transform(transform);
 
     // Create transformations
     m_model = mat4(1.0);

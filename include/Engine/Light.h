@@ -28,9 +28,6 @@ class Light : public Component {
     public:
         Light();
 
-        void set_position(const vec3 position);
-        vec3 get_position() const;
-
         void set_lighting(const vec3 ambient, const vec3 diffuse, const vec3 specular);
 
         void set_ambient(const vec3 ambient);
@@ -45,8 +42,6 @@ class Light : public Component {
 
     protected:
         int m_id;
-
-        vec3 m_vector;
 
         vec3 m_ambient;
         vec3 m_diffuse;

@@ -26,7 +26,17 @@ class Entity;
 /* Component
  */
 class Component {
+    public:
+        Component();
 
+        virtual void set_transform(Transform transform);
+        Transform get_transform() const;
+
+        void set_position(const vec3 position);
+        vec3 get_position() const;
+
+    protected:
+        Transform m_transform;
 };
 
 /* EntityManager
@@ -56,7 +66,7 @@ class Entity {
 
         void assign_entity_manager(EntityManager *manager);
 
-    private:
+    protected:
         EntityManager *p_entity_manager;
         ComponentMap m_components;
 };
