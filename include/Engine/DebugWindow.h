@@ -41,6 +41,7 @@ class DebugWindow {
         static void show_material(Mesh *mesh);
         static void show_light(Light *light);
         static void show_camera(Camera *camera);
+        static void show_debug();
 
         static float show_float(const float value, float step = 0.01f, float min = NULL, float max = NULL);
         static vec3 show_vec3(const vec3 vector, float step = 0.01f, float min = NULL, float max = NULL);

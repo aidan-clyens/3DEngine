@@ -19,6 +19,13 @@ class Engine;
 class Mesh;
 class Camera;
 
+// Structs
+typedef struct {
+    float light_projection_size;
+    float near_plane;
+    float far_plane;
+} LightingInfo;
+
 /* Renderer
  */
 class Renderer {
@@ -47,6 +54,9 @@ class Renderer {
         void set_shadows_enabled(bool enable);
 
         void set_debug_window_enabled(bool enable);
+
+        LightingInfo get_lighting_info() const;
+        void set_lighting_info(LightingInfo info);
 
         GLFWwindow *get_window();
 
@@ -81,6 +91,8 @@ class Renderer {
         // Lighting
         DirectionalLight m_directional_light;
         std::vector<PointLight> m_lights;
+
+        LightingInfo m_lighting_info;
 
         // Skybox
         Object3D *p_skybox;

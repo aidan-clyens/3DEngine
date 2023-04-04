@@ -20,7 +20,9 @@ m_projection(glm::perspective(glm::radians((float)45.0), (float)width / (float)h
 p_skybox(nullptr),
 m_enable_shadows(false)
 {
-
+    m_lighting_info.light_projection_size = 10.0f;
+    m_lighting_info.near_plane = 1.0f;
+    m_lighting_info.far_plane = 12.5f;
 }
 
 /* init
@@ -145,10 +147,14 @@ void Renderer::close() {
  */
 void Renderer::render(std::vector<Mesh*> &meshes, std::vector<Light*> &lights, Camera &camera) {
     // Pass 1: Render to depth map
-    float near_plane = 1.0f;
-    float far_plane = 12.5f;
-
-    mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+    mat4 light_projection = glm::ortho(
+        -m_lighting_info.light_projection_size,
+        m_lighting_info.light_projection_size,
+        -m_lighting_info.light_projection_size,
+        m_lighting_info.light_projection_size,
+        m_lighting_info.near_plane,
+        m_lighting_info.far_plane
+    );
     mat4 light_view = glm::lookAt(m_directional_light.get_position(), m_directional_light.get_origin(), vec3(0.0f, 1.0f, 0.0f));
     mat4 light_space = light_projection * light_view;
 
@@ -316,8 +322,8 @@ void Renderer::render(std::vector<Mesh*> &meshes, std::vector<Light*> &lights, C
 #else
     if (m_enable_shadows) {
         m_debug_depth_shader.enable();
-        m_debug_depth_shader.set_float("near_plane", near_plane);
-        m_debug_depth_shader.set_float("far_plane", far_plane);
+        m_debug_depth_shader.set_float("m_near_plane", m_lighting_info.near_plane);
+        m_debug_depth_shader.set_float("m_far_plane", m_lighting_info.far_plane);
 
         m_depth_texture.enable();
 
@@ -403,6 +409,18 @@ void Renderer::set_shadows_enabled(bool enable) {
  */
 void Renderer::set_debug_window_enabled(bool enable) {
     m_enable_debug_window = enable;
+}
+
+/* get_lighting_info
+ */
+LightingInfo Renderer::get_lighting_info() const {
+    return m_lighting_info;
+}
+
+/* set_lighting_info
+ */
+void Renderer::set_lighting_info(LightingInfo info) {
+    m_lighting_info = info;
 }
 
 /* is_window_closed

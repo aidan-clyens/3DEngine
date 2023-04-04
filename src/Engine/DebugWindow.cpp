@@ -97,6 +97,11 @@ void DebugWindow::show_window(bool *open) {
             p_engine->add_object(new Object3D());
         }
     }
+    
+    // Debug
+    if (ImGui::CollapsingHeader("Debug")) {
+        DebugWindow::show_debug();
+    }
 
     ImGui::End();
 }
@@ -451,6 +456,42 @@ void DebugWindow::show_light(Light *light) {
     light->set_diffuse(diffuse);
     light->set_specular(specular);
 
+    ImGui::PopID();
+}
+
+/* show_debug
+ */
+void DebugWindow::show_debug() {
+    ImGui::PushID("debug");
+
+    ImGui::Text("Lighting Matrix Info");
+
+    LightingInfo lighting_info = p_engine->get_renderer()->get_lighting_info();
+
+    ImGui::Text("Light Projection Size");
+    ImGui::SameLine();
+
+    ImGui::PushID("light_projection_size");
+    lighting_info.light_projection_size = DebugWindow::show_float(lighting_info.light_projection_size, 1.0f, 0.0f, 100.0f);
+    ImGui::PopID();
+
+    ImGui::Text("Near Plane");
+    ImGui::SameLine();
+
+    ImGui::PushID("near_plane");
+    lighting_info.near_plane = DebugWindow::show_float(lighting_info.near_plane);
+    ImGui::PopID();
+
+    ImGui::Text("Far Plane");
+    ImGui::SameLine();
+
+    ImGui::PushID("far_plane");
+    lighting_info.far_plane = DebugWindow::show_float(lighting_info.far_plane);
+    ImGui::PopID();
+
+    p_engine->get_renderer()->set_lighting_info(lighting_info);
+
+    ImGui::Separator();
     ImGui::PopID();
 }
 
