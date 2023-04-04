@@ -84,19 +84,19 @@ void Engine::add_object(Object3D *object) {
     m_objects.push_back(object);
 
     if (object->has_component(COMP_MESH)) {
-        m_meshes.push_back((Mesh*)object->get_component(COMP_MESH));
+        this->handle_add_component(object, object->get_component(COMP_MESH), COMP_MESH);
     }
 
     if (object->has_component(COMP_RIGIDBODY)) {
-        m_physics.add_rigid_body((Rigidbody*)object->get_component(COMP_RIGIDBODY));
+        this->handle_add_component(object, object->get_component(COMP_RIGIDBODY), COMP_RIGIDBODY);
     }
 
     if (object->has_component(COMP_CAMERA)) {
-        m_cameras.push_back((Camera*)object->get_component(COMP_CAMERA));
+        this->handle_add_component(object, object->get_component(COMP_CAMERA), COMP_CAMERA);
     }
 
     if (object->has_component(COMP_LIGHT)) {
-        m_lights.push_back((Light*)object->get_component(COMP_LIGHT));
+        this->handle_add_component(object, object->get_component(COMP_LIGHT), COMP_LIGHT);
     }
 }
 
