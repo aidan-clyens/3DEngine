@@ -6,7 +6,7 @@
 // Defines
 #define CUBE_NUM_FACES          6
 #define CUBE_FACE_NUM_VERTICES  6
-#define CUBE_NUM_VERTICES       CUBE_NUM_FACES * CUBE_FACE_NUM_VERTICES;
+#define CUBE_NUM_VERTICES       CUBE_NUM_FACES * CUBE_FACE_NUM_VERTICES
 
 // Enums
 typedef enum {

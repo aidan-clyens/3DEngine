@@ -4,6 +4,7 @@
 #include "Engine/utils/types.h"
 #include "Engine/ECS/ECS.h"
 #include "Engine/ECS/Mesh.h"
+#include "Engine/ECS/Model.h"
 #include "Engine/Renderer.h"
 #include "Engine/Object3D.h"
 #include "Engine/Camera.h"

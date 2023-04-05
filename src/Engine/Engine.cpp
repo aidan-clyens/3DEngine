@@ -98,6 +98,10 @@ void Engine::add_object(Object3D *object) {
     if (object->has_component(COMP_LIGHT)) {
         this->handle_add_component(object, object->get_component(COMP_LIGHT), COMP_LIGHT);
     }
+
+    if (object->has_component(COMP_MODEL)) {
+        this->handle_add_component(object, object->get_component(COMP_MODEL), COMP_MODEL);
+    }
 }
 
 /* remove_object
@@ -118,6 +122,10 @@ void Engine::remove_object(Object3D *object) {
 
     if (object->has_component(COMP_LIGHT)) {
         this->handle_remove_component(object, object->get_component(COMP_LIGHT), COMP_LIGHT);
+    }
+
+    if (object->has_component(COMP_MODEL)) {
+        this->handle_remove_component(object, object->get_component(COMP_MODEL), COMP_MODEL);
     }
 
     // Remove object
@@ -256,13 +264,26 @@ void Engine::handle_add_component(Entity *entity, Component *component, eCompone
                 }
                 break;
             }
+            case COMP_MODEL: {
+                Model *model = (Model*)entity->get_component(type);
+
+                std::vector<Mesh*> meshes;
+                model->get_meshes(meshes);
+
+                for (unsigned int i = 0; i < meshes.size(); i++) {
+                    if (std::find(m_meshes.begin(), m_meshes.end(), meshes[i]) == m_meshes.end()) {
+                        m_meshes.push_back(meshes[i]);
+                    }
+                }
+                break;
+            }
             default:
                 break;
         }
     }
 }
 
-/* handle_add_component
+/* handle_remove_component
  */
 void Engine::handle_remove_component(Entity *entity, Component *component, eComponentType type) {
     if (entity->has_component(type)) {
@@ -293,6 +314,20 @@ void Engine::handle_remove_component(Entity *entity, Component *component, eComp
                 auto it = std::find(m_lights.begin(), m_lights.end(), light);
                 if (it != m_lights.end()) {
                     m_lights.erase(it);
+                }
+                break;
+            }
+            case COMP_MODEL: {
+                Model *model = (Model*)entity->get_component(type);
+
+                std::vector<Mesh*> meshes;
+                model->get_meshes(meshes);
+
+                for (unsigned int i = 0; i < meshes.size(); i++) {
+                    auto it = std::find(m_meshes.begin(), m_meshes.end(), meshes[i]);
+                    if (it != m_meshes.end()) {
+                        m_meshes.erase(it);
+                    }
                 }
                 break;
             }

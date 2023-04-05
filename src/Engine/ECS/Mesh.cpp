@@ -9,9 +9,42 @@ m_use_texture(false),
 m_num_vertices(0),
 m_material_type(MATERIAL_COLOR)
 {
+    this->init_mesh();
+}
+
+/* Mesh
+ */
+Mesh::Mesh(std::vector<Vertex> vertices):
+m_use_shader(false),
+m_use_texture(false),
+m_num_vertices(vertices.size()),
+m_material_type(MATERIAL_COLOR)
+{
+    m_vertices = vertices;
+    this->init_mesh();
+    this->create_mesh();
+}
+
+/* ~Mesh
+ */
+Mesh::~Mesh() {
+    glDeleteBuffers(1, &m_vertex_buffer_object);
+    glDeleteBuffers(1, &m_element_buffer_object);
+    glDeleteBuffers(1, &m_instance_buffer_object);
+    glDeleteVertexArrays(1, &m_vertex_array_object);
+
+    delete m_vertex_buffer.data;
+    delete m_normal_buffer.data;
+    delete m_uv_buffer.data;
+}
+
+/* render
+ */
+void Mesh::init_mesh() {
     // Create VBO and VAO
     glGenVertexArrays(1, &m_vertex_array_object);
     glGenBuffers(1, &m_vertex_buffer_object);
+    glGenBuffers(1, &m_element_buffer_object);
     glGenBuffers(1, &m_instance_buffer_object);
 
     // Initialize material lighting data
@@ -26,22 +59,52 @@ m_material_type(MATERIAL_COLOR)
     m_transform.size = vec3(1, 1, 1);
 
     // Create transformations
-    m_model = mat4(1.0);
-
-    // Transform object
-    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.x), vec3(1.0, 0.0, 0.0));
-    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.y), vec3(0.0, 1.0, 0.0));
-    m_model = glm::rotate(m_model, glm::radians((float)m_transform.rotation.z), vec3(0.0, 0.0, 1.0));
-    m_model = glm::translate(m_model, m_transform.position);
-    m_model = glm::scale(m_model, m_transform.size);
+    set_transform(m_transform);
 }
 
-/* ~Mesh
+/* create_mesh
  */
-Mesh::~Mesh() {
-    glDeleteBuffers(1, &m_vertex_buffer_object);
-    glDeleteBuffers(1, &m_instance_buffer_object);
-    glDeleteVertexArrays(1, &m_vertex_array_object);
+void Mesh::create_mesh() {
+    if (m_num_vertices == 0)
+        return;
+
+    m_vertex_buffer.stride = 3;
+    m_vertex_buffer.size = sizeof(float) * m_vertex_buffer.stride * m_num_vertices;
+    m_vertex_buffer.data = new float[m_vertex_buffer.size];
+
+    m_normal_buffer.stride = 3;
+    m_normal_buffer.size = sizeof(float) * m_normal_buffer.stride * m_num_vertices;
+    m_normal_buffer.data = new float[m_normal_buffer.size];
+
+    m_uv_buffer.stride = 2;
+    m_uv_buffer.size = sizeof(float) * m_uv_buffer.stride * m_num_vertices;
+    m_uv_buffer.data = new float[m_uv_buffer.size];
+
+    // Vertices
+    int index = 0;
+    for (unsigned int i = 0; i < m_vertex_buffer.stride * m_num_vertices; i += m_vertex_buffer.stride) {
+        m_vertex_buffer.data[i] = m_vertices[index].vertex.x;
+        m_vertex_buffer.data[i+1] = m_vertices[index].vertex.y;
+        m_vertex_buffer.data[i+2] = m_vertices[index].vertex.z;
+        index++;
+    }
+
+    // Normals
+    index = 0;
+    for (unsigned int i = 0; i < m_normal_buffer.stride * m_num_vertices; i += m_normal_buffer.stride) {
+        m_normal_buffer.data[i] = m_vertices[index].normal.x;
+        m_normal_buffer.data[i+1] = m_vertices[index].normal.y;
+        m_normal_buffer.data[i+2] = m_vertices[index].normal.z;
+        index++;
+    }
+
+    // UVs
+    index = 0;
+    for (unsigned int i = 0; i < m_uv_buffer.stride * m_num_vertices; i += m_uv_buffer.stride) {
+        m_uv_buffer.data[i] = m_vertices[index].uv.x;
+        m_uv_buffer.data[i+1] = m_vertices[index].uv.y;
+        index++;
+    }
 }
 
 /* render
@@ -179,4 +242,28 @@ bool Mesh::has_texture() const {
  */
 eMaterialType Mesh::get_material_type() const {
     return m_material_type;
+}
+
+/* get_num_vertices
+ */
+unsigned int Mesh::get_num_vertices() const {
+    return m_num_vertices;
+}
+
+/* dump_vertices
+ */
+void Mesh::dump_vertices() {
+    for (int i = 0; i < m_vertices.size(); i++) {
+        std::cout << m_vertices[i].vertex.x << ", " << m_vertices[i].vertex.y << ", " << m_vertices[i].vertex.z << "," << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+/* dump_normals
+ */
+void Mesh::dump_normals() {
+    for (int i = 0; i < m_vertices.size(); i++) {
+        std::cout << m_vertices[i].normal.x << ", " << m_vertices[i].normal.y << ", " << m_vertices[i].normal.z << "," << std::endl;
+    }
+    std::cout << std::endl;
 }

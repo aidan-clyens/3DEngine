@@ -11,6 +11,7 @@
 class Engine;
 class Object3D;
 class Mesh;
+class Model;
 class Light;
 class Texture;
 class Camera;
@@ -38,6 +39,7 @@ class DebugWindow {
         static void show_objects();
         static void show_transform(Object3D *object);
         static void show_components(Object3D *object);
+        static void show_model(Model *model);
         static void show_material(Mesh *mesh);
         static void show_light(Light *light);
         static void show_camera(Camera *camera);

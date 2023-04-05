@@ -20,6 +20,12 @@ typedef struct {
     unsigned int stride;
 } Buffer;
 
+typedef struct {
+    vec3 vertex;
+    vec3 normal;
+    vec2 uv;
+} Vertex;
+
 // Forward Declarations
 class Renderer;
 class MeshInstances;
@@ -32,6 +38,7 @@ class Mesh : public Component {
 
     public:
         Mesh();
+        Mesh(std::vector<Vertex> vertices);
         virtual ~Mesh();
 
         virtual void render();
@@ -50,7 +57,17 @@ class Mesh : public Component {
 
         eMaterialType get_material_type() const;
 
+        unsigned int get_num_vertices() const;
+
+        void dump_vertices();
+        void dump_normals();
+
     protected:
+        void init_mesh();
+        virtual void create_mesh();
+
+        std::vector<Vertex> m_vertices;
+
         mat4 m_model;
 
         Material m_material;
@@ -63,6 +80,7 @@ class Mesh : public Component {
 
         unsigned int m_vertex_buffer_object;
         unsigned int m_vertex_array_object;
+        unsigned int m_element_buffer_object;
         unsigned int m_instance_buffer_object;
 
         bool m_use_shader;

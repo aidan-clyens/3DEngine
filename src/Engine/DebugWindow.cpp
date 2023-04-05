@@ -1,6 +1,7 @@
 #include "Engine/DebugWindow.h"
 #include "Engine/Engine.h"
 #include "Engine/ECS/Mesh.h"
+#include "Engine/ECS/Model.h"
 #include "Engine/CubeMesh.h"
 #include "Engine/Light.h"
 #include "Engine/Camera.h"
@@ -275,6 +276,28 @@ void DebugWindow::show_transform(Object3D *object) {
 /* show_components
  */
 void DebugWindow::show_components(Object3D *object) {
+    // Model
+    if (object->has_component(COMP_MODEL)) {
+        Model *model = (Model*)object->get_component(COMP_MODEL);
+
+        ImGui::Text("Model");
+
+        DebugWindow::show_model(model);
+
+        if (ImGui::Button("Delete Model", BUTTON_SIZE)) {
+            object->remove_component(COMP_MODEL);
+        }
+    }
+    else {
+        if (ImGui::Button("New Model", BUTTON_SIZE)) {
+            object->add_component(COMP_MODEL, new Model());
+            Model *model = (Model*)object->get_component(COMP_MODEL);
+            model->set_transform(object->get_transform());
+        }
+    }
+
+    ImGui::Separator();
+
     // Mesh
     if (object->has_component(COMP_MESH)) {
         Mesh *mesh = (Mesh*)object->get_component(COMP_MESH);
@@ -355,6 +378,19 @@ void DebugWindow::show_components(Object3D *object) {
     }
 
     ImGui::Separator();
+}
+
+/* show_model
+ */
+void DebugWindow::show_model(Model *model) {
+    ImGui::PushID("model");
+
+    std::vector<Mesh*> meshes;
+    model->get_meshes(meshes);
+
+    ImGui::Text("Meshes: %d", meshes.size());
+
+    ImGui::PopID();
 }
 
 /* show_material

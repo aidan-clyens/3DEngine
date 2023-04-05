@@ -154,23 +154,39 @@ float uvs[] = {
 /* CubeMesh
  */
 CubeMesh::CubeMesh() {
-    m_num_vertices = CUBE_NUM_VERTICES;
+    int index = 0;
+    int uv_index = 0;
 
-    m_vertex_buffer.stride = 3;
-    m_vertex_buffer.size = sizeof(float) * m_vertex_buffer.stride * CUBE_NUM_VERTICES;
-    m_vertex_buffer.data = new float[m_vertex_buffer.size];
+    m_num_vertices = sizeof(vertices) / (sizeof(float) * 3.0);
+    std::cout << "num vertices: " << sizeof(vertices) / (sizeof(float) * 3.0) << std::endl;
 
-    m_normal_buffer.stride = 3;
-    m_normal_buffer.size = sizeof(float) * m_normal_buffer.stride * CUBE_NUM_VERTICES;
-    m_normal_buffer.data = new float[m_normal_buffer.size];
+    for (int i = 0; i < m_num_vertices; i++) {
+        Vertex vertex;
 
-    m_uv_buffer.stride = 2;
-    m_uv_buffer.size = sizeof(float) * m_uv_buffer.stride * CUBE_NUM_VERTICES;
-    m_uv_buffer.data = new float[m_uv_buffer.size];
+        vertex.vertex = vec3(
+            vertices[index],
+            vertices[index + 1],
+            vertices[index + 2]
+        );
 
-    memcpy(m_vertex_buffer.data, vertices, m_vertex_buffer.size);
-    memcpy(m_normal_buffer.data, normals, m_normal_buffer.size);
-    memcpy(m_uv_buffer.data, uvs, m_uv_buffer.size);
+        vertex.normal = vec3(
+            normals[index],
+            normals[index + 1],
+            normals[index + 2]
+        );
+
+        vertex.uv = vec2(
+            uvs[uv_index],
+            uvs[uv_index + 1]
+        );
+
+        index += 3;
+        uv_index += 2;
+
+        m_vertices.push_back(vertex);
+    }
+
+    this->create_mesh();
 
     // Enable faces
     for (int i = 0; i < CUBE_NUM_FACES; i++) {
