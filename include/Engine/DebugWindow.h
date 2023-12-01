@@ -40,7 +40,7 @@ class DebugWindow {
         static void show_transform(Object3D *object);
         static void show_components(Object3D *object);
         static void show_model(Model *model);
-        static void show_material(Mesh *mesh);
+        static void show_mesh(Mesh *mesh);
         static void show_light(Light *light);
         static void show_camera(Camera *camera);
         static void show_debug();

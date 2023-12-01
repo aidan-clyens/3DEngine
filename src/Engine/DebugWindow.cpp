@@ -304,8 +304,8 @@ void DebugWindow::show_components(Object3D *object) {
 
         ImGui::Text("Mesh");
 
-        // Material
-        DebugWindow::show_material(mesh);
+        // Mesh
+        DebugWindow::show_mesh(mesh);
 
         if (ImGui::Button("Delete Mesh", BUTTON_SIZE)) {
             object->remove_component(COMP_MESH);
@@ -387,16 +387,21 @@ void DebugWindow::show_model(Model *model) {
 
     std::vector<Mesh*> meshes;
     model->get_meshes(meshes);
+    
+    ImGui::Text("Meshes");
 
-    ImGui::Text("Meshes: %d", meshes.size());
+    for (int i = 0; i < meshes.size(); i++) {
+        DebugWindow::show_mesh(meshes[i]);
+        ImGui::Spacing();
+    }
 
     ImGui::PopID();
 }
 
-/* show_material
+/* show_mesh
  */
-void DebugWindow::show_material(Mesh *mesh) {
-    ImGui::PushID("material");
+void DebugWindow::show_mesh(Mesh *mesh) {
+    ImGui::PushID("mesh");
 
     ImGui::Text("Mesh Type: ");
     ImGui::SameLine();
@@ -454,6 +459,20 @@ void DebugWindow::show_material(Mesh *mesh) {
     ImGui::PopID();
 
     mesh->set_material(material);
+
+    if (ImGui::TreeNode("Debug")) {
+        ImGui::Text("Vertices: %d", mesh->get_num_vertices());
+
+        if (ImGui::Button("Dump Vertices", BUTTON_SIZE)) {
+            mesh->dump_vertices();
+        }
+
+        if (ImGui::Button("Dump Normals", BUTTON_SIZE)) {
+            mesh->dump_normals();
+        }
+
+        ImGui::TreePop();
+    }
 
     ImGui::PopID();
 }
