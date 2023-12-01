@@ -391,8 +391,10 @@ void DebugWindow::show_model(Model *model) {
     ImGui::Text("Meshes");
 
     for (int i = 0; i < meshes.size(); i++) {
+        ImGui::PushID(i);
         DebugWindow::show_mesh(meshes[i]);
         ImGui::Spacing();
+        ImGui::PopID();
     }
 
     ImGui::PopID();
